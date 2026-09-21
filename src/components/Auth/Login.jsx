@@ -6,35 +6,55 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    
+    if (!email.trim()) {
+      setError('Please enter your email address');
+      return;
+    }
+    if (!password) {
+      setError('Please enter your password');
+      return;
+    }
+
+    setLoading(true);
     try {
-      await login(email, password);
-      navigate('/profile');
+      const loggedUser = await login(email.trim().toLowerCase(), password);
+      if (loggedUser?.is_admin) {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
-      setError('Invalid email or password');
+      const msg = err.response?.data?.detail || (err.message === 'Network Error' ? 'Cannot connect to backend server at http://127.0.0.1:8000. Please ensure the backend server is running.' : 'Invalid email or password');
+      setError(msg);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="auth-card">
+    <div className="auth-card" style={{ maxWidth: '480px', margin: '3rem auto' }}>
       <div className="auth-header">
-        <h2>Welcome back</h2>
-        <p style={{ color: 'var(--text-muted)' }}>Log in to continue learning</p>
+        <h2>Welcome Back 👋</h2>
+        <p style={{ color: 'var(--text-muted)' }}>Log in to continue your learning journey</p>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label className="form-label">Email</label>
+          <label className="form-label">Email Address</label>
           <input 
             type="email" 
             className="form-input" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
             required 
-            placeholder="e.g. duo@lingo.com"
+            placeholder="e.g. learner@example.com"
           />
         </div>
         <div className="form-group">
@@ -48,11 +68,26 @@ const Login = () => {
             placeholder="••••••••"
           />
         </div>
-        {error && <div className="form-error" style={{ marginBottom: '1rem' }}>{error}</div>}
-        <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>LOG IN</button>
+        
+        {error && (
+          <div className="form-error" style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: '#ffebee', color: '#c62828', borderRadius: '10px', border: '1px solid #ef9a9a', fontSize: '0.9rem' }}>
+            ⚠️ {error}
+            {error.includes('No account found') && (
+              <div style={{ marginTop: '0.5rem' }}>
+                <Link to="/register" style={{ fontWeight: '700', color: 'var(--primary-color)', textDecoration: 'underline' }}>
+                  Click here to Create a Free Account →
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+
+        <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '0.9rem' }} disabled={loading}>
+          {loading ? 'LOGGING IN...' : 'LOG IN'}
+        </button>
       </form>
       <div style={{ textAlign: 'center', marginTop: '1.5rem', fontWeight: 600 }}>
-        Don't have an account? <Link to="/register">Sign up</Link>
+        Don't have an account? <Link to="/register">Create one now</Link>
       </div>
     </div>
   );

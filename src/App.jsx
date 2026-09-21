@@ -4,12 +4,33 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+import Onboarding from './components/Auth/Onboarding';
 import ProfileDashboard from './components/Profile/ProfileDashboard';
 import CourseCatalog from './components/Courses/CourseCatalog';
 import CourseDetail from './components/Courses/CourseDetail';
 import LessonViewer from './components/Lessons/LessonViewer';
 import AssessmentRunner from './components/Assessments/AssessmentRunner';
 import LearnerDashboard from './components/Dashboard/LearnerDashboard';
+import Shop from './components/Shop/Shop';
+import Practice from './components/Lessons/Practice';
+import AdaptiveLessonRunner from './components/Lessons/AdaptiveLessonRunner';
+import LearningPathView from './components/Dashboard/LearningPathView';
+import PlacementTestRunner from './components/Assessments/PlacementTestRunner';
+import MistakesPractice from './components/Review/MistakesPractice';
+import SrsReview from './components/Review/SrsReview';
+import DatabaseExplorer from './components/Admin/DatabaseExplorer';
+import ConversationLab from './components/Conversation/ConversationLab';
+import StoryCatalog from './components/Stories/StoryCatalog';
+import StoryPlayer from './components/Stories/StoryPlayer';
+import AdventureCatalog from './components/Adventures/AdventureCatalog';
+import AdventureRunner from './components/Adventures/AdventureRunner';
+import PracticeHubDashboard from './components/PracticeHub/PracticeHubDashboard';
+import VisualFlashcards from './components/PracticeHub/VisualFlashcards';
+import FriendsHub from './components/Social/FriendsHub';
+import LeagueLadder from './components/Social/LeagueLadder';
+import AdminDashboard from './components/Admin/AdminDashboard';
+import PronunciationEvaluator from './components/Speech/PronunciationEvaluator';
+import AchievementsGrid from './components/Achievements/AchievementsGrid';
 import { BookOpen, Sparkles, ArrowRight, Globe, CheckCircle, Award } from 'lucide-react';
 
 const PrivateRoute = ({ children }) => {
@@ -19,6 +40,14 @@ const PrivateRoute = ({ children }) => {
 };
 
 const Home = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div style={{ padding: '2rem' }}>Loading Auth...</div>;
+
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
     <div style={{ textAlign: 'center', marginTop: '5vh', maxWidth: '850px', padding: '0 1rem' }}>
       
@@ -58,15 +87,15 @@ const Home = () => {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
           {[
-            { name: 'Spanish', flag: '🇪🇸' },
             { name: 'English', flag: '🇬🇧' },
-            { name: 'French', flag: '🇫🇷' },
-            { name: 'German', flag: '🇩🇪' },
-            { name: 'Japanese', flag: '🇯🇵' }
+            { name: 'Kannada (ಕನ್ನಡ)', flag: '🇮🇳' },
+            { name: 'Telugu (తెలుగు)', flag: '🇮🇳' },
+            { name: 'Marathi (मराठी)', flag: '🇮🇳' },
+            { name: 'Hindi (हिन्दी)', flag: '🇮🇳' }
           ].map(lang => (
             <Link key={lang.name} to="/courses" className="flag-card">
               <span style={{ fontSize: '1.75rem' }}>{lang.flag}</span>
-              <span>{lang.name}</span>
+              <span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{lang.name}</span>
             </Link>
           ))}
         </div>
@@ -83,7 +112,7 @@ const Home = () => {
           </div>
           <h3 style={{ fontSize: '1.15rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Multi-Language Support</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.4' }}>
-            Learn reading, vocabulary, and grammar in English, Spanish, French, German, and Japanese.
+            Learn reading, vocabulary, and grammar in Kannada, Telugu, Marathi, Hindi, and English.
           </p>
         </div>
 
@@ -130,13 +159,120 @@ function App() {
                   <LearnerDashboard />
                 </PrivateRoute>
               } />
+              <Route path="/learning-path" element={
+                <PrivateRoute>
+                  <LearningPathView />
+                </PrivateRoute>
+              } />
+              <Route path="/initial-exam" element={
+                <PrivateRoute>
+                  <PlacementTestRunner />
+                </PrivateRoute>
+              } />
+              <Route path="/placement-test" element={
+                <PrivateRoute>
+                  <PlacementTestRunner />
+                </PrivateRoute>
+              } />
+              <Route path="/adaptive-practice" element={
+                <PrivateRoute>
+                  <AdaptiveLessonRunner />
+                </PrivateRoute>
+              } />
+              <Route path="/shop" element={
+                <PrivateRoute>
+                  <Shop />
+                </PrivateRoute>
+              } />
+              <Route path="/practice" element={
+                <PrivateRoute>
+                  <Practice />
+                </PrivateRoute>
+              } />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/onboarding" element={
+                <PrivateRoute>
+                  <Onboarding />
+                </PrivateRoute>
+              } />
+              <Route path="/review/mistakes" element={
+                <PrivateRoute>
+                  <MistakesPractice />
+                </PrivateRoute>
+              } />
+              <Route path="/review/srs" element={
+                <PrivateRoute>
+                  <SrsReview />
+                </PrivateRoute>
+              } />
               <Route path="/profile" element={
                 <PrivateRoute>
                   <ProfileDashboard />
                 </PrivateRoute>
               } />
+              <Route path="/conversation" element={
+                <PrivateRoute>
+                  <ConversationLab />
+                </PrivateRoute>
+              } />
+              <Route path="/stories" element={
+                <PrivateRoute>
+                  <StoryCatalog />
+                </PrivateRoute>
+              } />
+              <Route path="/stories/:storyId" element={
+                <PrivateRoute>
+                  <StoryPlayer />
+                </PrivateRoute>
+              } />
+              <Route path="/adventures" element={
+                <PrivateRoute>
+                  <AdventureCatalog />
+                </PrivateRoute>
+              } />
+              <Route path="/adventures/:adventureId" element={
+                <PrivateRoute>
+                  <AdventureRunner />
+                </PrivateRoute>
+              } />
+              <Route path="/practice-hub" element={
+                <PrivateRoute>
+                  <PracticeHubDashboard />
+                </PrivateRoute>
+              } />
+              <Route path="/flashcards" element={
+                <PrivateRoute>
+                  <VisualFlashcards />
+                </PrivateRoute>
+              } />
+              <Route path="/friends" element={
+                <PrivateRoute>
+                  <FriendsHub />
+                </PrivateRoute>
+              } />
+              <Route path="/leagues" element={
+                <PrivateRoute>
+                  <LeagueLadder />
+                </PrivateRoute>
+              } />
+              <Route path="/admin" element={
+                <PrivateRoute>
+                  <AdminDashboard />
+                </PrivateRoute>
+              } />
+              <Route path="/speech-practice" element={
+                <PrivateRoute>
+                  <PronunciationEvaluator />
+                </PrivateRoute>
+              } />
+              <Route path="/achievements" element={
+                <PrivateRoute>
+                  <AchievementsGrid />
+                </PrivateRoute>
+              } />
+              <Route path="/database" element={<DatabaseExplorer />} />
+              <Route path="/db-explorer" element={<DatabaseExplorer />} />
             </Routes>
           </main>
         </div>
