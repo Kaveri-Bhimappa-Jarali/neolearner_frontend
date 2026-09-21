@@ -32,7 +32,7 @@ const Login = () => {
         navigate('/dashboard');
       }
     } catch (err) {
-      const msg = err.response?.data?.detail || (err.message === 'Network Error' ? 'Cannot connect to backend server at http://127.0.0.1:8000. Please ensure the backend server is running.' : 'Invalid email or password');
+      const msg = err.response?.data?.detail || (err.message === 'Network Error' ? `Cannot connect to backend server at ${api.defaults.baseURL || 'the configured API URL'}. Please verify backend status and VITE_API_BASE_URL setting.` : 'Invalid email or password');
       setError(msg);
     } finally {
       setLoading(false);

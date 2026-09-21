@@ -107,7 +107,7 @@ const Register = () => {
       // Show Placement Test Choice Modal
       setShowPlacementChoice(true);
     } catch (err) {
-      const msg = err.response?.data?.detail || (err.message === 'Network Error' ? 'Cannot connect to backend server at http://localhost:8000. Please ensure the backend is running.' : 'Registration failed. Please try again.');
+      const msg = err.response?.data?.detail || (err.message === 'Network Error' ? `Cannot connect to backend server at ${api.defaults.baseURL || 'the configured API URL'}. Please verify backend status and VITE_API_BASE_URL setting.` : 'Registration failed. Please try again.');
       setError(msg);
     } finally {
       setLoading(false);
