@@ -54,9 +54,14 @@ const Navbar = () => {
 
         {/* Desktop Links & Stats */}
         <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+          <Link to="/insights" onClick={closeMenu} className={`nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Sparkles size={16} /> Insights & Showcase
+          </Link>
+
           <Link to="/courses" onClick={closeMenu} className={`nav-item ${isActive('/courses') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <BookOpen size={16} /> {t('courses')}
           </Link>
+
 
           {user && (
             <>

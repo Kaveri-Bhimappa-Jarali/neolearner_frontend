@@ -65,21 +65,17 @@ const PlacementTestRunner = () => {
   // Shuffled right words for match pairs to ensure random non-matching column order
   const matchPairData = useMemo(() => {
     if (currentQ?.type !== 'match_pairs') return { rawPairs: [], leftWords: [], rightWords: [] };
-    const raw = (currentQ.answers[0]?.text || '').split(',').filter(Boolean);
+    const raw = (currentQ.answers?.[0]?.text || '').split(',').filter(Boolean);
     const left = raw.map(p => p.split(':')[0]).filter(Boolean);
     const right = raw.map(p => p.split(':')[1]).filter(Boolean);
     
-    const shuffled = [...right];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    // If length > 1 and happens to match original order, swap first two
+    const shuffled = [...right].sort(() => (currentQ.id ? (currentQ.id.charCodeAt(0) % 3) - 1 : 0.5));
     if (shuffled.length > 1 && shuffled.every((val, idx) => val === right[idx])) {
       [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
     }
     return { rawPairs: raw, leftWords: left, rightWords: shuffled };
-  }, [currentQ?.id, currentIndex]);
+  }, [currentQ]);
+
 
   const handlePlayAudio = (text, slow = false) => {
     speakText(text, langCode, slow);

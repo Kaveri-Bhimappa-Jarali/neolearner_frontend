@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from '../../utils/i18n';
 import { 
   Users, BookOpen, BarChart3, Sparkles, Award, 
-  ShieldAlert, Layers, CheckCircle2, Search, Filter, RefreshCw, Eye
+  ShieldAlert, Layers, CheckCircle2, Search, Filter, RefreshCw, Eye, Compass
 } from 'lucide-react';
 import LearnerManagement from './LearnerManagement';
 import LearningAnalytics from './LearningAnalytics';
@@ -13,6 +13,8 @@ import ContentManagement from './ContentManagement';
 import AiMonitoring from './AiMonitoring';
 import AchievementManagement from './AchievementManagement';
 import DatabaseExplorer from './DatabaseExplorer';
+import StoryAdventureManagement from './StoryAdventureManagement';
+import VocabularyManagement from './VocabularyManagement';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -114,11 +116,13 @@ const AdminDashboard = () => {
       <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', marginBottom: '2rem', paddingBottom: '0.5rem' }}>
         {[
           { id: 'overview', label: 'Learner Management', icon: <Users size={16} /> },
-          { id: 'analytics', label: 'Learning Analytics', icon: <BarChart3 size={16} /> },
-          { id: 'content', label: 'Content Management', icon: <BookOpen size={16} /> },
-          { id: 'ai_monitoring', label: 'AI & Recommendations', icon: <Sparkles size={16} /> },
+          { id: 'content', label: 'Curriculum Studio', icon: <BookOpen size={16} /> },
           { id: 'achievements', label: 'Achievements Manager', icon: <Award size={16} /> },
-          { id: 'database', label: 'Database Inspector', icon: <Layers size={16} /> }
+          { id: 'stories_adventures', label: 'Stories & Roleplay', icon: <Compass size={16} /> },
+          { id: 'vocabulary', label: 'Vocabulary & SRS', icon: <RefreshCw size={16} /> },
+          { id: 'analytics', label: 'Learning Analytics', icon: <BarChart3 size={16} /> },
+          { id: 'ai_monitoring', label: 'AI & Recommendations', icon: <Sparkles size={16} /> },
+          { id: 'database', label: 'Universal DB Inspector', icon: <Layers size={16} /> }
         ].map(tab => (
           <button
             key={tab.id}
@@ -133,10 +137,12 @@ const AdminDashboard = () => {
 
       {/* Active Tab Panel Body */}
       {activeTab === 'overview' && <LearnerManagement />}
-      {activeTab === 'analytics' && <LearningAnalytics />}
       {activeTab === 'content' && <ContentManagement />}
-      {activeTab === 'ai_monitoring' && <AiMonitoring />}
       {activeTab === 'achievements' && <AchievementManagement />}
+      {activeTab === 'stories_adventures' && <StoryAdventureManagement />}
+      {activeTab === 'vocabulary' && <VocabularyManagement />}
+      {activeTab === 'analytics' && <LearningAnalytics />}
+      {activeTab === 'ai_monitoring' && <AiMonitoring />}
       {activeTab === 'database' && <DatabaseExplorer />}
 
     </div>
@@ -144,3 +150,4 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+

@@ -3,7 +3,7 @@ import api from '../../api/axios';
 import { 
   Database, Table, Search, RefreshCw, Layers, ExternalLink, 
   Key, Link as LinkIcon, CheckCircle, FileText, Activity, 
-  ArrowRight, ShieldCheck, ChevronLeft, ChevronRight, Hash
+  ArrowRight, ShieldCheck, ChevronLeft, ChevronRight, Hash, Plus, Edit, Trash2, X
 } from 'lucide-react';
 
 const DatabaseExplorer = () => {
@@ -17,6 +17,19 @@ const DatabaseExplorer = () => {
   const [page, setPage] = useState(0);
   const [activeTab, setActiveTab] = useState('data'); // 'data' | 'schema' | 'architecture' | 'api'
   const pageSize = 15;
+
+  // Modal & CRUD states
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingRecord, setEditingRecord] = useState(null);
+  const [formData, setFormData] = useState({});
+  const [modalSaving, setModalSaving] = useState(false);
+  const [modalError, setModalError] = useState(null);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
 
   const fetchOverviewAndSchema = async () => {
     setLoading(true);
@@ -73,7 +86,57 @@ const DatabaseExplorer = () => {
     setSearchTerm('');
   };
 
+  const openCreateModal = () => {
+    setEditingRecord(null);
+    setFormData({});
+    setModalError(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (row) => {
+    setEditingRecord(row);
+    setFormData({ ...row });
+    setModalError(null);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteRecord = async (recId) => {
+    if (!window.confirm(`Are you sure you want to delete record ${recId} from table '${selectedTable}'?`)) return;
+    try {
+      await api.delete(`/db/tables/${selectedTable}/${recId}`);
+      showToast(`Successfully deleted record from ${selectedTable}`);
+      fetchTableData(selectedTable, page, searchTerm);
+      fetchOverviewAndSchema();
+    } catch (err) {
+      alert(`Deletion failed: ${err.response?.data?.detail || err.message}`);
+    }
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setModalSaving(true);
+    setModalError(null);
+    try {
+      if (editingRecord) {
+        await api.put(`/db/tables/${selectedTable}/${editingRecord.id}`, formData);
+        showToast(`Successfully updated record in ${selectedTable}`);
+      } else {
+        await api.post(`/db/tables/${selectedTable}`, formData);
+        showToast(`Successfully created record in ${selectedTable}`);
+      }
+      setIsModalOpen(false);
+      fetchTableData(selectedTable, page, searchTerm);
+      fetchOverviewAndSchema();
+    } catch (err) {
+      setModalError(err.response?.data?.detail || err.message);
+    } finally {
+      setModalSaving(false);
+    }
+  };
+
   const totalPages = tableData ? Math.ceil(tableData.total_count / pageSize) : 0;
+  const currentSchemaColumns = schema && schema[selectedTable] ? schema[selectedTable].columns : [];
+
 
   return (
     <div style={{ maxWidth: '1350px', margin: '0 auto', padding: '1.5rem 1rem' }}>
@@ -250,31 +313,47 @@ const DatabaseExplorer = () => {
                 </span>
               </div>
 
-              {/* Search Form */}
-              <form onSubmit={handleSearchSubmit} style={{ display: 'flex', gap: '6px' }}>
-                <div style={{ position: 'relative' }}>
-                  <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '10px', top: '10px' }} />
-                  <input
-                    type="text"
-                    placeholder={`Search ${selectedTable}...`}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{
-                      padding: '0.5rem 0.8rem 0.5rem 2.2rem', borderRadius: '8px',
-                      border: '1px solid var(--border-color)', background: 'var(--background)',
-                      color: 'var(--text-main)', fontSize: '0.85rem', width: '220px'
-                    }}
-                  />
-                </div>
-                <button 
-                  type="submit" 
+              {/* Search & Actions Bar */}
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <button
                   className="btn btn-primary"
-                  style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
+                  onClick={openCreateModal}
+                  style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 'bold' }}
                 >
-                  Filter
+                  <Plus size={16} /> Insert Row
                 </button>
-              </form>
+                <form onSubmit={handleSearchSubmit} style={{ display: 'flex', gap: '6px' }}>
+                  <div style={{ position: 'relative' }}>
+                    <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '10px', top: '10px' }} />
+                    <input
+                      type="text"
+                      placeholder={`Search ${selectedTable}...`}
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      style={{
+                        padding: '0.5rem 0.8rem 0.5rem 2.2rem', borderRadius: '8px',
+                        border: '1px solid var(--border-color)', background: 'var(--background)',
+                        color: 'var(--text-main)', fontSize: '0.85rem', width: '220px'
+                      }}
+                    />
+                  </div>
+                  <button 
+                    type="submit" 
+                    className="btn btn-secondary"
+                    style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
+                  >
+                    Filter
+                  </button>
+                </form>
+              </div>
             </div>
+
+            {/* Toast Notification */}
+            {toastMessage && (
+              <div style={{ background: '#10b981', color: '#fff', padding: '0.75rem 1.25rem', borderRadius: '10px', marginBottom: '1rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                ✓ {toastMessage}
+              </div>
+            )}
 
             {/* Table Content */}
             {tableLoading ? (
@@ -287,6 +366,9 @@ const DatabaseExplorer = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                   <thead>
                     <tr style={{ background: 'var(--surface-hover)', borderBottom: '2px solid var(--border-color)' }}>
+                      <th style={{ padding: '0.75rem 1rem', textAlign: 'center', fontWeight: '700', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                        Actions
+                      </th>
                       {tableData.columns.map(col => (
                         <th key={col} style={{ padding: '0.75rem 1rem', textAlign: 'left', fontWeight: '700', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                           {col}
@@ -303,6 +385,26 @@ const DatabaseExplorer = () => {
                           background: idx % 2 === 0 ? 'var(--background)' : 'var(--surface)' 
                         }}
                       >
+                        <td style={{ padding: '0.75rem 1rem', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                          <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
+                            <button
+                              className="btn btn-secondary"
+                              onClick={() => openEditModal(row)}
+                              style={{ padding: '4px 8px', fontSize: '0.75rem' }}
+                              title="Edit Record"
+                            >
+                              <Edit size={13} color="#3b82f6" />
+                            </button>
+                            <button
+                              className="btn btn-secondary"
+                              onClick={() => handleDeleteRecord(row.id)}
+                              style={{ padding: '4px 8px', fontSize: '0.75rem' }}
+                              title="Delete Record"
+                            >
+                              <Trash2 size={13} color="#ef4444" />
+                            </button>
+                          </div>
+                        </td>
                         {tableData.columns.map(col => {
                           const val = row[col];
                           return (
@@ -333,6 +435,7 @@ const DatabaseExplorer = () => {
                 </table>
               </div>
             ) : (
+
               <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)', background: 'var(--background)', borderRadius: '10px' }}>
                 <p style={{ margin: 0, fontSize: '1rem', fontWeight: '600' }}>No records found in table <code>{selectedTable}</code></p>
                 <p style={{ margin: '6px 0 0 0', fontSize: '0.85rem' }}>Try clearing your search filter or adding records through the app.</p>
@@ -563,8 +666,94 @@ const DatabaseExplorer = () => {
         </div>
       )}
 
+      {/* DYNAMIC SCHEMA-DRIVEN CRUD MODAL OVERLAY */}
+      {isModalOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1200, padding: '1rem' }}>
+          <div className="card" style={{ maxWidth: '650px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '2rem', borderRadius: '24px', position: 'relative' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1.35rem', fontWeight: '800', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Table size={20} color="var(--primary-color)" /> {editingRecord ? 'Edit Record' : 'Insert New Record'} — <code>{selectedTable}</code>
+              </h3>
+              <button onClick={() => setIsModalOpen(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
+                <X size={20} />
+              </button>
+            </div>
+
+            {modalError && (
+              <div style={{ background: 'rgba(239, 68, 68, 0.12)', border: '1px solid var(--error)', color: 'var(--error)', padding: '0.75rem 1rem', borderRadius: '12px', marginBottom: '1.25rem', fontSize: '0.85rem' }}>
+                {modalError}
+              </div>
+            )}
+
+            <form onSubmit={handleFormSubmit}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                {currentSchemaColumns.filter(c => c.name !== 'id').map(col => {
+                  const val = formData[col.name] !== undefined ? formData[col.name] : '';
+                  const colType = col.type.toUpperCase();
+                  const isBool = colType.includes('BOOL');
+
+                  return (
+                    <div key={col.name} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>
+                        {col.name} {col.nullable ? '' : '*'} <span style={{ fontSize: '0.7rem', color: '#6366f1' }}>({col.type})</span>
+                      </label>
+
+                      {isBool ? (
+                        <select
+                          className="form-input"
+                          value={val === true || val === 'true' ? 'true' : 'false'}
+                          onChange={(e) => setFormData({ ...formData, [col.name]: e.target.value === 'true' })}
+                        >
+                          <option value="false">FALSE</option>
+                          <option value="true">TRUE</option>
+                        </select>
+                      ) : col.name === 'password' ? (
+                        <input
+                          type="password"
+                          className="form-input"
+                          placeholder="New Password"
+                          value={val}
+                          onChange={(e) => setFormData({ ...formData, [col.name]: e.target.value })}
+                        />
+                      ) : colType.includes('TEXT') ? (
+                        <textarea
+                          className="form-input"
+                          rows={3}
+                          placeholder={`Enter ${col.name}...`}
+                          value={val}
+                          onChange={(e) => setFormData({ ...formData, [col.name]: e.target.value })}
+                        />
+                      ) : (
+                        <input
+                          type={colType.includes('INT') || colType.includes('FLOAT') ? 'number' : 'text'}
+                          step={colType.includes('FLOAT') ? 'any' : '1'}
+                          className="form-input"
+                          placeholder={`Enter ${col.name}...`}
+                          value={val}
+                          onChange={(e) => setFormData({ ...formData, [col.name]: e.target.value })}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
+                <button type="button" className="btn btn-secondary" onClick={() => setIsModalOpen(false)}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary" disabled={modalSaving} style={{ minWidth: '130px', fontWeight: 'bold' }}>
+                  {modalSaving ? 'Saving...' : editingRecord ? 'Update Record' : 'Create Record'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
 
 export default DatabaseExplorer;
+

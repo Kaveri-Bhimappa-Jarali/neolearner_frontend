@@ -122,6 +122,22 @@ const AdaptiveLessonRunner = () => {
     }
   }, [timeLeft, currentFocus, completedResult, submitting, lessonSession]);
 
+  const currentQ = lessonSession?.questions?.[currentIndex];
+
+  // Shuffled right words for match pairs to ensure random non-matching column order
+  const matchPairData = useMemo(() => {
+    if (currentQ?.type !== 'match_pairs') return { rawPairs: [], leftWords: [], rightWords: [] };
+    const raw = (currentQ.answers?.[0]?.text || '').split(',').filter(Boolean);
+    const left = raw.map(p => p.split(':')[0]).filter(Boolean);
+    const right = raw.map(p => p.split(':')[1]).filter(Boolean);
+
+    const shuffled = [...right].sort(() => (currentQ.id ? (currentQ.id.charCodeAt(0) % 3) - 1 : 0.5));
+    if (shuffled.length > 1 && shuffled.every((val, idx) => val === right[idx])) {
+      [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
+    }
+    return { rawPairs: raw, leftWords: left, rightWords: shuffled };
+  }, [currentQ]);
+
   const changeMode = (modeId) => {
     if (modeId) {
       setSearchParams({ focus: modeId });
@@ -133,10 +149,8 @@ const AdaptiveLessonRunner = () => {
   if (loading) {
     return (
       <div className="page-container" style={{ textAlign: 'center', padding: '5rem 1rem' }}>
-        <div className="spinner" style={{ margin: '0 auto 1.5rem' }} />
-        <h2 style={{ color: 'var(--text-main)', fontSize: '1.6rem', fontWeight: '800' }}>
-          {t('aiEngineAssembling') || 'AI Engine Assembling Personalized Workout...'}
-        </h2>
+        <RefreshCw size={40} className="animate-spin" style={{ color: 'var(--primary-color)', marginBottom: '1rem' }} />
+        <h2>{t('assemblingSession') || 'Assembling AI Adaptive Session...'}</h2>
         <p style={{ color: 'var(--text-muted)' }}>
           {t('analyzingSkillVectors') || 'Analyzing skill vectors, mistake history, and vocabulary retention.'}
         </p>
@@ -166,28 +180,10 @@ const AdaptiveLessonRunner = () => {
     );
   }
 
-  const currentQ = lessonSession.questions[currentIndex];
   const totalQ = lessonSession.questions.length;
   const progressPct = ((currentIndex + 1) / totalQ) * 100;
   const langCode = lessonSession.language_code || 'en';
 
-  // Shuffled right words for match pairs to ensure random non-matching column order
-  const matchPairData = useMemo(() => {
-    if (currentQ?.type !== 'match_pairs') return { rawPairs: [], leftWords: [], rightWords: [] };
-    const raw = (currentQ.answers[0]?.text || '').split(',').filter(Boolean);
-    const left = raw.map(p => p.split(':')[0]).filter(Boolean);
-    const right = raw.map(p => p.split(':')[1]).filter(Boolean);
-
-    const shuffled = [...right];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    if (shuffled.length > 1 && shuffled.every((val, idx) => val === right[idx])) {
-      [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
-    }
-    return { rawPairs: raw, leftWords: left, rightWords: shuffled };
-  }, [currentQ?.id, currentIndex]);
 
   // Handle TTS Audio playback (normal or slow)
   const handlePlayAudio = (text, slow = false) => {
