@@ -24,23 +24,35 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const DEFAULT_LANGS = [
+      { id: 1, code: 'en', name: 'English', native_name: 'English' },
+      { id: 2, code: 'kn', name: 'Kannada', native_name: 'ಕನ್ನಡ' },
+      { id: 3, code: 'te', name: 'Telugu', native_name: 'తెలుగు' },
+      { id: 4, code: 'mr', name: 'Marathi', native_name: 'ಮರಾಠಿ' },
+      { id: 5, code: 'hi', name: 'Hindi', native_name: 'हिन्दी' },
+      { id: 6, code: 'es', name: 'Spanish', native_name: 'Español' }
+    ];
+
     const fetchLanguages = async () => {
       try {
         const res = await api.get('/languages/');
-        setLanguages(res.data);
-        if (res.data && res.data.length > 0) {
-          // Pre-select first two if available
-          const knLang = res.data.find(l => l.code === 'kn') || res.data[0];
-          const enLang = res.data.find(l => l.code === 'en') || (res.data.length > 1 ? res.data[1] : res.data[0]);
-          setFormData(prev => ({
-            ...prev,
-            preferred_language_id: prev.preferred_language_id || (knLang ? knLang.id : ''),
-            target_language_id: prev.target_language_id || (enLang ? enLang.id : '')
-          }));
-        }
+        const langData = (res.data && res.data.length > 0) ? res.data : DEFAULT_LANGS;
+        setLanguages(langData);
+        const knLang = langData.find(l => l.code === 'kn') || langData[0];
+        const enLang = langData.find(l => l.code === 'en') || (langData.length > 1 ? langData[1] : langData[0]);
+        setFormData(prev => ({
+          ...prev,
+          preferred_language_id: prev.preferred_language_id || (knLang ? knLang.id : 2),
+          target_language_id: prev.target_language_id || (enLang ? enLang.id : 1)
+        }));
       } catch (err) {
-        console.error('Failed to fetch languages:', err);
-        setError('Unable to load languages. Please refresh and try again.');
+        console.warn('Failed to fetch languages from API, using default languages:', err);
+        setLanguages(DEFAULT_LANGS);
+        setFormData(prev => ({
+          ...prev,
+          preferred_language_id: prev.preferred_language_id || 2,
+          target_language_id: prev.target_language_id || 1
+        }));
       } finally {
         setLanguagesLoading(false);
       }

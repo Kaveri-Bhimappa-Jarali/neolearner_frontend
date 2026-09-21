@@ -40,21 +40,33 @@ const Onboarding = () => {
     if (user.learning_goal) setLearningGoal(user.learning_goal);
     if (user.daily_minutes_goal) setDailyMinutes(user.daily_minutes_goal);
 
+    const DEFAULT_LANGS = [
+      { id: 1, code: 'en', name: 'English', native_name: 'English' },
+      { id: 2, code: 'kn', name: 'Kannada', native_name: 'ಕನ್ನಡ' },
+      { id: 3, code: 'te', name: 'Telugu', native_name: 'తెలుగు' },
+      { id: 4, code: 'mr', name: 'Marathi', native_name: 'ಮರಾಠಿ' },
+      { id: 5, code: 'hi', name: 'Hindi', native_name: 'हिन्दी' },
+      { id: 6, code: 'es', name: 'Spanish', native_name: 'Español' }
+    ];
+
     const fetchLanguages = async () => {
       try {
         const res = await api.get('/languages/');
-        setLanguages(res.data);
-        if (!user.preferred_language_id && res.data.length > 0) {
-          const en = res.data.find(l => l.code === 'en') || res.data[0];
+        const langData = (res.data && res.data.length > 0) ? res.data : DEFAULT_LANGS;
+        setLanguages(langData);
+        if (!user.preferred_language_id && langData.length > 0) {
+          const en = langData.find(l => l.code === 'en') || langData[0];
           setPreferredLang(en.id);
         }
-        if (!user.target_language_id && res.data.length > 1) {
-          const kn = res.data.find(l => l.code === 'kn') || res.data[1];
+        if (!user.target_language_id && langData.length > 1) {
+          const kn = langData.find(l => l.code === 'kn') || langData[1];
           setTargetLang(kn.id);
         }
       } catch (err) {
-        console.error('Failed to fetch languages', err);
-        setError('Failed to load languages. Please try again.');
+        console.warn('Failed to fetch languages in onboarding, using defaults:', err);
+        setLanguages(DEFAULT_LANGS);
+        if (!user.preferred_language_id) setPreferredLang(1);
+        if (!user.target_language_id) setTargetLang(2);
       } finally {
         setLoading(false);
       }
