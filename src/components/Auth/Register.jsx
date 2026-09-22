@@ -36,7 +36,7 @@ const Register = () => {
     const fetchLanguages = async () => {
       try {
         const res = await api.get('/languages/');
-        const langData = (res.data && res.data.length > 0) ? res.data : DEFAULT_LANGS;
+        const langData = (Array.isArray(res.data) && res.data.length > 0) ? res.data : DEFAULT_LANGS;
         setLanguages(langData);
         const knLang = langData.find(l => l.code === 'kn') || langData[0];
         const enLang = langData.find(l => l.code === 'en') || (langData.length > 1 ? langData[1] : langData[0]);

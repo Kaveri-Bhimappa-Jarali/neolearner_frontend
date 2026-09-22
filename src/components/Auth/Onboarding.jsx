@@ -52,7 +52,7 @@ const Onboarding = () => {
     const fetchLanguages = async () => {
       try {
         const res = await api.get('/languages/');
-        const langData = (res.data && res.data.length > 0) ? res.data : DEFAULT_LANGS;
+        const langData = (Array.isArray(res.data) && res.data.length > 0) ? res.data : DEFAULT_LANGS;
         setLanguages(langData);
         if (!user.preferred_language_id && langData.length > 0) {
           const en = langData.find(l => l.code === 'en') || langData[0];
