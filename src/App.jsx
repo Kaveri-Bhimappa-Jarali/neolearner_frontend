@@ -34,6 +34,36 @@ import AchievementsGrid from './components/Achievements/AchievementsGrid';
 import LandingPage from './components/LandingPage';
 import { BookOpen, Sparkles, ArrowRight, Globe, CheckCircle, Award } from 'lucide-react';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Unhandled React Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '3rem 1.5rem', textAlign: 'center', maxWidth: '600px', margin: '3rem auto' }} className="card">
+          <h2 style={{ fontSize: '1.75rem', color: 'var(--text-main)', marginBottom: '1rem', fontWeight: '800' }}>Something went wrong loading this view</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>An unexpected error occurred. Click below to refresh the application.</p>
+          <button onClick={() => { this.setState({ hasError: false }); window.location.reload(); }} className="btn btn-primary" style={{ padding: '0.75rem 1.75rem', fontWeight: 'bold' }}>
+            Reload Page
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
   if (loading) return <div style={{ padding: '2rem' }}>Loading Auth...</div>;
@@ -47,7 +77,8 @@ function App() {
         <div className="app-container">
           <Navbar />
           <main className="main-content">
-            <Routes>
+            <ErrorBoundary>
+              <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/insights" element={<LandingPage />} />
               <Route path="/courses" element={<CourseCatalog />} />
@@ -175,6 +206,7 @@ function App() {
               <Route path="/database" element={<DatabaseExplorer />} />
               <Route path="/db-explorer" element={<DatabaseExplorer />} />
             </Routes>
+            </ErrorBoundary>
           </main>
         </div>
       </Router>

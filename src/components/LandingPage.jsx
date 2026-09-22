@@ -100,44 +100,44 @@ const LandingPage = () => {
       </div>
 
       {/* 2. METRICS RIBBON */}
-      {insights && (
+      {insights?.stats && (
         <div style={{
           display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
           gap: '1.25rem', marginBottom: '3.5rem'
         }}>
           <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <Users size={26} color="var(--primary-color)" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--primary-color)' }}>{insights.stats.total_learners}</div>
+            <div style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--primary-color)' }}>{insights.stats.total_learners ?? 0}</div>
             <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Active Learners</div>
           </div>
 
           <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <Globe size={26} color="#3b82f6" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#3b82f6' }}>{insights.stats.supported_languages}</div>
+            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#3b82f6' }}>{insights.stats.supported_languages ?? 0}</div>
             <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Languages Offered</div>
           </div>
 
           <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <BookOpen size={26} color="#ff9600" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#ff9600' }}>{insights.stats.courses_count}</div>
+            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#ff9600' }}>{insights.stats.courses_count ?? 0}</div>
             <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Structured Courses</div>
           </div>
 
           <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <CheckCircle size={26} color="#10b981" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#10b981' }}>{insights.stats.questions_count}</div>
+            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#10b981' }}>{insights.stats.questions_count ?? 0}</div>
             <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Practice Exercises</div>
           </div>
 
           <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <RefreshCw size={26} color="#ec4899" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#ec4899' }}>{insights.stats.vocabulary_words}</div>
+            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#ec4899' }}>{insights.stats.vocabulary_words ?? 0}</div>
             <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Vocab Terms</div>
           </div>
 
           <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <Award size={26} color="var(--accent-purple)" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--accent-purple)' }}>{insights.stats.achievements_count}</div>
+            <div style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--accent-purple)' }}>{insights.stats.achievements_count ?? 0}</div>
             <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Badges to Earn</div>
           </div>
         </div>
