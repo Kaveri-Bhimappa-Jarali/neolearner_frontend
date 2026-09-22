@@ -107,11 +107,27 @@ const Register = () => {
       // Show Placement Test Choice Modal
       setShowPlacementChoice(true);
     } catch (err) {
-      const msg = err.response?.data?.detail || (err.message === 'Network Error' ? `Cannot connect to backend server at ${api.defaults.baseURL || 'the configured API URL'}. Please verify backend status and VITE_API_BASE_URL setting.` : 'Registration failed. Please try again.');
+      let msg = 'Registration failed. Please try again.';
+      if (err.response?.data?.detail) {
+        if (typeof err.response.data.detail === 'string') {
+          msg = err.response.data.detail;
+        } else if (Array.isArray(err.response.data.detail)) {
+          msg = err.response.data.detail.map(d => `${d.loc ? d.loc.join('.') + ': ' : ''}${d.msg}`).join(', ');
+        } else {
+          msg = JSON.stringify(err.response.data.detail);
+        }
+      } else if (typeof err.response?.data === 'string' && err.response.data.includes('<!DOCTYPE')) {
+        msg = 'Cannot reach backend API server. API endpoint returned HTML instead of JSON. Please verify backend Vercel URL.';
+      } else if (err.message === 'Network Error') {
+        msg = `Cannot connect to backend server at ${api.defaults.baseURL || 'the configured API URL'}. Please verify backend status and VITE_API_BASE_URL setting.`;
+      } else if (err.message) {
+        msg = err.message;
+      }
       setError(msg);
     } finally {
       setLoading(false);
     }
+
   };
 
   if (showPlacementChoice) {
