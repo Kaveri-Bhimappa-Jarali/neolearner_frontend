@@ -2,11 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const DEFAULT_SAVED_ACCOUNTS = [
-  { email: 'kaveri.learner@gmail.com', name: 'Kaveri (Primary)', avatar: 'https://lh3.googleusercontent.com/a/default-user' },
-  { email: 'student.neo@gmail.com', name: 'Neo Student', avatar: 'https://lh3.googleusercontent.com/a/default-user' }
-];
-
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,15 +30,19 @@ const Login = () => {
       const stored = localStorage.getItem('saved_google_accounts');
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           setSavedAccounts(parsed);
+          if (parsed.length === 0) {
+            setIsAddingNewAccount(true);
+          }
           return;
         }
       }
     } catch (e) {
       console.warn('Failed to load saved Google accounts:', e);
     }
-    setSavedAccounts(DEFAULT_SAVED_ACCOUNTS);
+    setSavedAccounts([]);
+    setIsAddingNewAccount(true);
   }, []);
 
   const saveAccountToLocalStorage = (newAccount) => {
@@ -66,6 +65,9 @@ const Login = () => {
       try {
         localStorage.setItem('saved_google_accounts', JSON.stringify(updated));
       } catch (err) {}
+      if (updated.length === 0) {
+        setIsAddingNewAccount(true);
+      }
       return updated;
     });
   };
@@ -101,26 +103,32 @@ const Login = () => {
 
   const handleOpenGoogleModal = () => {
     setError('');
-    setCustomGoogleEmail(email.trim() ? email.trim() : '');
+    const prefEmail = email.trim() ? email.trim().toLowerCase() : '';
+    setCustomGoogleEmail(prefEmail);
     setCustomGoogleName('');
-    setIsAddingNewAccount(false);
+    setIsAddingNewAccount(savedAccounts.length === 0 || !!prefEmail);
     setShowGoogleModal(true);
   };
 
   const handleSelectGoogleAccount = async (account) => {
+    if (!account.email || !account.email.trim()) {
+      setError('Please enter a valid Google email address.');
+      return;
+    }
+
     setGoogleLoading(true);
     setError('');
     try {
       const googleUserPayload = {
-        google_id: `g_${account.email.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
-        email: account.email.toLowerCase(),
+        google_id: `g_${account.email.trim().toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+        email: account.email.trim().toLowerCase(),
         full_name: account.name || account.email.split('@')[0],
         avatar_url: account.avatar || 'https://lh3.googleusercontent.com/a/default-user'
       };
 
       const result = await googleLogin(googleUserPayload);
       saveAccountToLocalStorage({
-        email: account.email.toLowerCase(),
+        email: account.email.trim().toLowerCase(),
         name: account.name || account.email.split('@')[0],
         avatar: account.avatar || 'https://lh3.googleusercontent.com/a/default-user'
       });
@@ -134,7 +142,7 @@ const Login = () => {
         navigate('/dashboard');
       }
     } catch (err) {
-      setError(err.response?.data?.detail || 'Google Single Sign-On failed. Please try again.');
+      setError(err.response?.data?.detail || 'Google Single Sign-On failed. Please verify your email.');
     } finally {
       setGoogleLoading(false);
     }
@@ -142,8 +150,8 @@ const Login = () => {
 
   const handleConfirmNewGoogleAccount = async (e) => {
     e.preventDefault();
-    if (!customGoogleEmail.trim()) {
-      setError('Please enter your Google Email address');
+    if (!customGoogleEmail.trim() || !customGoogleEmail.includes('@')) {
+      setError('Please enter a valid Google email address');
       return;
     }
 
@@ -214,7 +222,7 @@ const Login = () => {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
                 </svg>
-                <h3 style={{ margin: 0, fontSize: '1.35rem', fontWeight: 800, color: '#0f172a' }}>Choose an Account</h3>
+                <h3 style={{ margin: 0, fontSize: '1.35rem', fontWeight: 800, color: '#0f172a' }}>Sign In with Google</h3>
               </div>
               <p style={{ fontSize: '0.9rem', color: '#64748b', margin: 0 }}>
                 to continue to <strong style={{ color: '#1e293b' }}>NeoLearner</strong>
@@ -227,7 +235,7 @@ const Login = () => {
               </div>
             )}
 
-            {!isAddingNewAccount ? (
+            {!isAddingNewAccount && savedAccounts.length > 0 ? (
               <>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.25rem', maxHeight: '240px', overflowY: 'auto' }}>
                   {savedAccounts.map((acc, idx) => (
@@ -282,14 +290,14 @@ const Login = () => {
             ) : (
               <form onSubmit={handleConfirmNewGoogleAccount} style={{ marginBottom: '1rem' }}>
                 <div style={{ marginBottom: '0.85rem' }}>
-                  <label style={{ fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem', color: '#334155' }}>Google Email Address</label>
+                  <label style={{ fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem', color: '#334155' }}>Google Email Address *</label>
                   <input 
                     type="email"
                     value={customGoogleEmail}
                     onChange={(e) => setCustomGoogleEmail(e.target.value)}
-                    placeholder="e.g. user@gmail.com"
+                    placeholder="e.g. yourname@gmail.com"
                     required
-                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.95rem' }}
+                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.95rem', color: '#0f172a' }}
                   />
                 </div>
                 <div style={{ marginBottom: '1.25rem' }}>
@@ -299,19 +307,21 @@ const Login = () => {
                     value={customGoogleName}
                     onChange={(e) => setCustomGoogleName(e.target.value)}
                     placeholder="e.g. Alex Smith"
-                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.95rem' }}
+                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.95rem', color: '#0f172a' }}
                   />
                 </div>
 
                 <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-                  <button 
-                    type="button" 
-                    onClick={() => setIsAddingNewAccount(false)}
-                    className="btn btn-secondary"
-                    style={{ padding: '0.65rem 1.25rem' }}
-                  >
-                    Back to Accounts
-                  </button>
+                  {savedAccounts.length > 0 && (
+                    <button 
+                      type="button" 
+                      onClick={() => setIsAddingNewAccount(false)}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.65rem 1.25rem' }}
+                    >
+                      Back to Accounts
+                    </button>
+                  )}
                   <button 
                     type="submit" 
                     className="btn btn-primary"
@@ -324,18 +334,16 @@ const Login = () => {
               </form>
             )}
 
-            {!isAddingNewAccount && (
-              <div style={{ textAlign: 'right' }}>
-                <button 
-                  type="button" 
-                  onClick={() => setShowGoogleModal(false)}
-                  className="btn btn-secondary"
-                  style={{ padding: '0.5rem 1.25rem', fontSize: '0.85rem' }}
-                >
-                  Cancel
-                </button>
-              </div>
-            )}
+            <div style={{ textAlign: 'right', marginTop: '0.5rem' }}>
+              <button 
+                type="button" 
+                onClick={() => setShowGoogleModal(false)}
+                className="btn btn-secondary"
+                style={{ padding: '0.5rem 1.25rem', fontSize: '0.85rem' }}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
