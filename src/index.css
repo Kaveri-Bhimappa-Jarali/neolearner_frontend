@@ -207,7 +207,7 @@ a:hover {
 
 .grid-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
@@ -463,6 +463,70 @@ a:hover {
   cursor: default;
 }
 
+/* Responsive Table Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+}
+
+.table-responsive table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+}
+
+/* Admin Dashboard & Controls Responsive Styles */
+.admin-tabs-bar {
+  display: flex;
+  gap: 0.65rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary-color) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-tabs-bar::-webkit-scrollbar {
+  height: 5px;
+}
+
+.admin-tabs-bar::-webkit-scrollbar-thumb {
+  background: var(--surface-hover);
+  border-radius: 99px;
+}
+
+/* Modals & Dialog Overlays */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.modal-dialog {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2rem;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 30px -5px rgba(0,0,0,0.3);
+  box-sizing: border-box;
+}
+
+/* Comprehensive Responsive Breakpoints */
 @media (max-width: 1024px) {
   .mobile-menu-btn {
     display: flex !important;
@@ -510,70 +574,8 @@ a:hover {
   }
 
   .grid-cards {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
   }
-
-  .inspector-stats {
-    grid-template-columns: 1fr 1fr !important;
-  }
-}
-
-@media (max-width: 520px) {
-  .inspector-stats {
-    grid-template-columns: 1fr !important;
-  }
-
-  .ai-answer-option {
-    padding: 0.9rem;
-    font-size: 0.98rem;
-  }
-
-  .match-pairs-grid {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .btn {
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
-
-/* Responsive Table Wrapper */
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border-radius: var(--radius-md);
-  margin-bottom: 1rem;
-}
-
-.table-responsive table {
-  width: 100%;
-  min-width: 650px;
-  border-collapse: collapse;
-}
-
-/* Admin Dashboard Responsive Styles */
-.admin-tabs-bar {
-  display: flex;
-  gap: 0.65rem;
-  overflow-x: auto;
-  white-space: nowrap;
-  padding-bottom: 0.75rem;
-  margin-bottom: 1.75rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--secondary-color) transparent;
-  -webkit-overflow-scrolling: touch;
-}
-
-.admin-tabs-bar::-webkit-scrollbar {
-  height: 5px;
-}
-
-.admin-tabs-bar::-webkit-scrollbar-thumb {
-  background: var(--surface-hover);
-  border-radius: 99px;
 }
 
 @media (max-width: 768px) {
@@ -592,15 +594,43 @@ a:hover {
     gap: 0.75rem !important;
   }
 
+  .auth-card, .profile-card {
+    padding: 1.5rem !important;
+    max-width: 100% !important;
+  }
+
   .modal-dialog {
     padding: 1.25rem !important;
     max-width: 95vw !important;
   }
+
+  .grid-cards {
+    grid-template-columns: 1fr !important;
+  }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .admin-metrics-ribbon {
     grid-template-columns: 1fr !important;
+  }
+
+  .ai-answer-option {
+    padding: 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .match-pairs-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .page-title {
+    font-size: 1.35rem !important;
   }
 }
 
@@ -614,4 +644,3 @@ a:hover {
   70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 75, 75, 0); }
   100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 75, 75, 0); }
 }
-

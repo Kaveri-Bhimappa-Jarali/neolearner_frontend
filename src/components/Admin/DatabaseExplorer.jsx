@@ -226,7 +226,7 @@ const DatabaseExplorer = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+      <div className="admin-tabs-bar" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem' }}>
         {[
           { id: 'data', label: 'Live Data Tables', icon: Table },
           { id: 'schema', label: 'Schema & Column Inspector', icon: Layers },
@@ -362,7 +362,7 @@ const DatabaseExplorer = () => {
                 <p>Loading table records...</p>
               </div>
             ) : tableData && tableData.rows.length > 0 ? (
-              <div style={{ overflowX: 'auto', border: '1px solid var(--border-color)', borderRadius: '10px' }}>
+              <div className="table-responsive" style={{ border: '1px solid var(--border-color)', borderRadius: '10px' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                   <thead>
                     <tr style={{ background: 'var(--surface-hover)', borderBottom: '2px solid var(--border-color)' }}>
