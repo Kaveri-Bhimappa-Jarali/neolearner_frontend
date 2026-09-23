@@ -124,6 +124,8 @@ const Register = () => {
     }));
   };
 
+  const [devCode, setDevCode] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -139,7 +141,10 @@ const Register = () => {
 
     setLoading(true);
     try {
-      await register(formData);
+      const res = await register(formData);
+      if (res?.data?.verification_code) {
+        setDevCode(res.data.verification_code);
+      }
       setStep(2); // Advance to email verification step
     } catch (err) {
       const msg = err.response?.data?.detail || 'Registration failed. Please verify your details.';
@@ -250,6 +255,21 @@ const Register = () => {
         </p>
 
         <form onSubmit={handleVerifyCode}>
+          {devCode && (
+            <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px dashed #10b981', borderRadius: '12px', padding: '0.75rem', marginBottom: '1.25rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: 'bold' }}>
+                🔑 Verification Code Generated: <span style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#0f172a' }}>{devCode}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setVerificationCode(devCode)}
+                style={{ background: 'none', border: 'none', color: '#3b82f6', fontSize: '0.82rem', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer', marginTop: '4px' }}
+              >
+                Click to Auto-Fill Code
+              </button>
+            </div>
+          )}
+
           <div className="form-group" style={{ marginBottom: '1.25rem' }}>
             <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
               Enter 6-Digit Verification Code
