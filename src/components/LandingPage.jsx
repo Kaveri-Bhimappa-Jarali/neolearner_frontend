@@ -35,11 +35,7 @@ const LandingPage = () => {
       
       {/* 1. HERO BANNER */}
       <div className="card insights-hero-card">
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.45rem 1.4rem',
-          borderRadius: '9999px', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.3)',
-          color: '#10b981', fontSize: '0.85rem', fontWeight: '800', marginBottom: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.5px'
-        }}>
+        <div className="insights-hero-badge">
           <Sparkles size={16} /> Intelligent Language & Literacy Platform
         </div>
 

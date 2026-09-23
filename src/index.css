@@ -549,8 +549,27 @@ a:hover {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
 }
 
+.insights-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.45rem 1.25rem;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .insights-hero-title {
-  font-size: clamp(1.5rem, 4.5vw + 0.5rem, 3.1rem);
+  font-size: clamp(1.4rem, 4.5vw + 0.5rem, 3.1rem);
   color: var(--text-main);
   margin-bottom: 1.25rem;
   font-weight: 900;
@@ -765,23 +784,68 @@ a:hover {
   }
 
   .insights-container {
-    padding: 1rem 0.75rem !important;
+    padding: 0.75rem 0.5rem !important;
   }
 
   .insights-hero-card {
-    padding: 2rem 1.25rem !important;
-    border-radius: 24px !important;
-    margin-bottom: 2rem !important;
+    padding: 1.5rem 1rem !important;
+    border-radius: 20px !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .insights-hero-badge {
+    font-size: 0.72rem !important;
+    padding: 0.35rem 0.75rem !important;
+    letter-spacing: 0px !important;
+  }
+
+  .desktop-br {
+    display: none !important;
+  }
+
+  .insights-action-flex {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .insights-action-flex .btn {
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .insights-tabs-bar {
     justify-content: flex-start !important;
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
   }
 
   .insights-metrics-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .insights-feature-card {
+    padding: 1.25rem 0.85rem !important;
+    border-radius: 20px !important;
+  }
+
+  .insights-feature-title {
+    font-size: 1.15rem !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+  }
+
+  .insights-subgrid-2,
+  .insights-subgrid-4,
+  .insights-exercise-grid {
+    grid-template-columns: 1fr !important;
     gap: 0.85rem !important;
-    margin-bottom: 2.5rem !important;
+  }
+
+  .insights-cta-card {
+    padding: 1.75rem 1rem !important;
+    border-radius: 20px !important;
   }
 
   .auth-card, .profile-card {
