@@ -7,7 +7,7 @@ let rawBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').trim();
 rawBaseUrl = rawBaseUrl.replace(/\/+$/, '');
 
 // Default to working live Vercel backend in production or http://localhost:8000/api in local dev
-let baseURL = 'https://neolearner-backend1-git-main-kaverijarali22-3383s-projects.vercel.app/api';
+let baseURL = 'https://neolearner-backend1.vercel.app/api';
 
 if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
   baseURL = 'http://localhost:8000/api';

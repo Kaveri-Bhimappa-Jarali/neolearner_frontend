@@ -52,7 +52,7 @@ const LandingPage = () => {
         </div>
 
         <h1 style={{ 
-          fontSize: '3.1rem', 
+          fontSize: 'clamp(1.75rem, 4vw + 1rem, 3.1rem)', 
           color: 'var(--text-main)', 
           marginBottom: '1.25rem', 
           fontWeight: '900', 
