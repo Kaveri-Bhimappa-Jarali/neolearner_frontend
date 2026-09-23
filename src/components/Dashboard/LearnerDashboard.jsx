@@ -297,7 +297,7 @@ const LearnerDashboard = () => {
       {hasCompletedTest && <CourseRecommendationBanner />}
 
       {/* Top Stat Counters */}
-      <div className="inspector-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
+      <div className="inspector-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
         <div className="stat-card">
           <span className="stat-count" style={{ color: 'var(--primary-color)' }}>{completedCount}</span>
           <h4 style={{ margin: '0.5rem 0 0.25rem 0', color: 'var(--text-main)' }}>{t('lessonsCompleted')}</h4>
@@ -320,7 +320,7 @@ const LearnerDashboard = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
         
         {/* LEFT COLUMN: ACTIVE PATH, DIAGNOSTICS & ADAPTIVE BOOSTERS */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

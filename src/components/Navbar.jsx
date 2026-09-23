@@ -68,53 +68,64 @@ const Navbar = () => {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle navigation menu"
           style={{
-            background: 'none', border: 'none', cursor: 'pointer', padding: '6px',
-            color: 'var(--text-main)', display: 'none'
+            background: 'none', border: 'none', cursor: 'pointer', padding: '8px',
+            color: 'var(--text-main)', display: 'none', minWidth: '44px', minHeight: '44px',
+            alignItems: 'center', justifyContent: 'center'
           }}
         >
-          {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
 
-        {/* Desktop Links & Stats */}
+        {/* Backdrop for Mobile Drawer */}
+        {mobileMenuOpen && (
+          <div 
+            onClick={closeMenu}
+            style={{
+              position: 'fixed', top: '60px', left: 0, right: 0, bottom: 0,
+              background: 'rgba(0, 0, 0, 0.6)', zIndex: 999
+            }}
+          />
+        )}
+
+        {/* Desktop Links & Stats (Mobile Drawer on < 1024px) */}
         <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-          <Link to="/insights" onClick={closeMenu} className={`nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Sparkles size={16} /> Insights & Showcase
+          <Link to="/insights" onClick={closeMenu} className={`nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', minHeight: '44px' }}>
+            <Sparkles size={18} /> Insights & Showcase
           </Link>
 
-          <Link to="/courses" onClick={closeMenu} className={`nav-item ${isActive('/courses') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <BookOpen size={16} /> {t('courses')}
+          <Link to="/courses" onClick={closeMenu} className={`nav-item ${isActive('/courses') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', minHeight: '44px' }}>
+            <BookOpen size={18} /> {t('courses')}
           </Link>
-
 
           {user && (
             <>
-              <Link to="/dashboard" onClick={closeMenu} className={`nav-item ${isActive('/dashboard') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <LayoutDashboard size={16} /> {t('dashboard')}
+              <Link to="/dashboard" onClick={closeMenu} className={`nav-item ${isActive('/dashboard') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', minHeight: '44px' }}>
+                <LayoutDashboard size={18} /> {t('dashboard')}
               </Link>
               {user.is_admin && (
-                <Link to="/admin" onClick={closeMenu} className={`nav-item ${isActive('/admin') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent-purple)', fontWeight: 'bold' }}>
-                  <ShieldAlert size={16} /> Admin Portal
+                <Link to="/admin" onClick={closeMenu} className={`nav-item ${isActive('/admin') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-purple)', fontWeight: 'bold', minHeight: '44px' }}>
+                  <ShieldAlert size={18} /> Admin Portal
                 </Link>
               )}
               {user.has_completed_placement_test && (
                 <>
-                  <Link to="/learning-path" onClick={closeMenu} className={`nav-item ${isActive('/learning-path') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Sparkles size={16} /> {t('learningPath')}
+                  <Link to="/learning-path" onClick={closeMenu} className={`nav-item ${isActive('/learning-path') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', minHeight: '44px' }}>
+                    <Sparkles size={18} /> {t('learningPath')}
                   </Link>
-                  <Link to="/practice-hub" onClick={closeMenu} className={`nav-item ${isActive('/practice-hub') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Zap size={16} /> {t('practiceHub')}
+                  <Link to="/practice-hub" onClick={closeMenu} className={`nav-item ${isActive('/practice-hub') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', minHeight: '44px' }}>
+                    <Zap size={18} /> {t('practiceHub')}
                   </Link>
-                  <Link to="/conversation" onClick={closeMenu} className={`nav-item ${isActive('/conversation') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Sparkles size={16} /> {t('aiLab')}
+                  <Link to="/conversation" onClick={closeMenu} className={`nav-item ${isActive('/conversation') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', minHeight: '44px' }}>
+                    <Sparkles size={18} /> {t('aiLab')}
                   </Link>
-                  <Link to="/stories" onClick={closeMenu} className={`nav-item ${isActive('/stories') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <BookOpen size={16} /> {t('stories')}
+                  <Link to="/stories" onClick={closeMenu} className={`nav-item ${isActive('/stories') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', minHeight: '44px' }}>
+                    <BookOpen size={18} /> {t('stories')}
                   </Link>
-                  <Link to="/friends" onClick={closeMenu} className={`nav-item ${isActive('/friends') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Award size={16} /> {t('social')}
+                  <Link to="/friends" onClick={closeMenu} className={`nav-item ${isActive('/friends') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', minHeight: '44px' }}>
+                    <Award size={18} /> {t('social')}
                   </Link>
-                  <Link to="/shop" onClick={closeMenu} className={`nav-item ${isActive('/shop') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Gem size={16} /> {t('shop')}
+                  <Link to="/shop" onClick={closeMenu} className={`nav-item ${isActive('/shop') ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', minHeight: '44px' }}>
+                    <Gem size={18} /> {t('shop')}
                   </Link>
                 </>
               )}
@@ -123,44 +134,44 @@ const Navbar = () => {
 
           {user && (
             <div className="nav-stats-bar">
-              <Link to="/practice-hub" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ff4b4b', fontWeight: 'bold', textDecoration: 'none' }} title="Hearts">
-                <Heart size={18} fill="#ff4b4b" />
+              <Link to="/practice-hub" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ff4b4b', fontWeight: 'bold', textDecoration: 'none', minHeight: '36px' }} title="Hearts">
+                <Heart size={20} fill="#ff4b4b" />
                 <span>{user.hearts}</span>
               </Link>
-              <Link to="/shop" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1cb0f6', fontWeight: 'bold', textDecoration: 'none' }} title="Gems">
-                <Gem size={18} fill="#1cb0f6" />
+              <Link to="/shop" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#1cb0f6', fontWeight: 'bold', textDecoration: 'none', minHeight: '36px' }} title="Gems">
+                <Gem size={20} fill="#1cb0f6" />
                 <span>{user.gems}</span>
               </Link>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ff9600', fontWeight: 'bold' }} title="Streak">
-                <Flame size={18} fill="#ff9600" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ff9600', fontWeight: 'bold', minHeight: '36px' }} title="Streak">
+                <Flame size={20} fill="#ff9600" />
                 <span>{user.streak}</span>
               </div>
-              <Link to="/leagues" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ffd700', fontWeight: 'bold', fontSize: '0.85rem', textDecoration: 'none' }} title="League Ladder">
-                <Award size={18} />
+              <Link to="/leagues" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ffd700', fontWeight: 'bold', fontSize: '0.85rem', textDecoration: 'none', minHeight: '36px' }} title="League Ladder">
+                <Award size={20} />
                 <span>{t(user.league_tier) || t('Gold')}</span>
               </Link>
             </div>
           )}
 
           {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <button onClick={handleInstallApp} className="btn btn-secondary" style={{ padding: '0.5rem 0.9rem', fontSize: '0.85rem', gap: '6px', background: 'rgba(16, 185, 129, 0.15)', borderColor: 'rgba(16, 185, 129, 0.3)', color: '#10b981', fontWeight: 'bold' }} title="Install / Download NeoLearner App">
-                <Download size={15} /> Install App
+            <div className="nav-action-buttons">
+              <button onClick={handleInstallApp} className="btn btn-secondary nav-action-btn" style={{ background: 'rgba(16, 185, 129, 0.15)', borderColor: 'rgba(16, 185, 129, 0.3)', color: '#10b981', fontWeight: 'bold', minHeight: '44px' }} title="Install / Download NeoLearner App">
+                <Download size={16} /> Install App
               </button>
-              <Link to="/profile" onClick={closeMenu} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', gap: '6px' }}>
-                <User size={15} /> {t('profile')}
+              <Link to="/profile" onClick={closeMenu} className="btn btn-secondary nav-action-btn" style={{ minHeight: '44px' }}>
+                <User size={16} /> {t('profile')}
               </Link>
-              <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', gap: '6px' }}>
-                <LogOut size={15} /> {t('logout')}
+              <button onClick={handleLogout} className="btn btn-secondary nav-action-btn" style={{ minHeight: '44px' }}>
+                <LogOut size={16} /> {t('logout')}
               </button>
             </div>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <button onClick={handleInstallApp} className="btn btn-secondary" style={{ padding: '0.5rem 0.9rem', fontSize: '0.85rem', gap: '6px', background: 'rgba(16, 185, 129, 0.15)', borderColor: 'rgba(16, 185, 129, 0.3)', color: '#10b981', fontWeight: 'bold' }} title="Install / Download NeoLearner App">
-                <Download size={15} /> Install App
+            <div className="nav-action-buttons">
+              <button onClick={handleInstallApp} className="btn btn-secondary nav-action-btn" style={{ background: 'rgba(16, 185, 129, 0.15)', borderColor: 'rgba(16, 185, 129, 0.3)', color: '#10b981', fontWeight: 'bold', minHeight: '44px' }} title="Install / Download NeoLearner App">
+                <Download size={16} /> Install App
               </button>
-              <Link to="/login" onClick={closeMenu} className="btn btn-secondary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem' }}>{t('login')}</Link>
-              <Link to="/register" onClick={closeMenu} className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem' }}>{t('getStarted')}</Link>
+              <Link to="/login" onClick={closeMenu} className="btn btn-secondary nav-action-btn" style={{ minHeight: '44px' }}>{t('login')}</Link>
+              <Link to="/register" onClick={closeMenu} className="btn btn-primary nav-action-btn" style={{ minHeight: '44px' }}>{t('getStarted')}</Link>
             </div>
           )}
         </div>
