@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://neolearner-backend1.vercel.app/api/$1"
+      "destination": "https://neolearner-backend1-git-main-kaverijarali22-3383s-projects.vercel.app/api/$1"
     },
     {
       "source": "/(.*)",
@@ -10,4 +10,3 @@
     }
   ]
 }
-

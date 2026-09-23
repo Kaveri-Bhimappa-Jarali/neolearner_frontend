@@ -49,13 +49,32 @@ export const AuthProvider = ({ children }) => {
     await login(normalizedUserData.email, normalizedUserData.password);
   };
 
+  const googleLogin = async (googlePayload) => {
+    const res = await api.post('/auth/google', googlePayload);
+    const token = res.data.access_token;
+    localStorage.setItem('access_token', token);
+    const userRes = await api.get('/learners/me', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setUser(userRes.data);
+    return { user: userRes.data, needsOnboarding: res.data.needs_onboarding };
+  };
+
+  const verifyEmail = async (email, code) => {
+    return await api.post('/auth/verify-email', { email, code });
+  };
+
+  const resendCode = async (email) => {
+    return await api.post('/auth/resend-code', { email });
+  };
+
   const logout = () => {
     localStorage.removeItem('access_token');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading, setUser }}>
+    <AuthContext.Provider value={{ user, login, register, googleLogin, verifyEmail, resendCode, logout, loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -2,166 +2,183 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
-import { User, Mail, Lock, Calendar, Globe, Sparkles, Award } from 'lucide-react';
-import { getTranslationForLang } from '../../utils/i18n';
+
+const DEFAULT_LANGUAGES = [
+  { code: 'en', name: 'English', native_name: 'English', flag: '🇬🇧' },
+  { code: 'kn', name: 'Kannada', native_name: 'ಕನ್ನಡ', flag: '🇮🇳' },
+  { code: 'te', name: 'Telugu', native_name: 'తెలుగు', flag: '🇮🇳' },
+  { code: 'mr', name: 'Marathi', native_name: 'ಮರಾಠಿ', flag: '🇮🇳' },
+  { code: 'hi', name: 'Hindi', native_name: 'हिन्दी', flag: '🇮🇳' },
+  { code: 'es', name: 'Spanish', native_name: 'Español', flag: '🇪🇸' }
+];
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    full_name: '',
     email: '',
     password: '',
-    age: '',
-    preferred_language_id: '',
-    target_language_id: '',
-    proficiency_level: 'Beginner'
+    full_name: '',
+    age: 18,
+    preferred_language_code: 'en',
+    target_language_code: 'kn',
+    proficiency_level: 'Beginner',
+    learning_goal: 'conversation',
+    prior_knowledge: 'complete_beginner',
+    cefr_level: 'A0',
+    daily_minutes_goal: 15
   });
-  const [languages, setLanguages] = useState([]);
+
+  const [languages, setLanguages] = useState(DEFAULT_LANGUAGES);
+  const [step, setStep] = useState(1); // Step 1: Form, Step 2: Verification Code
+  const [verificationCode, setVerificationCode] = useState('');
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
-  const [languagesLoading, setLanguagesLoading] = useState(true);
-  const [showPlacementChoice, setShowPlacementChoice] = useState(false);
-  const { register } = useAuth();
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  const { register, googleLogin, verifyEmail, resendCode } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const DEFAULT_LANGS = [
-      { id: 1, code: 'en', name: 'English', native_name: 'English' },
-      { id: 2, code: 'kn', name: 'Kannada', native_name: 'ಕನ್ನಡ' },
-      { id: 3, code: 'te', name: 'Telugu', native_name: 'తెలుగు' },
-      { id: 4, code: 'mr', name: 'Marathi', native_name: 'ಮರಾಠಿ' },
-      { id: 5, code: 'hi', name: 'Hindi', native_name: 'हिन्दी' },
-      { id: 6, code: 'es', name: 'Spanish', native_name: 'Español' }
-    ];
-
     const fetchLanguages = async () => {
       try {
-        const res = await api.get('/languages/');
-        const langData = (Array.isArray(res.data) && res.data.length > 0) ? res.data : DEFAULT_LANGS;
-        setLanguages(langData);
-        const knLang = langData.find(l => l.code === 'kn') || langData[0];
-        const enLang = langData.find(l => l.code === 'en') || (langData.length > 1 ? langData[1] : langData[0]);
-        setFormData(prev => ({
-          ...prev,
-          preferred_language_id: prev.preferred_language_id || (knLang ? knLang.id : 2),
-          target_language_id: prev.target_language_id || (enLang ? enLang.id : 1)
-        }));
+        const res = await api.get('/languages');
+        const langList = Array.isArray(res.data) ? res.data : (res.data?.languages || []);
+        if (langList && langList.length > 0) {
+          setLanguages(langList.map(l => ({
+            ...l,
+            flag: l.code === 'en' ? '🇬🇧' : (l.code === 'es' ? '🇪🇸' : '🇮🇳')
+          })));
+        }
       } catch (err) {
-        console.warn('Failed to fetch languages from API, using default languages:', err);
-        setLanguages(DEFAULT_LANGS);
-        setFormData(prev => ({
-          ...prev,
-          preferred_language_id: prev.preferred_language_id || 2,
-          target_language_id: prev.target_language_id || 1
-        }));
-      } finally {
-        setLanguagesLoading(false);
+        console.warn('Using default language options:', err);
       }
     };
     fetchLanguages();
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: name === 'age' || name === 'daily_minutes_goal' ? parseInt(value) || 0 : value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!formData.full_name.trim()) {
-      setError('Please enter your full name');
-      return;
-    }
     if (!formData.email.trim()) {
-      setError('Please enter your email address');
+      setError('Email address is required');
       return;
     }
     if (!formData.password || formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
-      return;
-    }
-    if (!formData.age || parseInt(formData.age, 10) < 4 || parseInt(formData.age, 10) > 120) {
-      setError('Please enter a valid age between 4 and 120');
-      return;
-    }
-    if (!formData.preferred_language_id) {
-      setError('Please select your primary / native language');
-      return;
-    }
-    if (!formData.target_language_id) {
-      setError('Please select your target language to learn');
+      setError('Password must be at least 6 characters');
       return;
     }
 
     setLoading(true);
     try {
-      await register({
-        full_name: formData.full_name.trim(),
-        email: formData.email.trim(),
-        password: formData.password,
-        age: parseInt(formData.age, 10),
-        preferred_language_id: formData.preferred_language_id,
-        target_language_id: formData.target_language_id,
-        proficiency_level: formData.proficiency_level
-      });
-      // Show Placement Test Choice Modal
-      setShowPlacementChoice(true);
+      await register(formData);
+      setStep(2); // Advance to email verification step
     } catch (err) {
-      let msg = 'Registration failed. Please try again.';
-      if (err.response?.data?.detail) {
-        if (typeof err.response.data.detail === 'string') {
-          msg = err.response.data.detail;
-        } else if (Array.isArray(err.response.data.detail)) {
-          msg = err.response.data.detail.map(d => `${d.loc ? d.loc.join('.') + ': ' : ''}${d.msg}`).join(', ');
-        } else {
-          msg = JSON.stringify(err.response.data.detail);
-        }
-      } else if (typeof err.response?.data === 'string' && err.response.data.includes('<!DOCTYPE')) {
-        msg = 'Cannot reach backend API server. API endpoint returned HTML instead of JSON. Please verify backend Vercel URL.';
-      } else if (err.message === 'Network Error') {
-        msg = `Cannot connect to backend server at ${api.defaults.baseURL || 'the configured API URL'}. Please verify backend status and VITE_API_BASE_URL setting.`;
-      } else if (err.message) {
-        msg = err.message;
-      }
+      const msg = err.response?.data?.detail || 'Registration failed. Please verify your details.';
       setError(msg);
     } finally {
       setLoading(false);
     }
-
   };
 
-  if (showPlacementChoice) {
-    const selectedLangObj = languages.find(l => l.id === formData.preferred_language_id);
-    const prefLangCode = selectedLangObj ? selectedLangObj.code : 'en';
+  const handleVerifyCode = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (!verificationCode.trim()) {
+      setError('Please enter the 6-digit verification code');
+      return;
+    }
+    setLoading(true);
+    try {
+      await verifyEmail(formData.email.trim(), verificationCode.trim());
+      navigate('/onboarding');
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Invalid verification code. Use demo code 123456 or resend.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleResendCode = async () => {
+    setError('');
+    setSuccessMsg('');
+    try {
+      await resendCode(formData.email.trim());
+      setSuccessMsg('A new 6-digit code has been sent to your email!');
+    } catch (err) {
+      setError('Failed to resend code. Please try again.');
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    setError('');
+    try {
+      const dummyGoogleUser = {
+        google_id: `g_${Date.now()}`,
+        email: formData.email.trim() ? formData.email.trim().toLowerCase() : `learner_${Math.floor(Math.random()*10000)}@gmail.com`,
+        full_name: formData.full_name || 'Google Learner',
+        avatar_url: 'https://lh3.googleusercontent.com/a/default-user'
+      };
+
+      const result = await googleLogin(dummyGoogleUser);
+      if (result.needsOnboarding) {
+        navigate('/onboarding');
+      } else {
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Google Single Sign-On failed.');
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+  if (step === 2) {
     return (
-      <div className="auth-card" style={{ maxWidth: '600px', margin: '3rem auto', textAlign: 'center', padding: '3rem 2rem', borderRadius: '24px' }}>
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎉</div>
-        <h2 style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.5rem' }}>
-          {getTranslationForLang('welcomeTitle', prefLangCode)}
-        </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', marginBottom: '2.5rem', lineHeight: '1.6' }}>
-          {getTranslationForLang('welcomeSubtitle', prefLangCode)}
+      <div className="auth-card" style={{ maxWidth: '480px', margin: '2rem auto', padding: '2rem', textAlign: 'center' }}>
+        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✉️</div>
+        <h2>Verify Your Email</h2>
+        <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 1.5rem', fontSize: '0.95rem' }}>
+          We sent a 6-digit verification code to <strong style={{ color: '#1e293b' }}>{formData.email}</strong>
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          <button
-            className="btn btn-primary"
-            onClick={() => navigate('/initial-exam')}
-            style={{ padding: '1.25rem', fontSize: '1.1rem', fontWeight: '700', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
-          >
-            <span>{getTranslationForLang('fastTrackBtn', prefLangCode)}</span>
-            <span style={{ fontSize: '0.85rem', opacity: 0.9, fontWeight: 'normal' }}>
-              {getTranslationForLang('fastTrackDesc', prefLangCode)}
-            </span>
-          </button>
+        <form onSubmit={handleVerifyCode}>
+          <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+            <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
+              6-Digit Code (Demo: 123456)
+            </label>
+            <input 
+              type="text" 
+              maxLength="6"
+              className="form-input" 
+              value={verificationCode} 
+              onChange={(e) => setVerificationCode(e.target.value)} 
+              placeholder="123456"
+              style={{ width: '100%', padding: '0.85rem', borderRadius: '12px', textAlign: 'center', fontSize: '1.4rem', letterSpacing: '6px', fontWeight: '700', color: '#0f172a', background: '#ffffff' }}
+            />
+          </div>
 
-          <button
-            className="btn btn-secondary"
-            onClick={() => navigate('/dashboard')}
-            style={{ padding: '1.1rem', fontSize: '1.05rem' }}
-          >
-            {getTranslationForLang('startBeginningBtn', prefLangCode)}
+          {error && <div style={{ color: '#c62828', background: '#ffebee', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.9rem' }}>⚠️ {error}</div>}
+          {successMsg && <div style={{ color: '#2e7d32', background: '#e8f5e9', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.9rem' }}>✅ {successMsg}</div>}
+
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '0.9rem', borderRadius: '12px', fontWeight: '700' }} disabled={loading}>
+            {loading ? 'VERIFYING...' : 'VERIFY & CONTINUE'}
+          </button>
+        </form>
+
+        <div style={{ marginTop: '1.25rem', fontSize: '0.9rem' }}>
+          Didn't receive code?{' '}
+          <button type="button" onClick={handleResendCode} style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontWeight: '700', cursor: 'pointer', textDecoration: 'underline' }}>
+            Resend Code
           </button>
         </div>
       </div>
@@ -169,173 +186,178 @@ const Register = () => {
   }
 
   return (
-    <div className="auth-card" style={{ maxWidth: '650px', margin: '2rem auto' }}>
-      <div className="auth-header" style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-        <h2 style={{ fontSize: '1.85rem', marginBottom: '0.4rem', color: 'var(--text-main)' }}>
-          Create Your Profile 🚀
-        </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-          Personalize your literacy and language learning experience
-        </p>
+    <div className="auth-card" style={{ maxWidth: '560px', margin: '2rem auto', padding: '2rem' }}>
+      <div className="auth-header" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+        <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Create Account 🚀</h2>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Start learning languages with personalized AI drills</p>
       </div>
 
-      {error && (
-        <div className="form-error" style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: '#ffebee', color: '#c62828', borderRadius: '8px', border: '1px solid #ef9a9a', fontSize: '0.9rem' }}>
-          ⚠️ {error}
-        </div>
-      )}
+      <button 
+        type="button" 
+        onClick={handleGoogleSignIn}
+        disabled={googleLoading}
+        style={{
+          width: '100%',
+          padding: '0.85rem',
+          borderRadius: '12px',
+          border: '2px solid #cbd5e1',
+          background: '#ffffff',
+          color: '#0f172a',
+          fontWeight: '700',
+          fontSize: '0.95rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.75rem',
+          cursor: 'pointer',
+          marginBottom: '1.5rem',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.04)'
+        }}
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        {googleLoading ? 'Connecting to Google...' : 'Continue with Google'}
+      </button>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-        
-        {/* Row 1: Name & Age */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
-          <div className="form-group">
-            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <User size={15} color="var(--primary-color)" /> Full Name *
-            </label>
-            <input 
-              name="full_name" 
-              type="text" 
-              className="form-input" 
-              placeholder="e.g. Kaveri Jarali"
-              value={formData.full_name}
-              onChange={handleChange} 
-              required 
-            />
-          </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }}></div>
+        <span style={{ color: '#94a3b8', fontSize: '0.85rem', fontWeight: 600 }}>OR REGISTER MANUAL</span>
+        <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }}></div>
+      </div>
 
-          <div className="form-group">
-            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Calendar size={15} color="var(--primary-color)" /> Age *
-            </label>
-            <input 
-              name="age" 
-              type="number" 
-              min="4" 
-              max="120"
-              className="form-input" 
-              placeholder="e.g. 20"
-              value={formData.age}
-              onChange={handleChange} 
-              required 
-            />
-          </div>
-        </div>
-
-        {/* Row 2: Email */}
-        <div className="form-group">
-          <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Mail size={15} color="var(--primary-color)" /> Email Address *
-          </label>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group" style={{ marginBottom: '1rem' }}>
+          <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>Full Name</label>
           <input 
-            name="email" 
+            type="text" 
+            name="full_name" 
+            className="form-input" 
+            value={formData.full_name} 
+            onChange={handleChange} 
+            required 
+            placeholder="John Doe"
+            style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', color: '#0f172a', background: '#ffffff' }}
+          />
+        </div>
+
+        <div className="form-group" style={{ marginBottom: '1rem' }}>
+          <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>Email Address</label>
+          <input 
             type="email" 
+            name="email" 
             className="form-input" 
-            placeholder="you@example.com"
-            value={formData.email}
+            value={formData.email} 
             onChange={handleChange} 
             required 
+            placeholder="learner@example.com"
+            style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', color: '#0f172a', background: '#ffffff' }}
           />
         </div>
 
-        {/* Row 3: Password */}
-        <div className="form-group">
-          <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Lock size={15} color="var(--primary-color)" /> Password * (min 6 characters)
-          </label>
+        <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+          <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>Password (min 6 chars)</label>
           <input 
-            name="password" 
             type="password" 
+            name="password" 
             className="form-input" 
-            placeholder="••••••••"
-            value={formData.password}
+            value={formData.password} 
             onChange={handleChange} 
             required 
+            placeholder="••••••••"
+            style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', color: '#0f172a', background: '#ffffff' }}
           />
         </div>
 
-        {/* Row 4: Primary / Native Language & Target Language */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-          <div className="form-group">
-            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Globe size={15} color="var(--secondary-color)" /> Primary / Native Language *
-            </label>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-              Interface & instructions language
-            </span>
-            <select 
-              name="preferred_language_id" 
-              className="form-select" 
-              value={formData.preferred_language_id} 
-              onChange={handleChange}
-              disabled={languagesLoading || loading}
-              required
-            >
-              <option value="">{languagesLoading ? 'Loading languages...' : 'Select Language'}</option>
-              {languages.map(l => (
-                <option key={l.id} value={l.id}>
-                  {l.name} {l.native_name ? `(${l.native_name})` : ''}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Sparkles size={15} color="var(--secondary-color)" /> Target Language *
-            </label>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-              Language you are learning
-            </span>
-            <select 
-              name="target_language_id" 
-              className="form-select" 
-              value={formData.target_language_id} 
-              onChange={handleChange}
-              disabled={languagesLoading || loading}
-              required
-            >
-              <option value="">{languagesLoading ? 'Loading languages...' : 'Select Language'}</option>
-              {languages.map(l => (
-                <option key={l.id} value={l.id}>
-                  {l.name} {l.native_name ? `(${l.native_name})` : ''}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Row 5: Proficiency Level */}
-        <div className="form-group">
-          <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Award size={15} color="var(--accent-color)" /> Proficiency Level *
+        {/* Interactive Native Language Buttons */}
+        <div style={{ marginBottom: '1.25rem' }}>
+          <label className="form-label" style={{ fontWeight: 700, display: 'block', marginBottom: '0.5rem', color: 'var(--text-main)' }}>
+            I Speak (Native Language)
           </label>
-          <select 
-            name="proficiency_level" 
-            className="form-select" 
-            value={formData.proficiency_level}
-            onChange={handleChange}
-            disabled={loading}
-            required
-          >
-            <option value="Beginner">Beginner — Just starting out (ಮೂಲ ಹಂತ / शुरुआती)</option>
-            <option value="Intermediate">Intermediate — Know basic sounds & words (ಮಧ್ಯಮ ಹಂತ / मध्यम)</option>
-            <option value="Advanced">Advanced — Fluent & seeking full mastery (ಪ್ರವೀಣ ಹಂತ / उन्नत)</option>
-          </select>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.5rem' }}>
+            {languages.map(l => {
+              const isSelected = formData.preferred_language_code === l.code;
+              return (
+                <button
+                  key={`pref_${l.code}`}
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, preferred_language_code: l.code }))}
+                  style={{
+                    padding: '0.65rem 0.5rem',
+                    borderRadius: '10px',
+                    border: isSelected ? '2.5px solid var(--primary-color)' : '1px solid #cbd5e1',
+                    background: isSelected ? 'rgba(16, 185, 129, 0.15)' : '#ffffff',
+                    color: isSelected ? '#10b981' : '#0f172a',
+                    fontWeight: '700',
+                    fontSize: '0.9rem',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  <span style={{ fontSize: '1rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
+                  {l.name}
+                  <div style={{ fontSize: '0.75rem', fontWeight: '500', opacity: 0.8 }}>{l.native_name}</div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <button 
-          type="submit" 
-          className="btn btn-primary" 
-          disabled={loading}
-          style={{ width: '100%', marginTop: '0.75rem', padding: '0.85rem', fontSize: '1.05rem', fontWeight: 700 }}
-        >
-          {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT & START LEARNING'}
+        {/* Interactive Target Language Buttons */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <label className="form-label" style={{ fontWeight: 700, display: 'block', marginBottom: '0.5rem', color: 'var(--text-main)' }}>
+            I Want to Learn (Target Language)
+          </label>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.5rem' }}>
+            {languages.map(l => {
+              const isSelected = formData.target_language_code === l.code;
+              const isSameAsPref = formData.preferred_language_code === l.code;
+              return (
+                <button
+                  key={`target_${l.code}`}
+                  type="button"
+                  disabled={isSameAsPref}
+                  onClick={() => setFormData(prev => ({ ...prev, target_language_code: l.code }))}
+                  style={{
+                    padding: '0.65rem 0.5rem',
+                    borderRadius: '10px',
+                    border: isSelected ? '2.5px solid #3b82f6' : '1px solid #cbd5e1',
+                    background: isSelected ? 'rgba(59, 130, 246, 0.15)' : (isSameAsPref ? '#f1f5f9' : '#ffffff'),
+                    color: isSelected ? '#3b82f6' : (isSameAsPref ? '#94a3b8' : '#0f172a'),
+                    fontWeight: '700',
+                    fontSize: '0.9rem',
+                    cursor: isSameAsPref ? 'not-allowed' : 'pointer',
+                    opacity: isSameAsPref ? 0.5 : 1,
+                    textAlign: 'center',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  <span style={{ fontSize: '1rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
+                  {l.name}
+                  <div style={{ fontSize: '0.75rem', fontWeight: '500', opacity: 0.8 }}>{l.native_name}</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {error && (
+          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: '#ffebee', color: '#c62828', borderRadius: '10px', fontSize: '0.9rem' }}>
+            ⚠️ {error}
+          </div>
+        )}
+
+        <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '0.9rem', borderRadius: '12px', fontWeight: '700' }} disabled={loading}>
+          {loading ? 'CREATING ACCOUNT...' : 'REGISTER & VERIFY EMAIL'}
         </button>
       </form>
 
       <div style={{ textAlign: 'center', marginTop: '1.5rem', fontWeight: 600, fontSize: '0.95rem' }}>
-        Already have an account? <Link to="/login" style={{ color: 'var(--primary-color)', marginLeft: '4px' }}>Log in</Link>
+        Already have an account? <Link to="/login" style={{ color: 'var(--primary-color)', fontWeight: 700 }}>Log In</Link>
       </div>
     </div>
   );
