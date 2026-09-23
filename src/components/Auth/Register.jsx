@@ -42,7 +42,7 @@ const Register = () => {
   const [customGoogleEmail, setCustomGoogleEmail] = useState('');
   const [customGoogleName, setCustomGoogleName] = useState('');
 
-  const { user, register, googleLogin, verifyEmail, resendCode } = useAuth();
+  const { user, register, login, googleLogin } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -141,45 +141,15 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const res = await register(formData);
-      if (res?.data?.verification_code) {
-        setDevCode(res.data.verification_code);
-      }
-      setStep(2); // Advance to email verification step
+      await register(formData);
+      // Auto-login registered learner and navigate straight to onboarding
+      await login(formData.email.trim(), formData.password);
+      navigate('/onboarding');
     } catch (err) {
       const msg = err.response?.data?.detail || 'Registration failed. Please verify your details.';
       setError(msg);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleVerifyCode = async (e) => {
-    e.preventDefault();
-    setError('');
-    if (!verificationCode.trim()) {
-      setError('Please enter the 6-digit verification code');
-      return;
-    }
-    setLoading(true);
-    try {
-      await verifyEmail(formData.email.trim(), verificationCode.trim(), formData.password);
-      navigate('/onboarding');
-    } catch (err) {
-      setError(err.response?.data?.detail || 'Invalid verification code. Please check your email or resend.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendCode = async () => {
-    setError('');
-    setSuccessMsg('');
-    try {
-      await resendCode(formData.email.trim());
-      setSuccessMsg('A new 6-digit code has been sent to your email address!');
-    } catch (err) {
-      setError('Failed to resend code. Please try again.');
     }
   };
 
@@ -243,65 +213,6 @@ const Register = () => {
 
     await handleSelectGoogleAccount(newAcc);
   };
-
-  if (step === 2) {
-    return (
-      <div className="auth-card" style={{ maxWidth: '480px', margin: '2rem auto', padding: '2rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✉️</div>
-        <h2>Verify Your Email</h2>
-        <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 1.5rem', fontSize: '0.95rem' }}>
-          We sent a 6-digit verification code to <strong style={{ color: '#1e293b' }}>{formData.email}</strong>.<br />
-          Please check your email inbox and spam folder.
-        </p>
-
-        <form onSubmit={handleVerifyCode}>
-          {devCode && (
-            <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px dashed #10b981', borderRadius: '12px', padding: '0.75rem', marginBottom: '1.25rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: 'bold' }}>
-                🔑 Verification Code Generated: <span style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#0f172a' }}>{devCode}</span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setVerificationCode(devCode)}
-                style={{ background: 'none', border: 'none', color: '#3b82f6', fontSize: '0.82rem', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer', marginTop: '4px' }}
-              >
-                Click to Auto-Fill Code
-              </button>
-            </div>
-          )}
-
-          <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-            <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
-              Enter 6-Digit Verification Code
-            </label>
-            <input 
-              type="text" 
-              maxLength="6"
-              className="form-input" 
-              value={verificationCode} 
-              onChange={(e) => setVerificationCode(e.target.value)} 
-              placeholder="123456"
-              style={{ width: '100%', padding: '0.85rem', borderRadius: '12px', textAlign: 'center', fontSize: '1.4rem', letterSpacing: '6px', fontWeight: '700', color: '#0f172a', background: '#ffffff' }}
-            />
-          </div>
-
-          {error && <div style={{ color: '#c62828', background: '#ffebee', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.9rem' }}>⚠️ {error}</div>}
-          {successMsg && <div style={{ color: '#2e7d32', background: '#e8f5e9', padding: '0.75rem', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.9rem' }}>✅ {successMsg}</div>}
-
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '0.9rem', borderRadius: '12px', fontWeight: '700' }} disabled={loading}>
-            {loading ? 'VERIFYING...' : 'VERIFY & CONTINUE'}
-          </button>
-        </form>
-
-        <div style={{ marginTop: '1.25rem', fontSize: '0.9rem' }}>
-          Didn't receive the code?{' '}
-          <button type="button" onClick={handleResendCode} style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontWeight: '700', cursor: 'pointer', textDecoration: 'underline' }}>
-            Resend Code to Email
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="auth-card" style={{ maxWidth: '560px', margin: '2rem auto', padding: '2rem' }}>
@@ -615,7 +526,7 @@ const Register = () => {
         )}
 
         <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '0.9rem', borderRadius: '12px', fontWeight: '700' }} disabled={loading}>
-          {loading ? 'CREATING ACCOUNT...' : 'REGISTER & VERIFY EMAIL'}
+          {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT & START LEARNING'}
         </button>
       </form>
 

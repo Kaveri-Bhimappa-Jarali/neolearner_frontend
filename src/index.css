@@ -537,6 +537,7 @@ a:hover {
   padding: 2rem 1.25rem;
   box-sizing: border-box;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .insights-hero-card {
@@ -547,6 +548,10 @@ a:hover {
   border: 1px solid rgba(16, 185, 129, 0.25);
   text-align: center;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .insights-hero-badge {
@@ -566,6 +571,10 @@ a:hover {
   letter-spacing: 0.5px;
   max-width: 100%;
   box-sizing: border-box;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  text-align: center;
 }
 
 .insights-hero-title {
@@ -575,6 +584,9 @@ a:hover {
   font-weight: 900;
   line-height: 1.2;
   letter-spacing: -0.5px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .insights-hero-desc {
@@ -583,6 +595,8 @@ a:hover {
   margin: 0 auto 2rem auto;
   line-height: 1.6;
   max-width: 800px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .insights-action-flex {
@@ -785,22 +799,53 @@ a:hover {
 
   .insights-container {
     padding: 0.75rem 0.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
   }
 
   .insights-hero-card {
-    padding: 1.5rem 1rem !important;
+    padding: 1.25rem 0.75rem !important;
     border-radius: 20px !important;
     margin-bottom: 1.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
   .insights-hero-badge {
     font-size: 0.72rem !important;
-    padding: 0.35rem 0.75rem !important;
+    padding: 0.35rem 0.65rem !important;
     letter-spacing: 0px !important;
+    white-space: normal !important;
+    text-align: center !important;
+    line-height: 1.3 !important;
+    max-width: 100% !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    box-sizing: border-box !important;
   }
 
   .desktop-br {
     display: none !important;
+  }
+
+  .insights-hero-title {
+    font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
+    line-height: 1.3 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+  }
+
+  .insights-hero-desc {
+    font-size: 0.92rem !important;
+    line-height: 1.5 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
   }
 
   .insights-action-flex {
@@ -817,23 +862,45 @@ a:hover {
     justify-content: flex-start !important;
     padding-left: 0.25rem !important;
     padding-right: 0.25rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
   }
 
   .insights-metrics-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.65rem !important;
     margin-bottom: 2rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .insights-metrics-grid .card {
+    padding: 1rem 0.35rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
   }
 
   .insights-feature-card {
     padding: 1.25rem 0.85rem !important;
     border-radius: 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
   .insights-feature-title {
     font-size: 1.15rem !important;
     flex-wrap: wrap !important;
     align-items: flex-start !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
   }
 
   .insights-subgrid-2,
@@ -841,11 +908,18 @@ a:hover {
   .insights-exercise-grid {
     grid-template-columns: 1fr !important;
     gap: 0.85rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .insights-cta-card {
     padding: 1.75rem 1rem !important;
     border-radius: 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
   .auth-card, .profile-card {
@@ -864,6 +938,9 @@ a:hover {
 
   .main-content {
     padding: 1rem 0.5rem !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
   }
 }
 
@@ -873,7 +950,7 @@ a:hover {
   }
 
   .insights-hero-card {
-    padding: 1.5rem 1rem !important;
+    padding: 1.25rem 0.65rem !important;
     border-radius: 20px !important;
   }
 
