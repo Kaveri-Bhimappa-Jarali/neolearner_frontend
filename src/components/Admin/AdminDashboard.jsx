@@ -59,16 +59,16 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="page-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '1.5rem 1rem' }}>
+    <div className="admin-container">
       
       {/* Header Banner */}
-      <div className="card" style={{ padding: '2rem', borderRadius: '24px', marginBottom: '2rem', background: 'linear-gradient(135deg, rgba(153, 102, 204, 0.12), rgba(59, 130, 246, 0.12))', border: '1px solid var(--accent-purple)' }}>
-        <div className="admin-header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+      <div className="card admin-header-card">
+        <div className="admin-header-flex">
           <div>
             <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--accent-purple)', display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '0.35rem' }}>
               <ShieldAlert size={16} /> ADMINISTRATOR SYSTEM CONTROL PORTAL
             </span>
-            <h1 className="page-title" style={{ fontSize: '2.2rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.5rem' }}>
+            <h1 className="page-title" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.5rem' }}>
               NeoLearner Admin Operations
             </h1>
             <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>
@@ -76,14 +76,14 @@ const AdminDashboard = () => {
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="admin-header-actions">
             <Link to="/dashboard" className="btn btn-secondary" style={{ padding: '0.65rem 1.15rem', fontSize: '0.85rem', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <Eye size={16} /> 👤 Learner View
             </Link>
             <button onClick={fetchOverview} className="btn btn-secondary" style={{ padding: '0.65rem 0.9rem', fontSize: '0.85rem', gap: '4px' }} title="Refresh metrics">
               <RefreshCw size={15} /> Refresh
             </button>
-            <div style={{ background: 'var(--surface)', padding: '0.65rem 1.15rem', borderRadius: '14px', border: '1px solid var(--border-color)', fontWeight: 'bold', fontSize: '0.85rem' }}>
+            <div style={{ background: 'var(--surface)', padding: '0.65rem 1.15rem', borderRadius: '14px', border: '1px solid var(--border-color)', fontWeight: 'bold', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
               👑 Admin: {user.full_name}
             </div>
           </div>

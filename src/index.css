@@ -479,6 +479,28 @@ a:hover {
 }
 
 /* Admin Dashboard & Controls Responsive Styles */
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+}
+
+.admin-header-card {
+  padding: 2rem;
+  border-radius: 24px;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, rgba(153, 102, 204, 0.12), rgba(59, 130, 246, 0.12));
+  border: 1px solid var(--accent-purple);
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .admin-tabs-bar {
   display: flex;
   gap: 0.65rem;
@@ -489,6 +511,14 @@ a:hover {
   scrollbar-width: thin;
   scrollbar-color: var(--secondary-color) transparent;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+}
+
+.admin-tabs-bar .btn,
+.insights-tabs-bar .btn {
+  width: auto !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
 }
 
 .admin-tabs-bar::-webkit-scrollbar {
@@ -498,6 +528,43 @@ a:hover {
 .admin-tabs-bar::-webkit-scrollbar-thumb {
   background: var(--surface-hover);
   border-radius: 99px;
+}
+
+/* Insights Page Responsive Classes */
+.insights-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+  box-sizing: border-box;
+}
+
+.insights-hero-card {
+  padding: 3.5rem 2.5rem;
+  border-radius: 32px;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(139, 92, 246, 0.1) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  text-align: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+}
+
+.insights-tabs-bar {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+}
+
+.insights-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3.5rem;
 }
 
 /* Modals & Dialog Overlays */
@@ -589,9 +656,34 @@ a:hover {
     gap: 1rem !important;
   }
 
+  .admin-header-actions {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
   .admin-metrics-ribbon {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.75rem !important;
+  }
+
+  .insights-container {
+    padding: 1rem 0.75rem !important;
+  }
+
+  .insights-hero-card {
+    padding: 2rem 1.25rem !important;
+    border-radius: 24px !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .insights-tabs-bar {
+    justify-content: flex-start !important;
+  }
+
+  .insights-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.85rem !important;
+    margin-bottom: 2.5rem !important;
   }
 
   .auth-card, .profile-card {
@@ -618,6 +710,15 @@ a:hover {
     grid-template-columns: 1fr !important;
   }
 
+  .insights-hero-card {
+    padding: 1.5rem 1rem !important;
+    border-radius: 20px !important;
+  }
+
+  .insights-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
   .ai-answer-option {
     padding: 0.85rem;
     font-size: 0.95rem;
@@ -628,9 +729,17 @@ a:hover {
     gap: 1rem;
   }
 
-  .btn {
+  .auth-card .btn,
+  .modal-dialog .btn-submit,
+  .btn-full-mobile {
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .admin-tabs-bar .btn,
+  .insights-tabs-bar .btn {
+    padding: 0.55rem 0.85rem !important;
+    font-size: 0.82rem !important;
   }
 
   .page-title {

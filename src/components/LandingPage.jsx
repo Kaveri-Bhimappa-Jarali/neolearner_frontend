@@ -31,18 +31,10 @@ const LandingPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1.25rem' }}>
+    <div className="insights-container">
       
       {/* 1. HERO BANNER */}
-      <div className="card" style={{
-        padding: '3.5rem 2.5rem',
-        borderRadius: '32px',
-        marginBottom: '3rem',
-        background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(139, 92, 246, 0.1) 100%)',
-        border: '1px solid rgba(16, 185, 129, 0.25)',
-        textAlign: 'center',
-        boxShadow: '0 12px 32px rgba(0, 0, 0, 0.04)'
-      }}>
+      <div className="card insights-hero-card">
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.45rem 1.4rem',
           borderRadius: '9999px', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.3)',
@@ -52,7 +44,7 @@ const LandingPage = () => {
         </div>
 
         <h1 style={{ 
-          fontSize: 'clamp(1.75rem, 4vw + 1rem, 3.1rem)', 
+          fontSize: 'clamp(1.6rem, 4vw + 0.8rem, 3.1rem)', 
           color: 'var(--text-main)', 
           marginBottom: '1.25rem', 
           fontWeight: '900', 
@@ -70,28 +62,28 @@ const LandingPage = () => {
         </h1>
 
         <p style={{ 
-          fontSize: '1.18rem', 
+          fontSize: '1.1rem', 
           color: 'var(--text-muted)', 
-          marginBottom: '2.5rem', 
+          marginBottom: '2rem', 
           lineHeight: '1.65', 
           maxWidth: '800px', 
-          margin: '0 auto 2.5rem auto' 
+          margin: '0 auto 2rem auto' 
         }}>
           Empowering neo-learners to build fluency in <strong>Kannada, Telugu, Hindi, Marathi, Spanish, and English</strong> through bite-sized gamified lessons, voice pronunciation practice, daily streaks, and smart memory review.
         </p>
 
         {/* Action Buttons */}
-        <div style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
           {user ? (
-            <Link to="/dashboard" className="btn btn-primary" style={{ padding: '0.9rem 2.25rem', fontSize: '1.05rem', fontWeight: '800', gap: '10px', borderRadius: '16px' }}>
+            <Link to="/dashboard" className="btn btn-primary" style={{ padding: '0.85rem 2rem', fontSize: '1rem', fontWeight: '800', gap: '8px', borderRadius: '16px' }}>
               <Zap size={20} /> Go to Dashboard <ArrowRight size={20} />
             </Link>
           ) : (
             <>
-              <Link to="/register" className="btn btn-primary" style={{ padding: '0.9rem 2.25rem', fontSize: '1.05rem', fontWeight: '800', gap: '10px', borderRadius: '16px' }}>
+              <Link to="/register" className="btn btn-primary" style={{ padding: '0.85rem 2rem', fontSize: '1rem', fontWeight: '800', gap: '8px', borderRadius: '16px' }}>
                 <Sparkles size={20} /> Start Learning Free <ArrowRight size={20} />
               </Link>
-              <Link to="/courses" className="btn btn-secondary" style={{ padding: '0.9rem 2rem', fontSize: '1.05rem', fontWeight: '800', borderRadius: '16px' }}>
+              <Link to="/courses" className="btn btn-secondary" style={{ padding: '0.85rem 1.75rem', fontSize: '1rem', fontWeight: '800', borderRadius: '16px' }}>
                 Explore Courses
               </Link>
             </>
@@ -101,61 +93,58 @@ const LandingPage = () => {
 
       {/* 2. METRICS RIBBON */}
       {insights?.stats && (
-        <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
-          gap: '1.25rem', marginBottom: '3.5rem'
-        }}>
-          <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
+        <div className="insights-metrics-grid">
+          <div className="card" style={{ padding: '1.25rem 0.75rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <Users size={26} color="var(--primary-color)" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--primary-color)' }}>{insights.stats.total_learners ?? 0}</div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Active Learners</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: '900', color: 'var(--primary-color)' }}>{insights.stats.total_learners ?? 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Active Learners</div>
           </div>
 
-          <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
+          <div className="card" style={{ padding: '1.25rem 0.75rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <Globe size={26} color="#3b82f6" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#3b82f6' }}>{insights.stats.supported_languages ?? 0}</div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Languages Offered</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: '900', color: '#3b82f6' }}>{insights.stats.supported_languages ?? 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Languages Offered</div>
           </div>
 
-          <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
+          <div className="card" style={{ padding: '1.25rem 0.75rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <BookOpen size={26} color="#ff9600" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#ff9600' }}>{insights.stats.courses_count ?? 0}</div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Structured Courses</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: '900', color: '#ff9600' }}>{insights.stats.courses_count ?? 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Structured Courses</div>
           </div>
 
-          <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
+          <div className="card" style={{ padding: '1.25rem 0.75rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <CheckCircle size={26} color="#10b981" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#10b981' }}>{insights.stats.questions_count ?? 0}</div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Practice Exercises</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: '900', color: '#10b981' }}>{insights.stats.questions_count ?? 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Practice Exercises</div>
           </div>
 
-          <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
+          <div className="card" style={{ padding: '1.25rem 0.75rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <RefreshCw size={26} color="#ec4899" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#ec4899' }}>{insights.stats.vocabulary_words ?? 0}</div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Vocab Terms</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: '900', color: '#ec4899' }}>{insights.stats.vocabulary_words ?? 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Vocab Terms</div>
           </div>
 
-          <div className="card" style={{ padding: '1.5rem 1rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
+          <div className="card" style={{ padding: '1.25rem 0.75rem', textAlign: 'center', borderRadius: '22px', border: '1px solid var(--border-color)' }}>
             <Award size={26} color="var(--accent-purple)" style={{ marginBottom: '8px' }} />
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--accent-purple)' }}>{insights.stats.achievements_count ?? 0}</div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Badges to Earn</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: '900', color: 'var(--accent-purple)' }}>{insights.stats.achievements_count ?? 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Badges to Earn</div>
           </div>
         </div>
       )}
 
       {/* 3. LEARNER FEATURE HIGHLIGHT TABS */}
-      <div style={{ marginBottom: '4rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '2.2rem', fontWeight: '900', color: 'var(--text-main)', marginBottom: '0.6rem' }}>
+      <div style={{ marginBottom: '3.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: '900', color: 'var(--text-main)', marginBottom: '0.5rem' }}>
             Why Learn With LinguaLearn?
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '640px', margin: '0 auto' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1rem', maxWidth: '640px', margin: '0 auto' }}>
             Designed specifically for quick, effective literacy building and long-term language retention.
           </p>
         </div>
 
         {/* Tab Buttons */}
-        <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', justifyContent: 'center', marginBottom: '2.5rem', paddingBottom: '0.5rem' }}>
+        <div className="insights-tabs-bar">
           {[
             { id: 'srs', label: 'Smart Memory (SRS)', icon: <Brain size={18} /> },
             { id: 'gamification', label: 'Fun Gamification', icon: <Flame size={18} /> },
