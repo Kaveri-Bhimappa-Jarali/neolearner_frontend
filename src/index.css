@@ -536,6 +536,7 @@ a:hover {
   margin: 0 auto;
   padding: 2rem 1.25rem;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .insights-hero-card {
@@ -546,6 +547,48 @@ a:hover {
   border: 1px solid rgba(16, 185, 129, 0.25);
   text-align: center;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+}
+
+.insights-hero-title {
+  font-size: clamp(1.5rem, 4.5vw + 0.5rem, 3.1rem);
+  color: var(--text-main);
+  margin-bottom: 1.25rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.insights-hero-desc {
+  font-size: clamp(0.95rem, 2vw + 0.5rem, 1.18rem);
+  color: var(--text-muted);
+  margin: 0 auto 2rem auto;
+  line-height: 1.6;
+  max-width: 800px;
+}
+
+.insights-action-flex {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.insights-action-flex .btn {
+  padding: 0.85rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 800;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insights-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3.5rem;
 }
 
 .insights-tabs-bar {
@@ -560,11 +603,66 @@ a:hover {
   touch-action: pan-x;
 }
 
-.insights-metrics-grid {
+.insights-tabs-bar .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.75rem 1.5rem;
+  white-space: nowrap;
+  border-radius: 14px;
+  font-weight: 800;
+  flex-shrink: 0;
+  width: auto !important;
+}
+
+.insights-feature-card {
+  padding: 2.5rem;
+  border-radius: 28px;
+  border: 1px solid var(--border-color);
+}
+
+.insights-feature-title {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-weight: 900;
+  margin-bottom: 1rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.insights-subgrid-2 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.insights-subgrid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1.25rem;
-  margin-bottom: 3.5rem;
+}
+
+.insights-exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.insights-cta-card {
+  padding: 3.5rem 2rem;
+  border-radius: 32px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.12) 100%);
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+}
+
+.insights-cta-title {
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  font-weight: 900;
+  margin-bottom: 0.75rem;
+  color: var(--text-main);
 }
 
 /* Modals & Dialog Overlays */
