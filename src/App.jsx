@@ -67,7 +67,16 @@ class ErrorBoundary extends React.Component {
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
   if (loading) return <div style={{ padding: '2rem' }}>Loading Auth...</div>;
-  return user ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/login" replace />;
+};
+
+const GuestRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <div style={{ padding: '2rem' }}>Loading Auth...</div>;
+  if (user) {
+    return <Navigate to={user.is_admin ? "/admin" : "/dashboard"} replace />;
+  }
+  return children;
 };
 
 function App() {
@@ -121,8 +130,16 @@ function App() {
                   <Practice />
                 </PrivateRoute>
               } />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={
+                <GuestRoute>
+                  <Login />
+                </GuestRoute>
+              } />
+              <Route path="/register" element={
+                <GuestRoute>
+                  <Register />
+                </GuestRoute>
+              } />
               <Route path="/onboarding" element={
                 <PrivateRoute>
                   <Onboarding />

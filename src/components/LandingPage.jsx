@@ -356,9 +356,15 @@ const LandingPage = () => {
           Join thousands of learners building reading, phonics, and vocabulary skills today.
         </p>
         <div style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
-          <Link to="/register" className="btn btn-primary" style={{ padding: '0.9rem 2.25rem', fontWeight: '800', fontSize: '1.05rem', borderRadius: '16px' }}>
-            Create Free Account
-          </Link>
+          {user ? (
+            <Link to="/dashboard" className="btn btn-primary" style={{ padding: '0.9rem 2.25rem', fontWeight: '800', fontSize: '1.05rem', borderRadius: '16px' }}>
+              Go to Dashboard
+            </Link>
+          ) : (
+            <Link to="/register" className="btn btn-primary" style={{ padding: '0.9rem 2.25rem', fontWeight: '800', fontSize: '1.05rem', borderRadius: '16px' }}>
+              Create Free Account
+            </Link>
+          )}
           <Link to="/courses" className="btn btn-secondary" style={{ padding: '0.9rem 2.25rem', fontWeight: '800', fontSize: '1.05rem', borderRadius: '16px' }}>
             Browse Course Catalog
           </Link>
