@@ -156,7 +156,7 @@ const Register = () => {
     }
     setLoading(true);
     try {
-      await verifyEmail(formData.email.trim(), verificationCode.trim());
+      await verifyEmail(formData.email.trim(), verificationCode.trim(), formData.password);
       navigate('/onboarding');
     } catch (err) {
       setError(err.response?.data?.detail || 'Invalid verification code. Please check your email or resend.');

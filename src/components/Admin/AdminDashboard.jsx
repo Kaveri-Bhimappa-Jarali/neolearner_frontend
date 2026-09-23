@@ -63,12 +63,12 @@ const AdminDashboard = () => {
       
       {/* Header Banner */}
       <div className="card" style={{ padding: '2rem', borderRadius: '24px', marginBottom: '2rem', background: 'linear-gradient(135deg, rgba(153, 102, 204, 0.12), rgba(59, 130, 246, 0.12))', border: '1px solid var(--accent-purple)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+        <div className="admin-header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--accent-purple)', display: 'inline-flex', alignItems: 'center', gap: '6px', marginBottom: '0.35rem' }}>
               <ShieldAlert size={16} /> ADMINISTRATOR SYSTEM CONTROL PORTAL
             </span>
-            <h1 style={{ fontSize: '2.2rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.5rem' }}>
+            <h1 className="page-title" style={{ fontSize: '2.2rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.5rem' }}>
               NeoLearner Admin Operations
             </h1>
             <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>
@@ -91,7 +91,7 @@ const AdminDashboard = () => {
 
         {/* Top Metric Cards Ribbon */}
         {overview && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginTop: '1.75rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-color)' }}>
+          <div className="admin-metrics-ribbon" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginTop: '1.75rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-color)' }}>
             <div style={{ background: 'var(--surface)', padding: '1rem', borderRadius: '14px', border: '1px solid var(--border-color)' }}>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>TOTAL LEARNERS</div>
               <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--primary-color)' }}>{overview.total_learners}</div>
@@ -113,7 +113,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Navigation Tabs Bar */}
-      <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', marginBottom: '2rem', paddingBottom: '0.5rem' }}>
+      <div className="admin-tabs-bar">
         {[
           { id: 'overview', label: 'Learner Management', icon: <Users size={16} /> },
           { id: 'content', label: 'Curriculum Studio', icon: <BookOpen size={16} /> },

@@ -45,8 +45,7 @@ export const AuthProvider = ({ children }) => {
       ...userData,
       email: userData.email.trim().toLowerCase()
     };
-    await api.post('/auth/register', normalizedUserData);
-    await login(normalizedUserData.email, normalizedUserData.password);
+    return await api.post('/auth/register', normalizedUserData);
   };
 
   const googleLogin = async (googlePayload) => {
@@ -60,8 +59,16 @@ export const AuthProvider = ({ children }) => {
     return { user: userRes.data, needsOnboarding: res.data.needs_onboarding };
   };
 
-  const verifyEmail = async (email, code) => {
-    return await api.post('/auth/verify-email', { email, code });
+  const verifyEmail = async (email, code, password = '') => {
+    const res = await api.post('/auth/verify-email', { email, code });
+    if (password) {
+      try {
+        await login(email, password);
+      } catch (e) {
+        console.warn('Auto-login after email verification failed:', e);
+      }
+    }
+    return res;
   };
 
   const resendCode = async (email) => {
