@@ -124,7 +124,6 @@ const Register = () => {
     }));
   };
 
-  const [devCode, setDevCode] = useState('');
   const [resendLoading, setResendLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -143,11 +142,8 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const regRes = await register(formData);
-      if (regRes?.data?.verification_code) {
-        setDevCode(regRes.data.verification_code);
-      }
-      setSuccessMsg(`Verification code dispatched to ${formData.email.trim()}`);
+      await register(formData);
+      setSuccessMsg(`A 6-digit verification code has been sent to ${formData.email.trim()}`);
       setStep(2);
     } catch (err) {
       const msg = err.response?.data?.detail || 'Registration failed. Please verify your details.';
@@ -284,12 +280,6 @@ const Register = () => {
         {successMsg && (
           <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: 'rgba(16, 185, 129, 0.12)', color: '#10b981', borderRadius: '12px', fontSize: '0.9rem', textAlign: 'center', fontWeight: '600' }}>
             ✓ {successMsg}
-          </div>
-        )}
-
-        {devCode && (
-          <div style={{ marginBottom: '1.25rem', padding: '0.75rem', background: 'rgba(59, 130, 246, 0.12)', color: '#3b82f6', borderRadius: '10px', fontSize: '0.85rem', textAlign: 'center' }}>
-            🔑 Dev Mode Code: <strong>{devCode}</strong>
           </div>
         )}
 
