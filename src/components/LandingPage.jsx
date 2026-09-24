@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { 
   BookOpen, Sparkles, ArrowRight, Globe, CheckCircle, Award, 
   Brain, Flame, Gem, Heart, Volume2, Mic, Compass, 
-  RefreshCw, Users, Zap, MessageSquare, Headphones, RotateCcw
+  RefreshCw, Users, Zap, MessageSquare, Headphones, RotateCcw, Download
 } from 'lucide-react';
 
 const LandingPage = () => {
@@ -13,10 +13,29 @@ const LandingPage = () => {
   const [insights, setInsights] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('srs');
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
     fetchInsights();
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   }, []);
+
+  const handleInstallApp = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      if (choice.outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    } else {
+      alert('To install NeoLearner as an App on your device:\n\n• Mobile/Android: Tap browser menu (⋮) -> "Install app" or "Add to Home screen".\n• iPhone/Safari: Tap Share (⎋) -> "Add to Home Screen".\n• Desktop (Chrome/Edge): Click the Install icon (⤓) in your browser address bar.');
+    }
+  };
 
   const fetchInsights = async () => {
     setLoading(true);
@@ -66,6 +85,27 @@ const LandingPage = () => {
               </Link>
             </>
           )}
+
+          <button 
+            type="button"
+            onClick={handleInstallApp}
+            className="btn"
+            style={{ 
+              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.2))',
+              border: '2px solid #10b981',
+              color: '#ffffff',
+              fontWeight: '800',
+              padding: '0.85rem 1.4rem',
+              borderRadius: '14px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 14px rgba(16, 185, 129, 0.25)'
+            }}
+          >
+            <Download size={18} color="#10b981" /> Install NeoLearner App
+          </button>
         </div>
       </section>
 
