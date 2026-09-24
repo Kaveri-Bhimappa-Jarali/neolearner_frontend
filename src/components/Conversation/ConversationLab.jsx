@@ -310,28 +310,26 @@ const ConversationLab = () => {
 
           {/* Quick Context Hints Bar */}
           {session?.context_hints && session.context_hints.length > 0 && (
-            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', padding: '0.75rem 0', borderTop: '1px solid var(--border-color)', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: '800', color: 'var(--text-muted)', alignSelf: 'center', whiteSpace: 'nowrap' }}>SUGGESTIONS:</span>
-              {session.context_hints.map((h, idx) => {
-                const cleanText = h.split('(')[0].trim();
-                return (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      setInputText(cleanText);
-                      handleSendResponse(cleanText);
-                    }}
-                    style={{
-                      padding: '5px 12px', borderRadius: 'var(--radius-md)', fontSize: '0.82rem',
-                      background: 'rgba(6, 182, 212, 0.15)', color: 'var(--accent-cyan)', border: '1px solid rgba(6, 182, 212, 0.3)',
-                      whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: '700'
-                    }}
-                  >
-                    💡 {h}
-                  </button>
-                );
-              })}
+            <div className="conversation-suggestions-bar">
+              <span className="conversation-suggestion-label">SUGGESTIONS:</span>
+              <div className="conversation-suggestions-list">
+                {session.context_hints.map((h, idx) => {
+                  const cleanText = h.split('(')[0].trim();
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      className="conversation-suggestion-chip"
+                      onClick={() => {
+                        setInputText(cleanText);
+                        handleSendResponse(cleanText);
+                      }}
+                    >
+                      💡 {h}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
 
@@ -340,7 +338,7 @@ const ConversationLab = () => {
             <div className="chat-input-row">
               <input
                 type="text"
-                className="form-input"
+                className="form-input chat-text-input"
                 placeholder="Type response in target language..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
@@ -350,9 +348,8 @@ const ConversationLab = () => {
               <button
                 type="button"
                 onClick={() => handleSendResponse()}
-                className="btn btn-primary"
+                className="btn btn-primary chat-send-btn"
                 disabled={!inputText.trim() || sending || isCompleted}
-                style={{ padding: '0.85rem 1.25rem', borderRadius: 'var(--radius-md)', fontWeight: '800' }}
                 title="Send Message"
               >
                 <Send size={18} />
@@ -363,8 +360,7 @@ const ConversationLab = () => {
               <button
                 type="button"
                 onClick={handleMicClick}
-                className={`btn ${isListening ? 'btn-danger' : 'btn-secondary'}`}
-                style={{ borderRadius: 'var(--radius-md)', fontWeight: '800' }}
+                className={`btn ${isListening ? 'btn-danger' : 'btn-secondary'} chat-speak-btn`}
                 title="Speak in target language"
               >
                 <Mic size={20} color={isListening ? '#ffffff' : 'var(--primary-color)'} />
@@ -374,8 +370,7 @@ const ConversationLab = () => {
               <button
                 type="button"
                 onClick={handleEndSession}
-                className="btn btn-outline"
-                style={{ borderRadius: 'var(--radius-md)', fontSize: '0.88rem', fontWeight: '700' }}
+                className="btn btn-outline chat-finish-btn"
                 title="Finish conversation and collect XP"
               >
                 Finish
