@@ -51,7 +51,13 @@ const PlacementTestRunner = () => {
       setSubmissions([]);
     } catch (err) {
       console.error('Failed to start Initial Exam:', err);
-      setError('Could not generate Initial Exam session. Please try again.');
+      if (err.response?.status === 401) {
+        setError('Your session has expired. Please log in again.');
+        setTimeout(() => navigate('/login'), 2000);
+      } else {
+        const detailMsg = err.response?.data?.detail || (err.message === 'Network Error' ? 'Cannot connect to backend server.' : 'Could not generate Initial Exam session. Please try again.');
+        setError(detailMsg);
+      }
     } finally {
       setLoading(false);
     }
