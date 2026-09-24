@@ -102,12 +102,17 @@ const Login = () => {
     setLoading(true);
     try {
       if (isResetMode) {
-        await resetPassword(email.trim().toLowerCase(), password);
+        const resetUser = await resetPassword(email.trim().toLowerCase(), password);
         setSuccessMsg('Password updated successfully! Logging you in...');
+        const needsOnboarding = !resetUser?.preferred_language_id || !resetUser?.target_language_id;
+        navigate(resetUser?.is_admin ? '/admin' : (needsOnboarding ? '/onboarding' : '/dashboard'), { replace: true });
       } else {
         const loggedUser = await login(email.trim().toLowerCase(), password);
+        const needsOnboarding = !loggedUser?.preferred_language_id || !loggedUser?.target_language_id;
         if (loggedUser?.is_admin) {
           navigate('/admin');
+        } else if (needsOnboarding) {
+          navigate('/onboarding');
         } else {
           navigate('/dashboard');
         }
