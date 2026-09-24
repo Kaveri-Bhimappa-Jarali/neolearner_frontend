@@ -177,6 +177,18 @@ a:hover {
   transform: translateY(-2px);
 }
 
+.btn-outline {
+  background-color: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--secondary-color);
+  color: var(--text-main);
+}
+
 /* Container & Cards */
 .page-container {
   width: 100%;
@@ -617,11 +629,79 @@ a:hover {
   justify-content: center;
 }
 
+.insights-metrics-section {
+  margin-bottom: 3.5rem;
+  width: 100%;
+}
+
 .insights-metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1.25rem;
+  width: 100%;
+}
+
+.insights-metric-card {
+  padding: 1.25rem 0.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-icon-wrapper {
+  margin: 0 auto 0.5rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+
+.metric-icon-green { background: rgba(16, 185, 129, 0.12); color: var(--primary-color); }
+.metric-icon-blue { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
+.metric-icon-orange { background: rgba(255, 150, 0, 0.12); color: #ff9600; }
+.metric-icon-emerald { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+.metric-icon-pink { background: rgba(236, 72, 153, 0.12); color: #ec4899; }
+.metric-icon-purple { background: rgba(139, 92, 246, 0.12); color: var(--accent-purple); }
+
+.metric-value { font-size: 1.75rem; font-weight: 900; line-height: 1.2; margin-bottom: 4px; }
+.metric-val-green { color: var(--primary-color); }
+.metric-val-blue { color: #3b82f6; }
+.metric-val-orange { color: #ff9600; }
+.metric-val-emerald { color: #10b981; }
+.metric-val-pink { color: #ec4899; }
+.metric-val-purple { color: var(--accent-purple); }
+
+.metric-label { font-size: 0.82rem; font-weight: 700; color: var(--text-muted); }
+
+.insights-section {
   margin-bottom: 3.5rem;
+  width: 100%;
+}
+
+.insights-section-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.insights-section-title {
+  font-size: clamp(1.3rem, 3.5vw, 2.1rem);
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+  word-break: break-word;
+}
+
+.insights-section-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.5;
+  word-break: break-word;
 }
 
 .insights-tabs-bar {
@@ -652,6 +732,9 @@ a:hover {
   padding: 2.5rem;
   border-radius: 28px;
   border: 1px solid var(--border-color);
+  background: var(--surface);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .insights-feature-title {
@@ -662,6 +745,52 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
+}
+
+.insights-feature-desc {
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  color: var(--text-muted);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.6;
+}
+
+.feature-box {
+  padding: 1.25rem;
+  background: var(--background);
+}
+
+.feature-box-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-main);
+}
+
+.feature-box-desc {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.feature-mini-card {
+  padding: 1.1rem 0.5rem;
+}
+
+.feature-mini-card h4 {
+  font-weight: 800;
+  margin: 0 0 0.25rem 0;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.feature-mini-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
 }
 
 .insights-subgrid-2 {
@@ -680,6 +809,36 @@ a:hover {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.25rem;
+}
+
+.exercise-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem;
+}
+
+.exercise-card-icon {
+  font-size: 1.75rem;
+  flex-shrink: 0;
+}
+
+.exercise-card-content {
+  min-width: 0;
+}
+
+.exercise-card-title {
+  font-weight: 800;
+  margin: 0 0 0.25rem 0;
+  font-size: 0.98rem;
+  color: var(--text-main);
+}
+
+.exercise-card-desc {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.3;
 }
 
 .insights-cta-card {

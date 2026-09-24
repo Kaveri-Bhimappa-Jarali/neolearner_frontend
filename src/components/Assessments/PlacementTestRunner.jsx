@@ -139,11 +139,11 @@ const PlacementTestRunner = () => {
     }
 
     setSubmissions(prev => [
-      ...prev,
+      ...prev.filter(s => s.question_id !== currentQ.id),
       {
         question_id: currentQ.id,
         is_correct: correct,
-        difficulty_level: currentQ.difficulty_level,
+        difficulty_level: currentQ.difficulty_level || 1,
         user_answer: textInput || selectedAnswer || 'matched'
       }
     ]);
@@ -163,23 +163,45 @@ const PlacementTestRunner = () => {
     } else {
       // Submit Initial Exam
       setSubmitting(true);
+      setError('');
       try {
+        // Ensure final question submission is guaranteed
+        let finalSubmissions = [...submissions];
+        const currentSub = {
+          question_id: currentQ.id,
+          is_correct: isCorrect,
+          difficulty_level: currentQ.difficulty_level || 1,
+          user_answer: textInput || selectedAnswer || 'matched'
+        };
+        if (!finalSubmissions.some(s => s.question_id === currentQ.id)) {
+          finalSubmissions.push(currentSub);
+        }
+
         const payload = {
           session_id: session.session_id,
-          submissions: submissions
+          submissions: finalSubmissions
         };
         const res = await api.post('/diagnostic/submit', payload);
         setResult(res.data);
         sounds.playVictory();
 
-        if (setUser) {
-          setUser(prev => prev ? {
-            ...prev,
-            has_completed_placement_test: true,
-            placement_score: res.data.placement_score,
-            proficiency_level: res.data.calibrated_level,
-            benchmark_level: res.data.benchmark_level
-          } : null);
+        // Refresh user profile directly from backend DB to sync AuthContext state
+        try {
+          const userRes = await api.get('/learners/me');
+          if (setUser && userRes.data) {
+            setUser(userRes.data);
+          }
+        } catch (e) {
+          if (setUser) {
+            setUser(prev => prev ? {
+              ...prev,
+              has_completed_placement_test: true,
+              placement_score: res.data.placement_score,
+              proficiency_level: res.data.calibrated_level,
+              benchmark_level: res.data.benchmark_level,
+              cefr_level: res.data.cefr_level
+            } : null);
+          }
         }
       } catch (err) {
         console.error('Failed to submit Initial Exam:', err);

@@ -34,22 +34,22 @@ const LearnerDashboard = () => {
       setLoading(true);
       try {
         const [progRes, resRes, recRes, leadRes, aiRecRes, predRes, pathRes, diagRes] = await Promise.all([
-          api.get('/progress/me'),
-          api.get('/assessments/results/me'),
-          api.get('/recommendations/me'),
-          api.get('/learners/leaderboard'),
-          api.get('/learning-paths/recommendations'),
-          api.get('/learning-paths/prediction'),
-          api.get('/learning-paths/me'),
+          api.get('/progress/me').catch(() => ({ data: [] })),
+          api.get('/assessments/results/me').catch(() => ({ data: [] })),
+          api.get('/recommendations/me').catch(() => ({ data: [] })),
+          api.get('/learners/leaderboard').catch(() => ({ data: null })),
+          api.get('/learning-paths/recommendations').catch(() => ({ data: [] })),
+          api.get('/learning-paths/prediction').catch(() => ({ data: null })),
+          api.get('/learning-paths/me').catch(() => ({ data: null })),
           api.get('/diagnostic/status').catch(() => ({ data: null }))
         ]);
-        setProgressList(progRes.data || []);
-        setResultsList(resRes.data || []);
-        setRecommendations(recRes.data || []);
-        setLeaderboardData(leadRes.data || null);
-        setAiRecommendations(aiRecRes.data || []);
-        setPrediction(predRes.data || null);
-        setLearningPath(pathRes.data || null);
+        setProgressList(progRes?.data || []);
+        setResultsList(resRes?.data || []);
+        setRecommendations(recRes?.data || []);
+        setLeaderboardData(leadRes?.data || null);
+        setAiRecommendations(aiRecRes?.data || []);
+        setPrediction(predRes?.data || null);
+        setLearningPath(pathRes?.data || null);
         setDiagnosticStatus(diagRes?.data || null);
       } catch (err) {
         console.error('Error fetching learner dashboard:', err);

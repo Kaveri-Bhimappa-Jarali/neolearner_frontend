@@ -71,55 +71,55 @@ const LandingPage = () => {
 
       {/* 2. LIVE METRICS RIBBON */}
       {insights?.stats && (
-        <section style={{ marginBottom: '3rem' }}>
+        <section className="insights-metrics-section">
           <div className="insights-metrics-grid">
             
-            <div className="card text-center" style={{ padding: '1.25rem 0.75rem' }}>
-              <div className="metric-icon-wrapper" style={{ margin: '0 auto 0.5rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: 'rgba(16, 185, 129, 0.12)', color: 'var(--primary-color)' }}>
+            <div className="card insights-metric-card">
+              <div className="metric-icon-wrapper metric-icon-green">
                 <Users size={22} />
               </div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--primary-color)' }}>{insights.stats.total_learners ?? 0}</div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>Active Learners</div>
+              <div className="metric-value metric-val-green">{insights.stats.total_learners ?? 0}</div>
+              <div className="metric-label">Active Learners</div>
             </div>
 
-            <div className="card text-center" style={{ padding: '1.25rem 0.75rem' }}>
-              <div className="metric-icon-wrapper" style={{ margin: '0 auto 0.5rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: 'rgba(59, 130, 246, 0.12)', color: '#3b82f6' }}>
+            <div className="card insights-metric-card">
+              <div className="metric-icon-wrapper metric-icon-blue">
                 <Globe size={22} />
               </div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 900, color: '#3b82f6' }}>{insights.stats.supported_languages ?? 0}</div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>Languages Offered</div>
+              <div className="metric-value metric-val-blue">{insights.stats.supported_languages ?? 0}</div>
+              <div className="metric-label">Languages Offered</div>
             </div>
 
-            <div className="card text-center" style={{ padding: '1.25rem 0.75rem' }}>
-              <div className="metric-icon-wrapper" style={{ margin: '0 auto 0.5rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: 'rgba(255, 150, 0, 0.12)', color: '#ff9600' }}>
+            <div className="card insights-metric-card">
+              <div className="metric-icon-wrapper metric-icon-orange">
                 <BookOpen size={22} />
               </div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 900, color: '#ff9600' }}>{insights.stats.courses_count ?? 0}</div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>Structured Courses</div>
+              <div className="metric-value metric-val-orange">{insights.stats.courses_count ?? 0}</div>
+              <div className="metric-label">Structured Courses</div>
             </div>
 
-            <div className="card text-center" style={{ padding: '1.25rem 0.75rem' }}>
-              <div className="metric-icon-wrapper" style={{ margin: '0 auto 0.5rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: 'rgba(16, 185, 129, 0.12)', color: '#10b981' }}>
+            <div className="card insights-metric-card">
+              <div className="metric-icon-wrapper metric-icon-emerald">
                 <CheckCircle size={22} />
               </div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 900, color: '#10b981' }}>{insights.stats.questions_count ?? 0}</div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>Practice Drills</div>
+              <div className="metric-value metric-val-emerald">{insights.stats.questions_count ?? 0}</div>
+              <div className="metric-label">Practice Drills</div>
             </div>
 
-            <div className="card text-center" style={{ padding: '1.25rem 0.75rem' }}>
-              <div className="metric-icon-wrapper" style={{ margin: '0 auto 0.5rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: 'rgba(236, 72, 153, 0.12)', color: '#ec4899' }}>
+            <div className="card insights-metric-card">
+              <div className="metric-icon-wrapper metric-icon-pink">
                 <RefreshCw size={22} />
               </div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 900, color: '#ec4899' }}>{insights.stats.vocabulary_words ?? 0}</div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>Vocab Cards</div>
+              <div className="metric-value metric-val-pink">{insights.stats.vocabulary_words ?? 0}</div>
+              <div className="metric-label">Vocab Cards</div>
             </div>
 
-            <div className="card text-center" style={{ padding: '1.25rem 0.75rem' }}>
-              <div className="metric-icon-wrapper" style={{ margin: '0 auto 0.5rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, borderRadius: '50%', background: 'rgba(139, 92, 246, 0.12)', color: 'var(--accent-purple)' }}>
+            <div className="card insights-metric-card">
+              <div className="metric-icon-wrapper metric-icon-purple">
                 <Award size={22} />
               </div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--accent-purple)' }}>{insights.stats.achievements_count ?? 0}</div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>Badges & Rewards</div>
+              <div className="metric-value metric-val-purple">{insights.stats.achievements_count ?? 0}</div>
+              <div className="metric-label">Badges & Rewards</div>
             </div>
 
           </div>
@@ -127,12 +127,12 @@ const LandingPage = () => {
       )}
 
       {/* 3. FEATURE SHOWCASE TABS */}
-      <section style={{ marginBottom: '3.5rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <h2 style={{ fontSize: 'clamp(1.3rem, 3.5vw, 2.1rem)', fontWeight: 900, marginBottom: '0.5rem', color: 'var(--text-main)' }}>
+      <section className="insights-section">
+        <div className="insights-section-header">
+          <h2 className="insights-section-title">
             Why Learn With LinguaLearn?
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+          <p className="insights-section-subtitle">
             Designed specifically for quick, effective literacy building and long-term memory retention.
           </p>
         </div>
@@ -160,25 +160,25 @@ const LandingPage = () => {
           {activeSection === 'srs' && (
             <div>
               <h3 className="insights-feature-title">
-                <Brain color="var(--primary-color)" size={26} /> Spaced Repetition (SRS) & Adaptive Progress
+                <Brain color="var(--primary-color)" size={26} /> <span>Spaced Repetition (SRS) & Adaptive Progress</span>
               </h3>
-              <p className="insights-hero-desc" style={{ textAlign: 'left', margin: '0 0 1.5rem 0' }}>
+              <p className="insights-feature-desc">
                 Never forget words you've learned. Our SM-2 algorithm automatically tracks recall confidence scores and schedules review sessions right when you need them.
               </p>
               <div className="insights-subgrid-2">
-                <div className="card" style={{ padding: '1.25rem' }}>
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'var(--text-main)' }}>
+                <div className="card feature-box">
+                  <h4 className="feature-box-title">
                     <RotateCcw size={18} color="#10b981" /> Smart Review Schedule
                   </h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.5 }}>
+                  <p className="feature-box-desc">
                     Words you master appear less frequently; words you struggle with are reviewed until perfected.
                   </p>
                 </div>
-                <div className="card" style={{ padding: '1.25rem' }}>
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'var(--text-main)' }}>
+                <div className="card feature-box">
+                  <h4 className="feature-box-title">
                     <Sparkles size={18} color="#3b82f6" /> CEFR Level Placement
                   </h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.5 }}>
+                  <p className="feature-box-desc">
                     Start with a quick placement test to automatically jump to your exact proficiency level (A0 to C1).
                   </p>
                 </div>
@@ -189,31 +189,31 @@ const LandingPage = () => {
           {activeSection === 'gamification' && (
             <div>
               <h3 className="insights-feature-title">
-                <Flame color="#ff9600" size={26} /> Stay Motivated With Gamified Learning
+                <Flame color="#ff9600" size={26} /> <span>Stay Motivated With Gamified Learning</span>
               </h3>
-              <p className="insights-hero-desc" style={{ textAlign: 'left', margin: '0 0 1.5rem 0' }}>
+              <p className="insights-feature-desc">
                 Turn daily learning into an exciting habit with streaks, XP rewards, energy hearts, and weekly league ladders.
               </p>
               <div className="insights-subgrid-4">
-                <div className="card text-center" style={{ padding: '1.1rem 0.5rem' }}>
+                <div className="card text-center feature-mini-card">
                   <Flame size={26} color="#ff9600" style={{ margin: '0 auto 0.5rem auto' }} />
-                  <h4 style={{ fontWeight: 800, margin: '0 0 0.25rem 0', fontSize: '0.95rem' }}>Daily Streaks</h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.8rem' }}>Build daily habits and shield your streak.</p>
+                  <h4>Daily Streaks</h4>
+                  <p>Build daily habits and shield your streak.</p>
                 </div>
-                <div className="card text-center" style={{ padding: '1.1rem 0.5rem' }}>
+                <div className="card text-center feature-mini-card">
                   <Heart size={26} color="#ff4b4b" style={{ margin: '0 auto 0.5rem auto' }} />
-                  <h4 style={{ fontWeight: 800, margin: '0 0 0.25rem 0', fontSize: '0.95rem' }}>5-Heart Energy</h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.8rem' }}>Practice carefully and refill hearts.</p>
+                  <h4>5-Heart Energy</h4>
+                  <p>Practice carefully and refill hearts.</p>
                 </div>
-                <div className="card text-center" style={{ padding: '1.1rem 0.5rem' }}>
+                <div className="card text-center feature-mini-card">
                   <Gem size={26} color="#1cb0f6" style={{ margin: '0 auto 0.5rem auto' }} />
-                  <h4 style={{ fontWeight: 800, margin: '0 0 0.25rem 0', fontSize: '0.95rem' }}>Gems & Shop</h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.8rem' }}>Earn gems to unlock powerups.</p>
+                  <h4>Gems & Shop</h4>
+                  <p>Earn gems to unlock powerups.</p>
                 </div>
-                <div className="card text-center" style={{ padding: '1.1rem 0.5rem' }}>
+                <div className="card text-center feature-mini-card">
                   <Award size={26} color="#ffd700" style={{ margin: '0 auto 0.5rem auto' }} />
-                  <h4 style={{ fontWeight: 800, margin: '0 0 0.25rem 0', fontSize: '0.95rem' }}>League Ladders</h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.8rem' }}>Climb from Bronze to Diamond.</p>
+                  <h4>League Ladders</h4>
+                  <p>Climb from Bronze to Diamond.</p>
                 </div>
               </div>
             </div>
@@ -222,25 +222,25 @@ const LandingPage = () => {
           {activeSection === 'speech' && (
             <div>
               <h3 className="insights-feature-title">
-                <Volume2 color="#10b981" size={26} /> Native Voice & Pronunciation Practice
+                <Volume2 color="#10b981" size={26} /> <span>Native Voice & Pronunciation Practice</span>
               </h3>
-              <p className="insights-hero-desc" style={{ textAlign: 'left', margin: '0 0 1.5rem 0' }}>
+              <p className="insights-feature-desc">
                 Hear native pronunciation for every word and sentence, and use your device microphone for real-time speech feedback.
               </p>
               <div className="insights-subgrid-2">
-                <div className="card" style={{ padding: '1.25rem' }}>
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'var(--text-main)' }}>
+                <div className="card feature-box">
+                  <h4 className="feature-box-title">
                     <Mic size={18} color="#10b981" /> Real-Time Voice Feedback
                   </h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.5 }}>
+                  <p className="feature-box-desc">
                     Speak directly into your microphone to receive instant accuracy scores and pronunciation tips.
                   </p>
                 </div>
-                <div className="card" style={{ padding: '1.25rem' }}>
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'var(--text-main)' }}>
+                <div className="card feature-box">
+                  <h4 className="feature-box-title">
                     <Headphones size={18} color="#3b82f6" /> Clear Audio Playback
                   </h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.5 }}>
+                  <p className="feature-box-desc">
                     Listen to native audio at normal or slow speed to perfect your listening comprehension.
                   </p>
                 </div>
@@ -251,25 +251,25 @@ const LandingPage = () => {
           {activeSection === 'stories' && (
             <div>
               <h3 className="insights-feature-title">
-                <Compass color="#6366f1" size={26} /> Interactive Stories & Real-World Scenarios
+                <Compass color="#6366f1" size={26} /> <span>Interactive Stories & Real-World Scenarios</span>
               </h3>
-              <p className="insights-hero-desc" style={{ textAlign: 'left', margin: '0 0 1.5rem 0' }}>
+              <p className="insights-feature-desc">
                 Practice conversational skills in realistic scenarios like ordering food, shopping at local markets, or making new friends.
               </p>
               <div className="insights-subgrid-2">
-                <div className="card" style={{ padding: '1.25rem' }}>
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'var(--text-main)' }}>
+                <div className="card feature-box">
+                  <h4 className="feature-box-title">
                     <MessageSquare size={18} color="#6366f1" /> Branching Dialogues
                   </h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.5 }}>
+                  <p className="feature-box-desc">
                     Make choices during stories to see how conversations unfold in natural regional dialects.
                   </p>
                 </div>
-                <div className="card" style={{ padding: '1.25rem' }}>
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'var(--text-main)' }}>
+                <div className="card feature-box">
+                  <h4 className="feature-box-title">
                     <Compass size={18} color="#ec4899" /> Roleplay Quests
                   </h4>
-                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.5 }}>
+                  <p className="feature-box-desc">
                     Engage in interactive text-based adventures that make practicing grammar effortless.
                   </p>
                 </div>
@@ -280,12 +280,12 @@ const LandingPage = () => {
       </section>
 
       {/* 4. 7 EXERCISE TYPES SHOWCASE */}
-      <section style={{ marginBottom: '3.5rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <h2 style={{ fontSize: 'clamp(1.3rem, 3.5vw, 2.1rem)', fontWeight: 900, marginBottom: '0.5rem', color: 'var(--text-main)' }}>
+      <section className="insights-section">
+        <div className="insights-section-header">
+          <h2 className="insights-section-title">
             7 Interactive Exercise Modes
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+          <p className="insights-section-subtitle">
             Varied quiz modes keep learning engaging, multi-sensory, and effective.
           </p>
         </div>
@@ -300,11 +300,11 @@ const LandingPage = () => {
             { title: 'Matching Pairs', desc: 'Match regional words with their meanings', icon: '🔄' },
             { title: 'Sentence Translation', desc: 'Translate sentences between target languages', icon: '🌐' }
           ].map((ex, idx) => (
-            <div key={idx} className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.1rem' }}>
-              <div style={{ fontSize: '1.75rem', flexShrink: 0 }}>{ex.icon}</div>
-              <div>
-                <h4 style={{ fontWeight: 800, margin: '0 0 0.25rem 0', fontSize: '0.98rem', color: 'var(--text-main)' }}>{ex.title}</h4>
-                <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.3 }}>{ex.desc}</p>
+            <div key={idx} className="card exercise-card">
+              <div className="exercise-card-icon">{ex.icon}</div>
+              <div className="exercise-card-content">
+                <h4 className="exercise-card-title">{ex.title}</h4>
+                <p className="exercise-card-desc">{ex.desc}</p>
               </div>
             </div>
           ))}
@@ -314,7 +314,7 @@ const LandingPage = () => {
       {/* 5. CALL TO ACTION FOOTER BANNER */}
       <section className="insights-cta-card">
         <h2 className="insights-cta-title">Ready to Start Your Language Journey?</h2>
-        <p className="insights-hero-desc" style={{ margin: '0 auto 1.5rem auto' }}>
+        <p className="insights-hero-desc">
           Join thousands of learners building reading, phonics, and regional language skills today.
         </p>
         <div className="insights-action-flex">
