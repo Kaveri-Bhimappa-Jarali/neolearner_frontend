@@ -110,6 +110,15 @@ class SoundManager {
       console.warn('Audio feedback error:', e);
     }
   }
+
+  // Alias methods used across components
+  playChime() {
+    this.playCorrect();
+  }
+
+  playCelebration() {
+    this.playVictory();
+  }
 }
 
 export const sounds = new SoundManager();

@@ -21,6 +21,19 @@ const SCENARIO_CARDS = [
   { id: 'introduction', nameKey: 'scenarioIntroductionName', name: 'Meeting a Neighbor', icon: '👋', desc: 'Exchange names, hometowns & hobbies', cefr: 'A1' }
 ];
 
+const extractErrorMessage = (err, fallbackMsg) => {
+  if (!err) return fallbackMsg;
+  const detail = err.response?.data?.detail;
+  if (typeof detail === 'string') return detail;
+  if (Array.isArray(detail)) {
+    return detail.map(d => (typeof d === 'string' ? d : d.msg || JSON.stringify(d))).join('; ');
+  }
+  if (detail && typeof detail === 'object') {
+    return detail.msg || JSON.stringify(detail);
+  }
+  return err.message || fallbackMsg;
+};
+
 const ConversationLab = () => {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
@@ -37,7 +50,6 @@ const ConversationLab = () => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [finalSummary, setFinalSummary] = useState(null);
   const [error, setError] = useState('');
-  const [unlockedMode, setUnlockedMode] = useState(false);
 
   const chatEndRef = useRef(null);
 
@@ -72,7 +84,7 @@ const ConversationLab = () => {
       }
     } catch (err) {
       console.error('Failed to start conversation:', err);
-      setError(err.response?.data?.detail || 'Could not start AI conversation. Please try again.');
+      setError(extractErrorMessage(err, 'Could not start AI conversation. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -85,7 +97,8 @@ const ConversationLab = () => {
   }, [user]);
 
   const handleSendResponse = async (textToSend) => {
-    const text = (textToSend || inputText).trim();
+    const rawText = typeof textToSend === 'string' ? textToSend : inputText;
+    const text = (rawText || '').trim();
     if (!text || sending) return;
 
     let currentSession = session;
@@ -94,7 +107,7 @@ const ConversationLab = () => {
     setSending(true);
     setError('');
 
-    if (!currentSession) {
+    if (!currentSession || !currentSession.session_id) {
       try {
         const startRes = await api.post('/conversation/start', {
           scenario: selectedScenario,
@@ -104,7 +117,7 @@ const ConversationLab = () => {
         setSession(currentSession);
       } catch (err) {
         console.error('Auto session start error:', err);
-        setError('Could not connect to AI Tutor. Please click a scenario above to retry.');
+        setError(extractErrorMessage(err, 'Could not connect to AI Tutor. Please click a scenario above to retry.'));
         setSending(false);
         return;
       }
@@ -118,7 +131,10 @@ const ConversationLab = () => {
         user_transcript: text
       });
 
-      sounds.playChime();
+      try {
+        if (typeof sounds.playChime === 'function') sounds.playChime();
+        else if (typeof sounds.playCorrect === 'function') sounds.playCorrect();
+      } catch (e) {}
 
       setMessages(prev => [
         ...prev,
@@ -137,19 +153,18 @@ const ConversationLab = () => {
         turnScore: res.data.turn_score
       });
 
-      if (currentSession.target_language_code) {
-        speakText(res.data.ai_reply, currentSession.target_language_code);
-      }
+      const langCode = res.data.target_language_code || currentSession?.target_language_code || user?.target_language?.code || 'kn';
+      speakText(res.data.ai_reply, langCode);
     } catch (err) {
       console.error('Failed to send response:', err);
-      setError(err.response?.data?.detail || 'Failed to receive AI tutor reply.');
+      setError(extractErrorMessage(err, 'Failed to receive AI tutor reply. Please try again.'));
     } finally {
       setSending(false);
     }
   };
 
   const handleMicClick = () => {
-    const langCode = session?.target_language_code || user?.target_language?.code || 'en';
+    const langCode = session?.target_language_code || user?.target_language?.code || 'kn';
     setIsListening(true);
     listenForSpeech(
       langCode,
@@ -167,7 +182,7 @@ const ConversationLab = () => {
   };
 
   const handleEndSession = async () => {
-    if (!session) return;
+    if (!session || !session.session_id) return;
     try {
       const res = await api.post('/conversation/end', { session_id: session.session_id });
       setFinalSummary(res.data);
@@ -176,9 +191,13 @@ const ConversationLab = () => {
         const uRes = await api.get('/learners/me');
         setUser(uRes.data);
       } catch (e) {}
-      sounds.playCelebration();
+      try {
+        if (typeof sounds.playCelebration === 'function') sounds.playCelebration();
+        else if (typeof sounds.playVictory === 'function') sounds.playVictory();
+      } catch (e) {}
     } catch (err) {
       console.error('Failed to end conversation:', err);
+      setError(extractErrorMessage(err, 'Failed to complete roleplay session.'));
     }
   };
 
@@ -287,7 +306,7 @@ const ConversationLab = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px', fontSize: '0.82rem', color: 'var(--text-muted)', flexWrap: 'wrap', maxWidth: '100%', wordBreak: 'break-word' }}>
                       <button 
                         type="button"
-                        onClick={() => speakText(msg.text, session?.target_language_code)}
+                        onClick={() => speakText(msg.text, session?.target_language_code || user?.target_language?.code)}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--primary-color)', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '3px' }}
                       >
                         <Volume2 size={15} /> Listen
@@ -295,7 +314,7 @@ const ConversationLab = () => {
                       <span>•</span>
                       <button 
                         type="button"
-                        onClick={() => speakText(msg.text, session?.target_language_code, true)}
+                        onClick={() => speakText(msg.text, session?.target_language_code || user?.target_language?.code, true)}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontWeight: '600' }}
                       >
                         Slow 🐢
@@ -340,8 +359,14 @@ const ConversationLab = () => {
             </div>
           )}
 
-          {/* Message Input Action Bar */}
-          <div className="chat-input-action-bar">
+          {/* Message Input Action Form */}
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSendResponse();
+            }}
+            className="chat-input-action-bar"
+          >
             <div className="chat-input-row">
               <input
                 type="text"
@@ -349,12 +374,10 @@ const ConversationLab = () => {
                 placeholder="Type response in target language..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSendResponse()}
                 disabled={sending || isCompleted}
               />
               <button
-                type="button"
-                onClick={() => handleSendResponse()}
+                type="submit"
                 className="btn btn-primary chat-send-btn"
                 disabled={!inputText.trim() || sending || isCompleted}
                 title="Send Message"
@@ -383,7 +406,7 @@ const ConversationLab = () => {
                 Finish
               </button>
             </div>
-          </div>
+          </form>
         </div>
 
         {/* Live Pedagogical Feedback Sidebar */}

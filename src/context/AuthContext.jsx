@@ -44,13 +44,6 @@ export const AuthProvider = ({ children }) => {
       email: userData.email.trim().toLowerCase()
     };
     const regRes = await api.post('/auth/register', normalizedUserData);
-    if (userData.password) {
-      try {
-        await login(userData.email, userData.password);
-      } catch (err) {
-        console.warn('Auto-login after registration failed:', err);
-      }
-    }
     return regRes;
   };
 
@@ -64,8 +57,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const verifyEmail = async (email, code, password = '') => {
-    const res = await api.post('/auth/verify-email', { email, code });
-    if (password) {
+    const res = await api.post('/auth/verify-email', { email: email.trim().toLowerCase(), code: code.trim() });
+    if (res.data?.access_token) {
+      const token = res.data.access_token;
+      localStorage.setItem('access_token', token);
+      const userRes = await api.get('/learners/me');
+      setUser(userRes.data);
+    } else if (password) {
       try {
         await login(email, password);
       } catch (e) {
