@@ -79,24 +79,42 @@ const ConversationLab = () => {
   };
 
   useEffect(() => {
-    if (user && (user.has_completed_placement_test || unlockedMode)) {
+    if (user && !session && !loading) {
       handleStartSession(selectedScenario);
     }
-  }, [user, unlockedMode]);
+  }, [user]);
 
   const handleSendResponse = async (textToSend) => {
     const text = (textToSend || inputText).trim();
-    if (!text || sending || !session) return;
+    if (!text || sending) return;
+
+    let currentSession = session;
 
     setInputText('');
     setSending(true);
     setError('');
 
+    if (!currentSession) {
+      try {
+        const startRes = await api.post('/conversation/start', {
+          scenario: selectedScenario,
+          target_language_id: user?.target_language_id || null
+        });
+        currentSession = startRes.data;
+        setSession(currentSession);
+      } catch (err) {
+        console.error('Auto session start error:', err);
+        setError('Could not connect to AI Tutor. Please click a scenario above to retry.');
+        setSending(false);
+        return;
+      }
+    }
+
     setMessages(prev => [...prev, { sender: 'user', text: text }]);
 
     try {
       const res = await api.post('/conversation/respond', {
-        session_id: session.session_id,
+        session_id: currentSession.session_id,
         user_transcript: text
       });
 
@@ -119,8 +137,8 @@ const ConversationLab = () => {
         turnScore: res.data.turn_score
       });
 
-      if (session.target_language_code) {
-        speakText(res.data.ai_reply, session.target_language_code);
+      if (currentSession.target_language_code) {
+        speakText(res.data.ai_reply, currentSession.target_language_code);
       }
     } catch (err) {
       console.error('Failed to send response:', err);
@@ -131,10 +149,10 @@ const ConversationLab = () => {
   };
 
   const handleMicClick = () => {
-    if (!session) return;
+    const langCode = session?.target_language_code || user?.target_language?.code || 'en';
     setIsListening(true);
     listenForSpeech(
-      session.target_language_code || 'en',
+      langCode,
       (transcript) => {
         setIsListening(false);
         setInputText(transcript);
@@ -163,58 +181,6 @@ const ConversationLab = () => {
       console.error('Failed to end conversation:', err);
     }
   };
-
-  const isAccessLocked = user && !user.has_completed_placement_test && !unlockedMode;
-
-  if (isAccessLocked) {
-    return (
-      <div className="page-container" style={{ maxWidth: '800px', margin: '3rem auto', padding: '0 1rem' }}>
-        <div 
-          className="card" 
-          style={{
-            padding: '3rem 2rem', 
-            borderRadius: 'var(--radius-xl)', 
-            textAlign: 'center',
-            background: 'var(--surface-card)',
-            border: '2px dashed var(--accent-gold)', 
-            boxShadow: 'var(--shadow-lg)'
-          }}
-        >
-          <div style={{
-            width: '74px', height: '74px', borderRadius: '50%', background: 'rgba(245, 158, 11, 0.15)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem'
-          }}>
-            <Lock size={38} color="var(--accent-gold)" />
-          </div>
-
-          <h1 style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.5rem' }}>
-            Diagnostic Assessment Required
-          </h1>
-
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto 1.75rem', lineHeight: '1.6' }}>
-            Complete your initial placement assessment to unlock custom AI roleplay scenarios tuned to your exact CEFR proficiency level.
-          </p>
-
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button
-              className="btn btn-primary"
-              style={{ padding: '0.9rem 2rem', fontSize: '1.05rem', fontWeight: '800', borderRadius: 'var(--radius-md)' }}
-              onClick={() => navigate('/initial-exam')}
-            >
-              Start Diagnostic Test 🚀
-            </button>
-            <button
-              className="btn btn-secondary"
-              style={{ padding: '0.9rem 2rem', fontSize: '1.05rem', fontWeight: '700', borderRadius: 'var(--radius-md)' }}
-              onClick={() => { setUnlockedMode(true); handleStartSession('restaurant'); }}
-            >
-              Try Interactive Demo
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="page-container" style={{ maxWidth: '1150px', margin: '0 auto', padding: '1rem' }}>
