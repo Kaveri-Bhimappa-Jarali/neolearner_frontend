@@ -124,12 +124,9 @@ const Register = () => {
     }));
   };
 
-  const [resendLoading, setResendLoading] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setSuccessMsg('');
 
     if (!formData.email.trim()) {
       setError('Email address is required');
@@ -143,49 +140,14 @@ const Register = () => {
     setLoading(true);
     try {
       await register(formData);
-      setSuccessMsg(`A 6-digit verification code has been sent to ${formData.email.trim()}`);
-      setStep(2);
+      // Auto-login registered learner and navigate straight to onboarding
+      await login(formData.email.trim(), formData.password);
+      navigate('/onboarding');
     } catch (err) {
       const msg = err.response?.data?.detail || 'Registration failed. Please verify your details.';
       setError(msg);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleVerifySubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccessMsg('');
-
-    if (!verificationCode || verificationCode.trim().length !== 6) {
-      setError('Please enter the full 6-digit verification code.');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await verifyEmail(formData.email.trim(), verificationCode.trim(), formData.password);
-      navigate('/onboarding');
-    } catch (err) {
-      const msg = err.response?.data?.detail || 'Invalid verification code. Please try again.';
-      setError(msg);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendCode = async () => {
-    setError('');
-    setSuccessMsg('');
-    setResendLoading(true);
-    try {
-      const res = await resendCode(formData.email.trim());
-      setSuccessMsg(res.data?.message || `A new 6-digit code has been sent to ${formData.email.trim()}`);
-    } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to resend code. Please try again.');
-    } finally {
-      setResendLoading(false);
     }
   };
 
@@ -249,98 +211,6 @@ const Register = () => {
 
     await handleSelectGoogleAccount(newAcc);
   };
-
-  // STEP 2: 6-DIGIT EMAIL VERIFICATION SCREEN
-  if (step === 2) {
-    return (
-      <div className="auth-card" style={{ maxWidth: '480px', margin: '3rem auto', padding: '2.5rem 2rem' }}>
-        <div className="auth-header" style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <div style={{
-            width: '72px', height: '72px', borderRadius: '50%',
-            background: 'rgba(16, 185, 129, 0.12)', color: 'var(--primary-color)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 1rem', fontSize: '2rem'
-          }}>
-            📧
-          </div>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: '800', marginBottom: '0.5rem', color: 'var(--text-main)' }}>
-            Verify Your Email
-          </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.5' }}>
-            We've sent a 6-digit verification code to <strong style={{ color: 'var(--text-main)' }}>{formData.email}</strong>.
-          </p>
-        </div>
-
-        {error && (
-          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: '#ffebee', color: '#c62828', borderRadius: '12px', fontSize: '0.9rem', textAlign: 'center' }}>
-            ⚠️ {error}
-          </div>
-        )}
-
-        {successMsg && (
-          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: 'rgba(16, 185, 129, 0.12)', color: '#10b981', borderRadius: '12px', fontSize: '0.9rem', textAlign: 'center', fontWeight: '600' }}>
-            ✓ {successMsg}
-          </div>
-        )}
-
-        <form onSubmit={handleVerifySubmit}>
-          <div className="form-group" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
-            <label className="form-label" style={{ fontWeight: '700', display: 'block', marginBottom: '0.5rem' }}>
-              6-Digit Verification Code
-            </label>
-            <input
-              type="text"
-              maxLength={6}
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
-              placeholder="123456"
-              required
-              autoFocus
-              style={{
-                width: '100%',
-                padding: '0.9rem',
-                fontSize: '1.8rem',
-                fontWeight: '800',
-                letterSpacing: '8px',
-                textAlign: 'center',
-                borderRadius: '14px',
-                border: '2px solid var(--primary-color)',
-                color: 'var(--text-main)',
-                background: 'var(--background)'
-              }}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={loading || verificationCode.length !== 6}
-            style={{ width: '100%', padding: '1rem', borderRadius: '14px', fontWeight: '800', fontSize: '1.05rem', marginBottom: '1rem' }}
-          >
-            {loading ? 'VERIFYING...' : 'VERIFY EMAIL & START LEARNING →'}
-          </button>
-        </form>
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
-          <button
-            type="button"
-            onClick={handleResendCode}
-            disabled={resendLoading}
-            style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontWeight: '700', fontSize: '0.9rem', cursor: 'pointer' }}
-          >
-            {resendLoading ? 'Sending new code...' : '↻ Resend Code'}
-          </button>
-          <button
-            type="button"
-            onClick={() => setStep(1)}
-            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.9rem', cursor: 'pointer' }}
-          >
-            Change Email
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="auth-card" style={{ maxWidth: '560px', margin: '2rem auto', padding: '2rem' }}>
