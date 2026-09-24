@@ -49,7 +49,8 @@ const Register = () => {
 
   useEffect(() => {
     if (user) {
-      navigate(user.is_admin ? '/admin' : '/dashboard', { replace: true });
+      const needsOnboarding = !user.preferred_language_id || !user.target_language_id;
+      navigate(user.is_admin ? '/admin' : (needsOnboarding ? '/onboarding' : '/dashboard'), { replace: true });
     }
   }, [user, navigate]);
 
@@ -598,6 +599,27 @@ const Register = () => {
             {error && (
               <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(239,68,68,0.3)', fontSize: '0.9rem' }}>
                 ⚠️ {error}
+                {error.toLowerCase().includes('already registered') && (
+                  <div style={{ marginTop: '0.65rem' }}>
+                    <button
+                      type="button"
+                      onClick={() => navigate('/login', { state: { email: formData.email } })}
+                      style={{
+                        background: 'var(--primary-color)',
+                        color: '#ffffff',
+                        border: 'none',
+                        padding: '0.55rem 1.1rem',
+                        borderRadius: 'var(--radius-md)',
+                        fontWeight: '800',
+                        cursor: 'pointer',
+                        fontSize: '0.88rem',
+                        boxShadow: 'var(--shadow-sm)'
+                      }}
+                    >
+                      Log In with {formData.email} →
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 

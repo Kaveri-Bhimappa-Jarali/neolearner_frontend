@@ -32,10 +32,8 @@ export const AuthProvider = ({ children }) => {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     });
     const token = res.data.access_token;
-    const userRes = await api.get('/learners/me', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
     localStorage.setItem('access_token', token);
+    const userRes = await api.get('/learners/me');
     setUser(userRes.data);
     return userRes.data;
   };
@@ -45,16 +43,22 @@ export const AuthProvider = ({ children }) => {
       ...userData,
       email: userData.email.trim().toLowerCase()
     };
-    return await api.post('/auth/register', normalizedUserData);
+    const regRes = await api.post('/auth/register', normalizedUserData);
+    if (userData.password) {
+      try {
+        await login(userData.email, userData.password);
+      } catch (err) {
+        console.warn('Auto-login after registration failed:', err);
+      }
+    }
+    return regRes;
   };
 
   const googleLogin = async (googlePayload) => {
     const res = await api.post('/auth/google', googlePayload);
     const token = res.data.access_token;
     localStorage.setItem('access_token', token);
-    const userRes = await api.get('/learners/me', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const userRes = await api.get('/learners/me');
     setUser(userRes.data);
     return { user: userRes.data, needsOnboarding: res.data.needs_onboarding };
   };

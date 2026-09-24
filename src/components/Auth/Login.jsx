@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { BookOpen, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const location = useLocation();
+  const [email, setEmail] = useState(location.state?.email || '');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -22,8 +23,15 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (location.state?.email) {
+      setEmail(location.state.email);
+    }
+  }, [location]);
+
+  useEffect(() => {
     if (user) {
-      navigate(user.is_admin ? '/admin' : '/dashboard', { replace: true });
+      const needsOnboarding = !user.preferred_language_id || !user.target_language_id;
+      navigate(user.is_admin ? '/admin' : (needsOnboarding ? '/onboarding' : '/dashboard'), { replace: true });
     }
   }, [user, navigate]);
 
