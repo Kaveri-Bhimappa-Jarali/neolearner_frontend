@@ -19,7 +19,10 @@ const Login = () => {
   const [customGoogleEmail, setCustomGoogleEmail] = useState('');
   const [customGoogleName, setCustomGoogleName] = useState('');
 
-  const { user, login, googleLogin } = useAuth();
+  const [isResetMode, setIsResetMode] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
+
+  const { user, login, googleLogin, resetPassword } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,6 +88,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
     
     if (!email.trim()) {
       setError('Please enter your email address');
@@ -97,11 +101,16 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const loggedUser = await login(email.trim().toLowerCase(), password);
-      if (loggedUser?.is_admin) {
-        navigate('/admin');
+      if (isResetMode) {
+        await resetPassword(email.trim().toLowerCase(), password);
+        setSuccessMsg('Password updated successfully! Logging you in...');
       } else {
-        navigate('/dashboard');
+        const loggedUser = await login(email.trim().toLowerCase(), password);
+        if (loggedUser?.is_admin) {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       }
     } catch (err) {
       const msg = err.response?.data?.detail || (err.message === 'Network Error' ? 'Cannot connect to backend server. Please check your connection.' : 'Invalid email or password');
@@ -239,48 +248,56 @@ const Login = () => {
         {/* Right Authentication Form Column */}
         <div style={{ padding: '3rem 2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div style={{ marginBottom: '2rem' }}>
-            <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.5rem' }}>Welcome Back 👋</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem' }}>Sign in to continue your personalized learning journey</p>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.5rem' }}>
+              {isResetMode ? 'Reset Password 🔑' : 'Welcome Back 👋'}
+            </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem' }}>
+              {isResetMode ? 'Enter a new password for your account' : 'Sign in to continue your personalized learning journey'}
+            </p>
           </div>
 
           {/* Google SSO Button */}
-          <button 
-            type="button" 
-            onClick={handleOpenGoogleModal}
-            disabled={googleLoading}
-            style={{
-              width: '100%',
-              padding: '0.9rem',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border-color)',
-              background: 'var(--surface)',
-              color: 'var(--text-main)',
-              fontWeight: '700',
-              fontSize: '0.95rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.75rem',
-              cursor: 'pointer',
-              marginBottom: '1.5rem',
-              transition: 'all 0.2s ease',
-              boxShadow: 'var(--shadow-sm)'
-            }}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-            </svg>
-            {googleLoading ? 'Connecting...' : 'Continue with Google'}
-          </button>
+          {!isResetMode && (
+            <button 
+              type="button" 
+              onClick={handleOpenGoogleModal}
+              disabled={googleLoading}
+              style={{
+                width: '100%',
+                padding: '0.9rem',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-color)',
+                background: 'var(--surface)',
+                color: 'var(--text-main)',
+                fontWeight: '700',
+                fontSize: '0.95rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.75rem',
+                cursor: 'pointer',
+                marginBottom: '1.5rem',
+                transition: 'all 0.2s ease',
+                boxShadow: 'var(--shadow-sm)'
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              {googleLoading ? 'Connecting...' : 'Continue with Google'}
+            </button>
+          )}
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-            <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
-            <span style={{ color: 'var(--text-subtle)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.5px' }}>OR WITH EMAIL</span>
-            <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
-          </div>
+          {!isResetMode && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+              <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
+              <span style={{ color: 'var(--text-subtle)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.5px' }}>OR WITH EMAIL</span>
+              <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit}>
             <div className="form-group" style={{ marginBottom: '1.25rem' }}>
@@ -309,8 +326,15 @@ const Login = () => {
             <div className="form-group" style={{ marginBottom: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
                 <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-main)', fontSize: '0.88rem', margin: 0 }}>
-                  <Lock size={16} color="var(--primary-color)" /> Password
+                  <Lock size={16} color="var(--primary-color)" /> {isResetMode ? 'New Password (min 6 chars)' : 'Password'}
                 </label>
+                <button
+                  type="button"
+                  onClick={() => { setIsResetMode(!isResetMode); setError(''); setSuccessMsg(''); }}
+                  style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontSize: '0.82rem', fontWeight: '700', cursor: 'pointer', padding: 0 }}
+                >
+                  {isResetMode ? '← Back to Login' : 'Forgot / Reset Password?'}
+                </button>
               </div>
               <div style={{ position: 'relative' }}>
                 <input 
@@ -343,6 +367,12 @@ const Login = () => {
               </div>
             </div>
             
+            {successMsg && (
+              <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--success-bg)', color: 'var(--success)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem' }}>
+                ✅ {successMsg}
+              </div>
+            )}
+
             {error && (
               <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(239,68,68,0.3)', fontSize: '0.9rem' }}>
                 ⚠️ {error}
@@ -351,6 +381,24 @@ const Login = () => {
                     <Link to="/register" style={{ fontWeight: '700', color: 'var(--primary-color)', textDecoration: 'underline' }}>
                       Click here to Create a Free Account →
                     </Link>
+                  </div>
+                )}
+                {error.includes('Incorrect password') && (
+                  <div style={{ marginTop: '0.65rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => { setIsResetMode(true); setError(''); }}
+                      style={{ background: 'var(--primary-color)', color: '#fff', border: 'none', padding: '0.45rem 0.85rem', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', fontSize: '0.82rem' }}
+                    >
+                      🔑 Reset Password for {email}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleOpenGoogleModal}
+                      style={{ background: 'var(--surface)', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.45rem 0.85rem', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', fontSize: '0.82rem' }}
+                    >
+                      Sign In with Google
+                    </button>
                   </div>
                 )}
               </div>
@@ -362,7 +410,7 @@ const Login = () => {
               style={{ width: '100%', padding: '0.95rem', borderRadius: 'var(--radius-md)', fontWeight: '800', fontSize: '1rem' }} 
               disabled={loading}
             >
-              {loading ? 'LOGGING IN...' : 'LOG IN TO NEOLEARNER'}
+              {loading ? (isResetMode ? 'RESETTING...' : 'LOGGING IN...') : (isResetMode ? 'RESET PASSWORD & LOG IN' : 'LOG IN TO NEOLEARNER')}
             </button>
           </form>
 

@@ -79,13 +79,25 @@ export const AuthProvider = ({ children }) => {
     return await api.post('/auth/resend-code', { email });
   };
 
+  const resetPassword = async (email, newPassword) => {
+    const res = await api.post('/auth/reset-password', {
+      email: email.trim().toLowerCase(),
+      new_password: newPassword
+    });
+    const token = res.data.access_token;
+    localStorage.setItem('access_token', token);
+    const userRes = await api.get('/learners/me');
+    setUser(userRes.data);
+    return userRes.data;
+  };
+
   const logout = () => {
     localStorage.removeItem('access_token');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, googleLogin, verifyEmail, resendCode, logout, loading, setUser }}>
+    <AuthContext.Provider value={{ user, login, register, googleLogin, verifyEmail, resendCode, resetPassword, logout, loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );
