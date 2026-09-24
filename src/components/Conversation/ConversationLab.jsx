@@ -256,10 +256,12 @@ const ConversationLab = () => {
                   key={i} 
                   style={{ 
                     alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                    maxWidth: '88%',
+                    maxWidth: '92%',
+                    width: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start'
+                    alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+                    boxSizing: 'border-box'
                   }}
                 >
                   <div style={{
@@ -271,13 +273,18 @@ const ConversationLab = () => {
                     lineHeight: '1.5',
                     fontWeight: '600',
                     border: msg.sender === 'user' ? 'none' : '1px solid var(--border-color)',
-                    boxShadow: 'var(--shadow-sm)'
+                    boxShadow: 'var(--shadow-sm)',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'break-word',
+                    whiteSpace: 'pre-wrap',
+                    maxWidth: '100%',
+                    boxSizing: 'border-box'
                   }}>
                     {msg.text}
                   </div>
 
                   {msg.sender === 'ai' && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px', fontSize: '0.82rem', color: 'var(--text-muted)', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px', fontSize: '0.82rem', color: 'var(--text-muted)', flexWrap: 'wrap', maxWidth: '100%', wordBreak: 'break-word' }}>
                       <button 
                         type="button"
                         onClick={() => speakText(msg.text, session?.target_language_code)}
@@ -293,7 +300,7 @@ const ConversationLab = () => {
                       >
                         Slow 🐢
                       </button>
-                      {msg.translation && <span style={{ fontStyle: 'italic' }}>• "{msg.translation}"</span>}
+                      {msg.translation && <span style={{ fontStyle: 'italic', wordBreak: 'break-word' }}>• "{msg.translation}"</span>}
                     </div>
                   )}
                 </div>
