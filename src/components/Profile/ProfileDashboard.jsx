@@ -3,6 +3,8 @@ import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
 import { useTranslation } from '../../utils/i18n';
 import { User, Globe, Target, Award, Clock, Flame, Zap, Shield, CheckCircle2, AlertCircle, Edit3, Save, X } from 'lucide-react';
+import Badge from '../ui/Badge';
+import StatCard from '../ui/StatCard';
 
 const ProfileDashboard = () => {
   const { user, setUser } = useAuth();
@@ -95,30 +97,30 @@ const ProfileDashboard = () => {
     }
   };
 
-  if (!user) return <div style={{ padding: '4rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>{t('analyzingProfile')}</div>;
+  if (!user) return <div style={{ padding: '4rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading Profile...</div>;
 
   return (
-    <div className="profile-dashboard page-container" style={{ maxWidth: '1000px', margin: '0 auto', padding: '1.5rem 1rem' }}>
+    <div className="profile-dashboard page-container" style={{ maxWidth: '1050px', margin: '0 auto', padding: '1rem', animation: 'fadeIn 0.3s ease' }}>
       
-      {/* Profile Card Header */}
-      <div className="card" style={{ padding: '2rem', borderRadius: '24px', marginBottom: '2rem', boxShadow: '0 8px 30px rgba(0,0,0,0.06)' }}>
+      {/* Profile Header Card */}
+      <div className="card" style={{ padding: '2.25rem', borderRadius: 'var(--radius-xl)', background: 'var(--surface-card)', border: '1px solid var(--border-color)', marginBottom: '2rem', boxShadow: 'var(--shadow-md)' }}>
         
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.25rem', marginBottom: '1.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
             <div style={{
-              width: '72px', height: '72px', borderRadius: '50%',
-              background: 'linear-gradient(135deg, var(--primary-color), #3b82f6)',
-              color: '#ffffff', fontSize: '2rem', fontWeight: '900',
+              width: '76px', height: '76px', borderRadius: '50%',
+              background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))',
+              color: '#ffffff', fontSize: '2.2rem', fontWeight: '900',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 14px rgba(16, 185, 129, 0.3)'
+              boxShadow: 'var(--shadow-teal)'
             }}>
               {user.full_name ? user.full_name.charAt(0).toUpperCase() : 'U'}
             </div>
             <div>
-              <h1 style={{ fontSize: '2rem', fontWeight: '800', margin: 0, color: 'var(--text-main)', lineHeight: '1.2' }}>
+              <h1 style={{ fontSize: '2.1rem', fontWeight: '900', margin: 0, color: 'var(--text-main)', lineHeight: '1.2' }}>
                 {user.full_name}
               </h1>
-              <p style={{ color: 'var(--text-muted)', margin: '4px 0 0', fontWeight: '600', fontSize: '0.95rem' }}>
+              <p style={{ color: 'var(--text-muted)', margin: '4px 0 0', fontWeight: '600', fontSize: '0.98rem' }}>
                 {user.email}
               </p>
             </div>
@@ -129,9 +131,9 @@ const ProfileDashboard = () => {
               <button 
                 className="btn btn-primary" 
                 onClick={() => { setIsEditing(true); setError(''); setSuccessMsg(''); }}
-                style={{ padding: '0.65rem 1.4rem', fontWeight: '700', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}
+                style={{ padding: '0.75rem 1.5rem', fontWeight: '800', gap: '8px' }}
               >
-                <Edit3 size={16} /> {t('editProfile')}
+                <Edit3 size={18} /> Edit Profile
               </button>
             ) : (
               <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -139,18 +141,18 @@ const ProfileDashboard = () => {
                   type="button"
                   className="btn btn-secondary" 
                   onClick={() => { setIsEditing(false); setError(''); }}
-                  style={{ padding: '0.65rem 1.25rem', fontWeight: '600', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  style={{ padding: '0.75rem 1.25rem', fontWeight: '700', gap: '6px' }}
                 >
-                  <X size={16} /> {t('cancel')}
+                  <X size={18} /> Cancel
                 </button>
                 <button 
                   type="button"
                   className="btn btn-primary" 
                   onClick={handleSave}
                   disabled={loading}
-                  style={{ padding: '0.65rem 1.4rem', fontWeight: '700', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  style={{ padding: '0.75rem 1.5rem', fontWeight: '800', gap: '6px' }}
                 >
-                  <Save size={16} /> {loading ? 'Saving...' : t('save')}
+                  <Save size={18} /> {loading ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             )}
@@ -158,29 +160,29 @@ const ProfileDashboard = () => {
         </div>
 
         {error && (
-          <div style={{ padding: '0.85rem 1rem', background: '#ffebee', color: '#c62828', borderRadius: '12px', marginBottom: '1.25rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ padding: '0.85rem 1rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', marginBottom: '1.25rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <AlertCircle size={18} /> {error}
           </div>
         )}
 
         {successMsg && (
-          <div style={{ padding: '0.85rem 1rem', background: '#e8f5e9', color: '#2e7d32', borderRadius: '12px', marginBottom: '1.25rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ padding: '0.85rem 1rem', background: 'var(--success-bg)', color: 'var(--success)', borderRadius: 'var(--radius-md)', marginBottom: '1.25rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <CheckCircle2 size={18} /> {successMsg}
           </div>
         )}
 
-        {/* Main Form & Information View */}
+        {/* Form Details Grid */}
         <form onSubmit={handleSave}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginTop: '1.5rem' }}>
             
-            {/* Column 1: Personal Details */}
-            <div style={{ background: 'var(--bg-subtle)', padding: '1.5rem', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--primary-color)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <User size={20} /> Personal Info
+            {/* Column 1: Personal Information */}
+            <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--primary-color)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <User size={20} /> Personal Information
               </h3>
 
-              <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)', display: 'block', marginBottom: '4px' }}>Full Name *</label>
+              <div className="form-group" style={{ marginBottom: '1.1rem' }}>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Full Name *</label>
                 {isEditing ? (
                   <input 
                     name="full_name" 
@@ -189,17 +191,17 @@ const ProfileDashboard = () => {
                     value={formData.full_name || ''} 
                     onChange={handleChange} 
                     required
-                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}
+                    style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}
                   />
                 ) : (
-                  <div style={{ padding: '0.5rem 0', fontWeight: '700', color: 'var(--text-main)', fontSize: '1.05rem' }}>
+                  <div style={{ fontWeight: '800', color: 'var(--text-main)', fontSize: '1.05rem' }}>
                     {user.full_name}
                   </div>
                 )}
               </div>
 
-              <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)', display: 'block', marginBottom: '4px' }}>Age</label>
+              <div className="form-group" style={{ marginBottom: '1.1rem' }}>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Age</label>
                 {isEditing ? (
                   <input 
                     name="age" 
@@ -210,80 +212,80 @@ const ProfileDashboard = () => {
                     value={formData.age || ''} 
                     onChange={handleChange} 
                     placeholder="e.g. 21"
-                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}
+                    style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}
                   />
                 ) : (
-                  <div style={{ padding: '0.5rem 0', fontWeight: '600', color: 'var(--text-muted)' }}>
+                  <div style={{ fontWeight: '600', color: 'var(--text-muted)' }}>
                     {user.age ? `${user.age} years old` : 'Not specified'}
                   </div>
                 )}
               </div>
 
               <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)', display: 'block', marginBottom: '4px' }}>Daily Goal (Minutes)</label>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Daily Learning Goal</label>
                 {isEditing ? (
-                  <select name="daily_minutes_goal" className="form-select" value={formData.daily_minutes_goal || '15'} onChange={handleChange} style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                  <select name="daily_minutes_goal" className="form-select" value={formData.daily_minutes_goal || '15'} onChange={handleChange} style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}>
                     <option value="5">⚡ 5 mins/day (Casual)</option>
                     <option value="15">🔥 15 mins/day (Regular)</option>
                     <option value="30">🚀 30 mins/day (Serious)</option>
                     <option value="60">🏆 60 mins/day (Intensive)</option>
                   </select>
                 ) : (
-                  <div style={{ padding: '0.5rem 0', fontWeight: '600', color: 'var(--text-muted)' }}>
+                  <div style={{ fontWeight: '600', color: 'var(--text-muted)' }}>
                     {user.daily_minutes_goal || 15} minutes / day
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Column 2: Language & Learning Goals */}
-            <div style={{ background: 'var(--bg-subtle)', padding: '1.5rem', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#1cb0f6', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Globe size={20} /> Language Preferences
+            {/* Column 2: Language & Proficiency */}
+            <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--accent-cyan)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Globe size={20} /> Language Settings
               </h3>
 
-              <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)', display: 'block', marginBottom: '4px' }}>{t('targetLang')}</label>
+              <div className="form-group" style={{ marginBottom: '1.1rem' }}>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Target Language</label>
                 {isEditing ? (
-                  <select name="target_language_id" className="form-select" value={formData.target_language_id || ''} onChange={handleChange} style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                  <select name="target_language_id" className="form-select" value={formData.target_language_id || ''} onChange={handleChange} style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}>
                     <option value="">Select Target Language</option>
                     {languages.map(l => (
                       <option key={l.id} value={l.id}>{l.name} ({l.native_name || l.code})</option>
                     ))}
                   </select>
                 ) : (
-                  <div style={{ padding: '0.5rem 0', fontWeight: '700', color: '#1cb0f6' }}>
+                  <div style={{ fontWeight: '800', color: 'var(--accent-cyan)' }}>
                     🌐 {user.target_language?.name || 'Not selected'}
                   </div>
                 )}
               </div>
 
-              <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)', display: 'block', marginBottom: '4px' }}>{t('prefLang')}</label>
+              <div className="form-group" style={{ marginBottom: '1.1rem' }}>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Native / Interface Language</label>
                 {isEditing ? (
-                  <select name="preferred_language_id" className="form-select" value={formData.preferred_language_id || ''} onChange={handleChange} style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                  <select name="preferred_language_id" className="form-select" value={formData.preferred_language_id || ''} onChange={handleChange} style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}>
                     <option value="">Select Native Language</option>
                     {languages.map(l => (
                       <option key={l.id} value={l.id}>{l.name} ({l.native_name || l.code})</option>
                     ))}
                   </select>
                 ) : (
-                  <div style={{ padding: '0.5rem 0', fontWeight: '600', color: 'var(--text-muted)' }}>
+                  <div style={{ fontWeight: '600', color: 'var(--text-muted)' }}>
                     🗣️ {user.preferred_language?.name || 'English'}
                   </div>
                 )}
               </div>
 
               <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.85rem', color: 'var(--text-main)', display: 'block', marginBottom: '4px' }}>{t('profLevel')}</label>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Proficiency & CEFR Level</label>
                 {isEditing ? (
-                  <select name="proficiency_level" className="form-select" value={formData.proficiency_level || 'Beginner'} onChange={handleChange} style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                  <select name="proficiency_level" className="form-select" value={formData.proficiency_level || 'Beginner'} onChange={handleChange} style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}>
                     <option value="Beginner">Beginner (A0 - A1)</option>
                     <option value="Intermediate">Intermediate (A2 - B1)</option>
                     <option value="Advanced">Advanced (B2 - C2)</option>
                   </select>
                 ) : (
-                  <div style={{ padding: '0.5rem 0', fontWeight: '600', color: 'var(--primary-color)' }}>
+                  <div style={{ fontWeight: '700', color: 'var(--primary-color)' }}>
                     🏆 {user.proficiency_level || 'Beginner'} ({user.cefr_level || 'A1'})
                   </div>
                 )}
@@ -294,86 +296,12 @@ const ProfileDashboard = () => {
         </form>
       </div>
 
-      {/* Stats & Gamification Overview */}
-      <div className="card" style={{ padding: '2rem', borderRadius: '24px', marginBottom: '2rem' }}>
-        <h3 style={{ marginBottom: '1.25rem', color: 'var(--secondary-color)', fontWeight: '800', fontSize: '1.3rem' }}>
-          {t('myStats')}
-        </h3>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
-          <div style={{ background: 'var(--surface-hover)', padding: '1.25rem', borderRadius: '16px', border: '1px solid var(--border-color)', textAlign: 'center' }}>
-            <span style={{ display: 'block', fontSize: '1.75rem', fontWeight: '900', color: '#ff9600' }}>{user.streak} 🔥</span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>{t('dayStreak')}</span>
-          </div>
-          <div style={{ background: 'var(--surface-hover)', padding: '1.25rem', borderRadius: '16px', border: '1px solid var(--border-color)', textAlign: 'center' }}>
-            <span style={{ display: 'block', fontSize: '1.75rem', fontWeight: '900', color: '#58cc02' }}>{user.xp} XP</span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>{t('xpEarned')}</span>
-          </div>
-          <div style={{ background: 'var(--surface-hover)', padding: '1.25rem', borderRadius: '16px', border: '1px solid var(--border-color)', textAlign: 'center' }}>
-            <span style={{ display: 'block', fontSize: '1.75rem', fontWeight: '900', color: '#1cb0f6' }}>{user.gems} 💎</span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>Gems</span>
-          </div>
-          <div style={{ background: 'var(--surface-hover)', padding: '1.25rem', borderRadius: '16px', border: '1px solid var(--border-color)', textAlign: 'center' }}>
-            <span style={{ display: 'block', fontSize: '1.75rem', fontWeight: '900', color: '#ff4b4b' }}>{user.hearts} / 5 ❤️</span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>Hearts</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Achievements Section */}
-      <div className="card" style={{ padding: '2rem', borderRadius: '24px' }}>
-        <h3 style={{ marginBottom: '1.25rem', color: 'var(--accent-purple)', fontWeight: '800', fontSize: '1.3rem' }}>
-          {t('achievements')}
-        </h3>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {achievements.length === 0 ? (
-            <div style={{ background: 'var(--surface-hover)', padding: '1.5rem', borderRadius: '16px', textAlign: 'center', border: '1px dashed var(--border-color)' }}>
-              <p style={{ color: 'var(--text-muted)', margin: 0 }}>No achievements computed yet. Complete lessons and quizzes to earn badges!</p>
-            </div>
-          ) : (
-            achievements.map(ach => (
-              <div key={ach.id} style={{ 
-                background: 'var(--surface-hover)', padding: '1.25rem 1.5rem', borderRadius: '16px', 
-                border: '1px solid var(--border-color)'
-              }}>
-                <h4 style={{ color: 'var(--text-main)', fontSize: '1.05rem', marginBottom: '0.25rem', fontWeight: '700' }}>{t(ach.name) || ach.name}</h4>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.75rem', lineHeight: '1.4' }}>{t(ach.description) || ach.description}</p>
-                
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-                  {ach.tiers.map((tItem, idx) => (
-                    <span 
-                      key={idx} 
-                      className={`badge ${tItem.unlocked ? 'badge-purple' : 'badge-secondary'}`}
-                      style={{ 
-                        fontSize: '0.75rem', 
-                        opacity: tItem.unlocked ? 1 : 0.5,
-                        border: tItem.unlocked ? 'none' : '1px dashed var(--border-color)',
-                        padding: '4px 10px', borderRadius: '8px'
-                      }}
-                    >
-                      🏅 {tItem.label} ({tItem.target})
-                    </span>
-                  ))}
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.35rem', fontWeight: '600' }}>
-                  <span>Progress</span>
-                  <span>{ach.progress}</span>
-                </div>
-                
-                <div style={{ height: '8px', background: 'var(--background)', borderRadius: '9999px', overflow: 'hidden' }}>
-                  <div style={{ 
-                    height: '100%', 
-                    background: 'linear-gradient(90deg, var(--accent-purple), #a855f7)', 
-                    width: `${Math.min(100, (ach.progress / (ach.tiers[ach.tiers.length - 1]?.target || 1)) * 100)}%`,
-                    transition: 'width 0.4s ease'
-                  }} />
-                </div>
-              </div>
-            ))
-          )}
-        </div>
+      {/* Stats KPI Overview */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
+        <StatCard title="Streak" value={`${user.streak} 🔥`} subtitle="Consecutive days" icon={Flame} color="gold" />
+        <StatCard title="Total XP" value={`${user.xp} XP`} subtitle="Lifetime experience points" icon={Zap} color="teal" />
+        <StatCard title="Gems Balance" value={`${user.gems} 💎`} subtitle="Store currency" icon={Globe} color="cyan" />
+        <StatCard title="Hearts Remaining" value={`${user.hearts} / 5 ❤️`} subtitle="Lesson capacity" icon={Shield} color="red" />
       </div>
 
     </div>

@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from '../../utils/i18n';
-import { BookOpen, Globe, ChevronRight, Star, HelpCircle, ShieldAlert, Compass } from 'lucide-react';
+import { BookOpen, Globe, ChevronRight, Star, HelpCircle, ShieldAlert, Compass, Sparkles, Filter, Lock } from 'lucide-react';
 import CourseRecommendationBanner from '../Dashboard/CourseRecommendationBanner';
 import WhySeeingThisModal from '../Shared/WhySeeingThisModal';
+import Badge from '../ui/Badge';
 
 const CourseCatalog = () => {
   const { user } = useAuth();
@@ -63,30 +64,55 @@ const CourseCatalog = () => {
   }
 
   return (
-    <div className="page-container">
+    <div className="page-container" style={{ maxWidth: '1200px' }}>
       
       {/* Top Header */}
-      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+      <div 
+        style={{ 
+          display: 'flex', 
+          justify: 'space-between', 
+          alignItems: 'center', 
+          flexWrap: 'wrap', 
+          gap: '1.5rem', 
+          marginBottom: '2rem',
+          background: 'var(--surface-card)',
+          padding: '2rem',
+          borderRadius: 'var(--radius-xl)',
+          border: '1px solid var(--border-color)',
+          boxShadow: 'var(--shadow-md)'
+        }}
+      >
         <div>
-          <h1 className="page-title">
+          <h1 className="page-title" style={{ margin: '0 0 6px 0', fontSize: '2rem' }}>
             <BookOpen color="var(--primary-color)" size={36} />
-            {t('exploreTitle')}
+            Course Catalog
           </h1>
-          <p className="page-subtitle">{t('exploreSubtitle')}</p>
+          <p className="page-subtitle" style={{ margin: 0 }}>
+            Structured regional language courses calibrated to CEFR standards
+          </p>
         </div>
 
         {languages.length > 0 && (
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <Globe color="var(--text-muted)" size={18} />
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            <Globe color="var(--primary-color)" size={20} />
             <select 
               className="form-select"
               value={selectedLang} 
               onChange={(e) => setSelectedLang(e.target.value)}
-              style={{ width: 'auto', minWidth: '180px' }}
+              style={{
+                width: 'auto',
+                minWidth: '200px',
+                padding: '0.75rem 1rem',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-color)',
+                background: 'var(--surface)',
+                color: 'var(--text-main)',
+                fontWeight: '700'
+              }}
             >
-              <option value="">{t('allLanguages')}</option>
+              <option value="">All Languages</option>
               {languages.map(lang => (
-                <option key={lang.id} value={lang.id}>{t(lang.name)} ({lang.native_name || lang.code})</option>
+                <option key={lang.id} value={lang.id}>{lang.name} ({lang.native_name || lang.code})</option>
               ))}
             </select>
           </div>
@@ -96,12 +122,15 @@ const CourseCatalog = () => {
       {/* Adaptive Recommendation Banner */}
       <CourseRecommendationBanner />
 
-      {/* Course Cards Grid */}
-      <h2 style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1rem' }}>
-        {t('courses')} ({filteredCourses.length})
-      </h2>
+      {/* Course Cards Grid Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+        <h2 style={{ fontSize: '1.45rem', fontWeight: '800', color: 'var(--text-main)', margin: 0 }}>
+          Available Courses ({filteredCourses.length})
+        </h2>
+      </div>
 
-      <div className="grid-cards">
+      {/* Course Cards Grid */}
+      <div className="grid-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
         {filteredCourses.map(course => {
           const recInfo = recMap[course.id];
           const isBestMatch = recInfo?.recommendation_type === 'primary';
@@ -112,85 +141,95 @@ const CourseCatalog = () => {
           const skippedCount = recInfo?.skipped_topics_count || 0;
 
           return (
-            <div key={course.id} className="card" style={{
-              display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-              border: isBestMatch ? '2px solid var(--primary-color)' : (isBooster ? '2px solid #8b5cf6' : '1px solid var(--border-color)'),
-              opacity: isLocked ? 0.75 : 1.0, position: 'relative'
-            }}>
+            <div 
+              key={course.id} 
+              className="card" 
+              style={{
+                display: 'flex', 
+                flexDirection: 'column', 
+                justify: 'space-between',
+                border: isBestMatch ? '2px solid var(--primary-color)' : (isBooster ? '2px solid var(--secondary-color)' : '1px solid var(--border-color)'),
+                background: 'var(--surface-card)',
+                borderRadius: 'var(--radius-xl)',
+                opacity: isLocked ? 0.8 : 1.0, 
+                position: 'relative',
+                padding: '1.75rem'
+              }}
+            >
               <div>
                 {/* Header Badges */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '6px' }}>
                   {isBestMatch ? (
-                    <span className="badge badge-gold" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem', fontWeight: '800' }}>
-                      <Star size={13} fill="currentColor" /> {t('bestMatch')} ({matchScore}%)
-                    </span>
+                    <Badge variant="gold" icon={Star}>Best Match ({matchScore}%)</Badge>
                   ) : isBooster ? (
-                    <span className="badge badge-purple" style={{ fontSize: '0.78rem', fontWeight: '800' }}>
-                      🎯 {t('skillBooster')} ({matchScore}%)
-                    </span>
+                    <Badge variant="purple" icon={Sparkles}>Skill Booster ({matchScore}%)</Badge>
                   ) : isLocked ? (
-                    <span className="badge badge-red" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem', fontWeight: '800' }}>
-                      <ShieldAlert size={13} /> {t('statusLocked')} ({matchScore}%)
-                    </span>
+                    <Badge variant="red" icon={Lock}>Locked ({matchScore}%)</Badge>
                   ) : (
-                    <span className="badge badge-blue">
-                      CEFR {course.cefr_level || course.level} ({matchScore}% Match)
-                    </span>
+                    <Badge variant="cyan">CEFR {course.cefr_level || course.level || 'A1'}</Badge>
                   )}
 
                   {recInfo && (
                     <button
                       onClick={() => setSelectedModalRec(recInfo)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 4px', color: 'var(--text-muted)' }}
-                      title={t('whyAmISeeingThis')}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: 'var(--text-muted)' }}
+                      title="Why am I seeing this?"
                     >
-                      <HelpCircle size={17} />
+                      <HelpCircle size={18} />
                     </button>
                   )}
                 </div>
 
-                <h3 style={{ fontSize: '1.35rem', marginBottom: '0.4rem', color: 'var(--text-main)', fontWeight: '800', lineHeight: '1.4' }}>
-                  {t(course.title)}
+                <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.5rem', lineHeight: '1.3' }}>
+                  {course.title}
                 </h3>
                 
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.25rem', lineHeight: '1.5' }}>
-                  {t(course.description) || 'Comprehensive literacy and language exercises.'}
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', marginBottom: '1.25rem', lineHeight: '1.5' }}>
+                  {course.description || 'Comprehensive regional language curriculum.'}
                 </p>
 
-                {/* Starting Unit Indicator */}
-                {!isLocked && (
-                  <div style={{
-                    padding: '0.4rem 0.75rem', borderRadius: '10px',
-                    background: 'rgba(28, 176, 246, 0.08)', fontSize: '0.82rem',
-                    fontWeight: '700', color: 'var(--primary-color)', marginBottom: '1.25rem',
-                    display: 'inline-flex', alignItems: 'center', gap: '6px'
-                  }}>
-                    <Compass size={14} />
-                    <span>📍 {t('startingPointUnit', { index: startUnit })} {skippedCount > 0 ? `(${skippedCount} skipped)` : ''}</span>
-                  </div>
-                )}
+                {/* Course Metadata Pills */}
+                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.5rem', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                  <span>🎯 {course.level || 'Beginner'}</span>
+                  <span>📖 {course.total_lessons || 10} Lessons</span>
+                  {skippedCount > 0 && (
+                    <span style={{ color: 'var(--primary-color)', fontWeight: '700' }}>⚡ Skipped {skippedCount} Known Units</span>
+                  )}
+                </div>
               </div>
 
-              {isLocked ? (
-                <div style={{ padding: '0.75rem', borderRadius: '12px', background: 'rgba(255, 75, 75, 0.1)', color: '#c62828', fontSize: '0.82rem', textAlign: 'center', fontWeight: '700' }}>
-                  🔒 {t(recInfo?.lock_reason) || recInfo?.lock_reason || 'Requires higher proficiency band.'}
-                </div>
-              ) : (
-                <Link to={`/courses/${course.id}`} className="btn btn-primary" style={{ width: '100%', gap: '8px' }}>
-                  {t('viewSyllabus')} <ChevronRight size={18} />
-                </Link>
-              )}
+              {/* Action Button */}
+              <div>
+                {isLocked ? (
+                  <button 
+                    disabled 
+                    className="btn btn-secondary" 
+                    style={{ width: '100%', justifyContent: 'center', opacity: 0.6, cursor: 'not-allowed' }}
+                  >
+                    🔒 Complete Prerequisite Course First
+                  </button>
+                ) : (
+                  <Link 
+                    to={`/courses/${course.id}`} 
+                    className="btn btn-primary" 
+                    style={{ width: '100%', justifyContent: 'center', fontWeight: '800', gap: '6px' }}
+                  >
+                    {startUnit > 1 ? `Start at Unit ${startUnit}` : 'Explore Course'} <ChevronRight size={18} />
+                  </Link>
+                )}
+              </div>
             </div>
           );
         })}
       </div>
 
-      {/* Why am I seeing this Modal */}
-      <WhySeeingThisModal
-        isOpen={!!selectedModalRec}
-        onClose={() => setSelectedModalRec(null)}
-        recommendation={selectedModalRec}
-      />
+      {/* Why Seeing This Recommendation Modal */}
+      {selectedModalRec && (
+        <WhySeeingThisModal 
+          rec={selectedModalRec} 
+          onClose={() => setSelectedModalRec(null)} 
+        />
+      )}
     </div>
   );
 };

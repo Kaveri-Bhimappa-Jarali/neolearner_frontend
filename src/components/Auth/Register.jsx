@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
+import { BookOpen, Mail, Lock, User, CheckCircle2, ShieldCheck, Sparkles, Key, Globe, ArrowRight } from 'lucide-react';
 
 const DEFAULT_LANGUAGES = [
   { code: 'en', name: 'English', native_name: 'English', flag: '🇬🇧' },
@@ -256,49 +257,63 @@ const Register = () => {
 
   if (step === 2) {
     return (
-      <div className="auth-card" style={{ maxWidth: '480px', margin: '2rem auto', padding: '2rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>✉️</div>
-        <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem', color: '#0f172a' }}>Verify Your Email</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: '1.5' }}>
-          Verification code sent to <strong>{formData.email}</strong>.
+      <div 
+        className="card"
+        style={{
+          maxWidth: '520px',
+          margin: '2rem auto',
+          padding: '2.5rem',
+          textAlign: 'center',
+          background: 'var(--surface-card)',
+          borderRadius: 'var(--radius-xl)',
+          border: '1px solid var(--border-color)',
+          boxShadow: 'var(--shadow-lg)'
+        }}
+      >
+        <div style={{ padding: '1rem', background: 'rgba(20, 184, 166, 0.12)', color: 'var(--primary-color)', borderRadius: '50%', width: 'fit-content', margin: '0 auto 1.25rem' }}>
+          <Mail size={38} />
+        </div>
+        <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.5rem' }}>Verify Your Email</h2>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+          We've sent a 6-digit activation code to <strong style={{ color: 'var(--text-main)' }}>{formData.email}</strong>.
         </p>
 
         {devCode && (
           <div style={{
-            background: 'linear-gradient(135deg, #eff6ff, #dbeafe)',
-            border: '2px dashed #3b82f6',
-            borderRadius: '16px',
+            background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(99, 102, 241, 0.12))',
+            border: '2px dashed var(--primary-color)',
+            borderRadius: 'var(--radius-lg)',
             padding: '1.25rem',
             marginBottom: '1.5rem',
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '0.8rem', color: '#1e40af', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
-              🔑 Verification Code (Displayed on Device)
+            <div style={{ fontSize: '0.8rem', color: 'var(--primary-color)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
+              🔑 Verification Code (On-Device Helper)
             </div>
-            <div style={{ fontSize: '2.5rem', fontWeight: '900', color: '#1d4ed8', letterSpacing: '8px', fontFamily: 'monospace' }}>
+            <div style={{ fontSize: '2.5rem', fontWeight: '900', color: 'var(--text-main)', letterSpacing: '8px', fontFamily: 'monospace' }}>
               {devCode}
             </div>
-            <div style={{ fontSize: '0.8rem', color: '#3b82f6', marginTop: '6px' }}>
-              Enter this 6-digit code below to activate your account
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '6px' }}>
+              Enter this 6-digit code below to instantly activate your account
             </div>
           </div>
         )}
 
         {error && (
-          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: '#ffebee', color: '#c62828', borderRadius: '10px', fontSize: '0.9rem', textAlign: 'left' }}>
+          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', textAlign: 'left' }}>
             ⚠️ {error}
           </div>
         )}
 
         {successMsg && (
-          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: '#e8f5e9', color: '#2e7d32', borderRadius: '10px', fontSize: '0.9rem', textAlign: 'left' }}>
+          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: 'var(--success-bg)', color: 'var(--success)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', textAlign: 'left' }}>
             ✅ {successMsg}
           </div>
         )}
 
         <form onSubmit={handleVerifySubmit}>
           <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', fontWeight: '600', fontSize: '0.85rem', color: '#334155', marginBottom: '0.5rem', textAlign: 'left' }}>
+            <label style={{ display: 'block', fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', marginBottom: '0.5rem', textAlign: 'left' }}>
               6-Digit Verification Code
             </label>
             <input 
@@ -310,15 +325,15 @@ const Register = () => {
               placeholder="123456"
               style={{
                 width: '100%',
-                padding: '0.85rem',
-                borderRadius: '12px',
-                border: '2px solid #cbd5e1',
-                fontSize: '1.5rem',
+                padding: '0.9rem',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-color)',
+                fontSize: '1.75rem',
                 textAlign: 'center',
                 letterSpacing: '8px',
-                fontWeight: '800',
-                color: '#0f172a',
-                background: '#ffffff'
+                fontWeight: '900',
+                color: 'var(--text-main)',
+                background: 'var(--background)'
               }}
             />
           </div>
@@ -326,10 +341,10 @@ const Register = () => {
           <button 
             type="submit" 
             className="btn btn-primary" 
-            style={{ width: '100%', padding: '0.9rem', borderRadius: '12px', fontWeight: '700', fontSize: '1rem' }} 
+            style={{ width: '100%', padding: '0.95rem', borderRadius: 'var(--radius-md)', fontWeight: '800', fontSize: '1rem' }} 
             disabled={loading}
           >
-            {loading ? 'VERIFYING...' : 'VERIFY & CONTINUE 🚀'}
+            {loading ? 'VERIFYING...' : 'VERIFY & START LEARNING 🚀'}
           </button>
         </form>
 
@@ -337,14 +352,14 @@ const Register = () => {
           <button 
             type="button" 
             onClick={handleResendCode}
-            style={{ background: 'none', border: 'none', color: '#3b82f6', fontWeight: 700, cursor: 'pointer', padding: 0 }}
+            style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontWeight: 800, cursor: 'pointer', padding: 0 }}
           >
             Resend Code
           </button>
           <button 
             type="button" 
             onClick={() => { setStep(1); setError(''); setSuccessMsg(''); }}
-            style={{ background: 'none', border: 'none', color: '#64748b', fontWeight: 600, cursor: 'pointer', padding: 0 }}
+            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontWeight: 600, cursor: 'pointer', padding: 0 }}
           >
             Edit Details
           </button>
@@ -354,53 +369,264 @@ const Register = () => {
   }
 
   return (
-    <div className="auth-card" style={{ maxWidth: '560px', margin: '2rem auto', padding: '2rem' }}>
-      <div className="auth-header" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-        <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Create Account 🚀</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Start learning languages with personalized AI drills</p>
-      </div>
-
-      <button 
-        type="button" 
-        onClick={handleOpenGoogleModal}
-        disabled={googleLoading}
-        style={{
-          width: '100%',
-          padding: '0.85rem',
-          borderRadius: '12px',
-          border: '2px solid #cbd5e1',
-          background: '#ffffff',
-          color: '#0f172a',
-          fontWeight: '700',
-          fontSize: '0.95rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '0.75rem',
-          cursor: 'pointer',
-          marginBottom: '1.5rem',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.04)'
+    <div style={{ width: '100%', maxWidth: '1100px', margin: '1.5rem auto', animation: 'fadeIn 0.3s ease' }}>
+      <div 
+        style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
+          background: 'var(--surface-card)', 
+          borderRadius: 'var(--radius-xl)', 
+          border: '1px solid var(--border-color)',
+          overflow: 'hidden',
+          boxShadow: 'var(--shadow-lg)'
         }}
       >
-        <svg width="20" height="20" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-        </svg>
-        {googleLoading ? 'Connecting to Google...' : 'Continue with Google'}
-      </button>
+        {/* Left Hero Column */}
+        <div 
+          style={{ 
+            background: 'linear-gradient(135deg, #0d172a 0%, #111c33 50%, #08111f 100%)', 
+            padding: '3rem 2.5rem', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            justify: 'space-between',
+            borderRight: '1px solid var(--border-color)'
+          }}
+        >
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '2.5rem' }}>
+              <div style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))', padding: '10px', borderRadius: '14px', display: 'flex' }}>
+                <BookOpen size={26} color="#ffffff" />
+              </div>
+              <span style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--text-main)' }}>NeoLearner</span>
+            </div>
+
+            <h1 style={{ fontSize: '2.2rem', fontWeight: '900', lineHeight: 1.25, color: 'var(--text-main)', marginBottom: '1.25rem' }}>
+              Create Your Account & Start Learning Today ✨
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+              Join thousands of learners mastering Kannada, Telugu, Hindi, Marathi, Spanish, and English through AI voice practice.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)', fontWeight: '600' }}>
+                <CheckCircle2 size={20} color="var(--primary-color)" />
+                <span>Instant diagnostic literacy assessment</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)', fontWeight: '600' }}>
+                <CheckCircle2 size={20} color="var(--primary-color)" />
+                <span>Gamified XP, Streak, and League Rewards</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)', fontWeight: '600' }}>
+                <CheckCircle2 size={20} color="var(--primary-color)" />
+                <span>Spaced repetition (SM-2) memory drills</span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
+            <ShieldCheck size={18} color="var(--primary-color)" />
+            <span>No credit card required — 100% Free Access</span>
+          </div>
+        </div>
+
+        {/* Right Form Column */}
+        <div style={{ padding: '3rem 2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ marginBottom: '1.75rem' }}>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.4rem' }}>Create Free Account 🚀</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem' }}>Set up your preferred language and learning goals</p>
+          </div>
+
+          {/* Google SSO Button */}
+          <button 
+            type="button" 
+            onClick={handleOpenGoogleModal}
+            disabled={googleLoading}
+            style={{
+              width: '100%',
+              padding: '0.9rem',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border-color)',
+              background: 'var(--surface)',
+              color: 'var(--text-main)',
+              fontWeight: '700',
+              fontSize: '0.95rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.75rem',
+              cursor: 'pointer',
+              marginBottom: '1.5rem',
+              transition: 'all 0.2s ease',
+              boxShadow: 'var(--shadow-sm)'
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            {googleLoading ? 'Connecting...' : 'Sign Up with Google'}
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
+            <span style={{ color: 'var(--text-subtle)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.5px' }}>OR REGISTER WITH EMAIL</span>
+            <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-group" style={{ marginBottom: '1.1rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+                <User size={16} color="var(--primary-color)" /> Full Name
+              </label>
+              <input 
+                type="text" 
+                name="full_name" 
+                className="form-input" 
+                value={formData.full_name} 
+                onChange={handleChange} 
+                required 
+                placeholder="John Doe"
+                style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--background)' }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.1rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+                <Mail size={16} color="var(--primary-color)" /> Email Address
+              </label>
+              <input 
+                type="email" 
+                name="email" 
+                className="form-input" 
+                value={formData.email} 
+                onChange={handleChange} 
+                required 
+                placeholder="learner@example.com"
+                style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--background)' }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+                <Lock size={16} color="var(--primary-color)" /> Password (min 6 characters)
+              </label>
+              <input 
+                type="password" 
+                name="password" 
+                className="form-input" 
+                value={formData.password} 
+                onChange={handleChange} 
+                required 
+                placeholder="••••••••"
+                style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--background)' }}
+              />
+            </div>
+
+            {/* Interactive Native Language Selector */}
+            <div style={{ marginBottom: '1.25rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.5rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+                <Globe size={16} color="var(--primary-color)" /> I Speak (Native Language)
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.5rem' }}>
+                {languages.map(l => {
+                  const isSelected = formData.preferred_language_code === l.code;
+                  return (
+                    <button
+                      key={`pref_${l.code}`}
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, preferred_language_code: l.code }))}
+                      style={{
+                        padding: '0.65rem 0.5rem',
+                        borderRadius: 'var(--radius-md)',
+                        border: isSelected ? '2px solid var(--primary-color)' : '1px solid var(--border-color)',
+                        background: isSelected ? 'rgba(20, 184, 166, 0.15)' : 'var(--surface)',
+                        color: isSelected ? 'var(--primary-color)' : 'var(--text-main)',
+                        fontWeight: '700',
+                        fontSize: '0.85rem',
+                        cursor: 'pointer',
+                        textAlign: 'center',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <span style={{ fontSize: '1rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
+                      {l.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Interactive Target Language Selector */}
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.5rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+                <Sparkles size={16} color="var(--secondary-color)" /> I Want to Learn (Target Language)
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.5rem' }}>
+                {languages.map(l => {
+                  const isSelected = formData.target_language_code === l.code;
+                  const isSameAsPref = formData.preferred_language_code === l.code;
+                  return (
+                    <button
+                      key={`target_${l.code}`}
+                      type="button"
+                      disabled={isSameAsPref}
+                      onClick={() => setFormData(prev => ({ ...prev, target_language_code: l.code }))}
+                      style={{
+                        padding: '0.65rem 0.5rem',
+                        borderRadius: 'var(--radius-md)',
+                        border: isSelected ? '2px solid var(--secondary-color)' : '1px solid var(--border-color)',
+                        background: isSelected ? 'rgba(99, 102, 241, 0.18)' : (isSameAsPref ? 'var(--surface)' : 'var(--surface)'),
+                        color: isSelected ? 'var(--secondary-color)' : (isSameAsPref ? 'var(--text-subtle)' : 'var(--text-main)'),
+                        fontWeight: '700',
+                        fontSize: '0.85rem',
+                        cursor: isSameAsPref ? 'not-allowed' : 'pointer',
+                        opacity: isSameAsPref ? 0.4 : 1,
+                        textAlign: 'center',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <span style={{ fontSize: '1rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
+                      {l.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {error && (
+              <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(239,68,68,0.3)', fontSize: '0.9rem' }}>
+                ⚠️ {error}
+              </div>
+            )}
+
+            <button 
+              type="submit" 
+              className="btn btn-primary" 
+              style={{ width: '100%', padding: '0.95rem', borderRadius: 'var(--radius-md)', fontWeight: '800', fontSize: '1rem' }} 
+              disabled={loading}
+            >
+              {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT & START LEARNING'}
+            </button>
+          </form>
+
+          <div style={{ textAlign: 'center', marginTop: '1.5rem', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+            Already have an account? <Link to="/login" style={{ color: 'var(--primary-color)', fontWeight: 800 }}>Log In</Link>
+          </div>
+        </div>
+      </div>
 
       {/* Google Multi-Account Selection Modal */}
       {showGoogleModal && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(0, 0, 0, 0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'rgba(8, 17, 31, 0.85)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center',
           zIndex: 9999, padding: '1rem'
         }}>
           <div style={{
-            background: '#ffffff', borderRadius: '24px', padding: '2rem', maxWidth: '440px', width: '100%',
-            boxShadow: '0 20px 30px -5px rgba(0,0,0,0.15)', border: '1px solid #e2e8f0'
+            background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)', padding: '2rem', maxWidth: '440px', width: '100%',
+            boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border-color)'
           }}>
             <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
@@ -410,15 +636,15 @@ const Register = () => {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
                 </svg>
-                <h3 style={{ margin: 0, fontSize: '1.35rem', fontWeight: 800, color: '#0f172a' }}>Sign Up with Google</h3>
+                <h3 style={{ margin: 0, fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>Sign Up with Google</h3>
               </div>
-              <p style={{ fontSize: '0.9rem', color: '#64748b', margin: 0 }}>
-                to continue to <strong style={{ color: '#1e293b' }}>NeoLearner</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
+                to continue to <strong style={{ color: 'var(--text-main)' }}>NeoLearner</strong>
               </p>
             </div>
 
             {error && (
-              <div style={{ padding: '0.75rem', background: '#ffebee', color: '#c62828', borderRadius: '10px', fontSize: '0.88rem', marginBottom: '1rem' }}>
+              <div style={{ padding: '0.75rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: '10px', fontSize: '0.88rem', marginBottom: '1rem' }}>
                 ⚠️ {error}
               </div>
             )}
@@ -432,30 +658,28 @@ const Register = () => {
                       onClick={() => handleSelectGoogleAccount(acc)}
                       style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        padding: '0.85rem 1rem', borderRadius: '14px', border: '1.5px solid #e2e8f0',
-                        background: '#ffffff', cursor: 'pointer', transition: 'all 0.15s ease'
+                        padding: '0.85rem 1rem', borderRadius: '14px', border: '1px solid var(--border-color)',
+                        background: 'var(--surface)', cursor: 'pointer', transition: 'all 0.15s ease'
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.borderColor = '#3b82f6'}
-                      onMouseLeave={(e) => e.currentTarget.style.borderColor = '#e2e8f0'}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div style={{
-                          width: '38px', height: '38px', borderRadius: '50%', background: '#3b82f6',
+                          width: '38px', height: '38px', borderRadius: '50%', background: 'var(--primary-color)',
                           color: '#ffffff', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center',
                           fontSize: '1rem', textTransform: 'uppercase'
                         }}>
                           {acc.name ? acc.name[0] : acc.email[0]}
                         </div>
                         <div>
-                          <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{acc.name}</div>
-                          <div style={{ color: '#64748b', fontSize: '0.82rem' }}>{acc.email}</div>
+                          <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem' }}>{acc.name}</div>
+                          <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{acc.email}</div>
                         </div>
                       </div>
                       <button 
                         type="button"
                         onClick={(e) => removeAccount(e, acc.email)}
-                        style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '1.1rem', padding: '4px' }}
-                        title="Remove from account list"
+                        style={{ background: 'none', border: 'none', color: 'var(--text-subtle)', cursor: 'pointer', fontSize: '1.1rem', padding: '4px' }}
+                        title="Remove account"
                       >
                         ✕
                       </button>
@@ -467,8 +691,8 @@ const Register = () => {
                   type="button"
                   onClick={() => setIsAddingNewAccount(true)}
                   style={{
-                    width: '100%', padding: '0.85rem', borderRadius: '14px', border: '1.5px dashed #cbd5e1',
-                    background: '#f8fafc', color: '#3b82f6', fontWeight: 700, fontSize: '0.95rem',
+                    width: '100%', padding: '0.85rem', borderRadius: '14px', border: '1.5px dashed var(--border-color)',
+                    background: 'var(--surface)', color: 'var(--primary-color)', fontWeight: 700, fontSize: '0.95rem',
                     cursor: 'pointer', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
                   }}
                 >
@@ -478,24 +702,24 @@ const Register = () => {
             ) : (
               <form onSubmit={handleConfirmNewGoogleAccount} style={{ marginBottom: '1rem' }}>
                 <div style={{ marginBottom: '0.85rem' }}>
-                  <label style={{ fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem', color: '#334155' }}>Google Email Address *</label>
+                  <label style={{ fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem', color: 'var(--text-main)' }}>Google Email Address *</label>
                   <input 
                     type="email"
                     value={customGoogleEmail}
                     onChange={(e) => setCustomGoogleEmail(e.target.value)}
-                    placeholder="e.g. yourname@gmail.com"
+                    placeholder="yourname@gmail.com"
                     required
-                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.95rem', color: '#0f172a' }}
+                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-color)', fontSize: '0.95rem', color: 'var(--text-main)', background: 'var(--background)' }}
                   />
                 </div>
                 <div style={{ marginBottom: '1.25rem' }}>
-                  <label style={{ fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem', color: '#334155' }}>Full Name (Optional)</label>
+                  <label style={{ fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.25rem', color: 'var(--text-main)' }}>Full Name (Optional)</label>
                   <input 
                     type="text"
                     value={customGoogleName}
                     onChange={(e) => setCustomGoogleName(e.target.value)}
-                    placeholder="e.g. Alex Smith"
-                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.95rem', color: '#0f172a' }}
+                    placeholder="Alex Smith"
+                    style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-color)', fontSize: '0.95rem', color: 'var(--text-main)', background: 'var(--background)' }}
                   />
                 </div>
 
@@ -507,7 +731,7 @@ const Register = () => {
                       className="btn btn-secondary"
                       style={{ padding: '0.65rem 1.25rem' }}
                     >
-                      Back to Accounts
+                      Back
                     </button>
                   )}
                   <button 
@@ -526,7 +750,7 @@ const Register = () => {
               <button 
                 type="button" 
                 onClick={() => setShowGoogleModal(false)}
-                className="btn btn-secondary"
+                className="btn btn-outline"
                 style={{ padding: '0.5rem 1.25rem', fontSize: '0.85rem' }}
               >
                 Cancel
@@ -535,143 +759,6 @@ const Register = () => {
           </div>
         </div>
       )}
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-        <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }}></div>
-        <span style={{ color: '#94a3b8', fontSize: '0.85rem', fontWeight: 600 }}>OR REGISTER MANUAL</span>
-        <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }}></div>
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group" style={{ marginBottom: '1rem' }}>
-          <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>Full Name</label>
-          <input 
-            type="text" 
-            name="full_name" 
-            className="form-input" 
-            value={formData.full_name} 
-            onChange={handleChange} 
-            required 
-            placeholder="John Doe"
-            style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', color: '#0f172a', background: '#ffffff' }}
-          />
-        </div>
-
-        <div className="form-group" style={{ marginBottom: '1rem' }}>
-          <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>Email Address</label>
-          <input 
-            type="email" 
-            name="email" 
-            className="form-input" 
-            value={formData.email} 
-            onChange={handleChange} 
-            required 
-            placeholder="learner@example.com"
-            style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', color: '#0f172a', background: '#ffffff' }}
-          />
-        </div>
-
-        <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-          <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>Password (min 6 chars)</label>
-          <input 
-            type="password" 
-            name="password" 
-            className="form-input" 
-            value={formData.password} 
-            onChange={handleChange} 
-            required 
-            placeholder="••••••••"
-            style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', color: '#0f172a', background: '#ffffff' }}
-          />
-        </div>
-
-        {/* Interactive Native Language Buttons */}
-        <div style={{ marginBottom: '1.25rem' }}>
-          <label className="form-label" style={{ fontWeight: 700, display: 'block', marginBottom: '0.5rem', color: 'var(--text-main)' }}>
-            I Speak (Native Language)
-          </label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.5rem' }}>
-            {languages.map(l => {
-              const isSelected = formData.preferred_language_code === l.code;
-              return (
-                <button
-                  key={`pref_${l.code}`}
-                  type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, preferred_language_code: l.code }))}
-                  style={{
-                    padding: '0.65rem 0.5rem',
-                    borderRadius: '10px',
-                    border: isSelected ? '2.5px solid var(--primary-color)' : '1px solid #cbd5e1',
-                    background: isSelected ? 'rgba(16, 185, 129, 0.15)' : '#ffffff',
-                    color: isSelected ? '#10b981' : '#0f172a',
-                    fontWeight: '700',
-                    fontSize: '0.9rem',
-                    cursor: 'pointer',
-                    textAlign: 'center',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  <span style={{ fontSize: '1rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
-                  {l.name}
-                  <div style={{ fontSize: '0.75rem', fontWeight: '500', opacity: 0.8 }}>{l.native_name}</div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Interactive Target Language Buttons */}
-        <div style={{ marginBottom: '1.5rem' }}>
-          <label className="form-label" style={{ fontWeight: 700, display: 'block', marginBottom: '0.5rem', color: 'var(--text-main)' }}>
-            I Want to Learn (Target Language)
-          </label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.5rem' }}>
-            {languages.map(l => {
-              const isSelected = formData.target_language_code === l.code;
-              const isSameAsPref = formData.preferred_language_code === l.code;
-              return (
-                <button
-                  key={`target_${l.code}`}
-                  type="button"
-                  disabled={isSameAsPref}
-                  onClick={() => setFormData(prev => ({ ...prev, target_language_code: l.code }))}
-                  style={{
-                    padding: '0.65rem 0.5rem',
-                    borderRadius: '10px',
-                    border: isSelected ? '2.5px solid #3b82f6' : '1px solid #cbd5e1',
-                    background: isSelected ? 'rgba(59, 130, 246, 0.15)' : (isSameAsPref ? '#f1f5f9' : '#ffffff'),
-                    color: isSelected ? '#3b82f6' : (isSameAsPref ? '#94a3b8' : '#0f172a'),
-                    fontWeight: '700',
-                    fontSize: '0.9rem',
-                    cursor: isSameAsPref ? 'not-allowed' : 'pointer',
-                    opacity: isSameAsPref ? 0.5 : 1,
-                    textAlign: 'center',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  <span style={{ fontSize: '1rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
-                  {l.name}
-                  <div style={{ fontSize: '0.75rem', fontWeight: '500', opacity: 0.8 }}>{l.native_name}</div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {error && (
-          <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: '#ffebee', color: '#c62828', borderRadius: '10px', fontSize: '0.9rem' }}>
-            ⚠️ {error}
-          </div>
-        )}
-
-        <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '0.9rem', borderRadius: '12px', fontWeight: '700' }} disabled={loading}>
-          {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT & START LEARNING'}
-        </button>
-      </form>
-
-      <div style={{ textAlign: 'center', marginTop: '1.5rem', fontWeight: 600, fontSize: '0.95rem' }}>
-        Already have an account? <Link to="/login" style={{ color: 'var(--primary-color)', fontWeight: 700 }}>Log In</Link>
-      </div>
     </div>
   );
 };

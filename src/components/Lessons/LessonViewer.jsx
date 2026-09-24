@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
-import { FileText, CheckCircle, HelpCircle, ArrowRight, Clock, Volume2, Heart } from 'lucide-react';
+import { FileText, CheckCircle, HelpCircle, ArrowRight, Clock, Volume2, Heart, Sparkles, ArrowLeft } from 'lucide-react';
 import { useTranslation } from '../../utils/i18n';
+import Badge from '../ui/Badge';
 
 const playPhonicPitch = (freq) => {
   try {
@@ -190,10 +191,9 @@ const LessonViewer = () => {
       if (voice) {
         utterance.voice = voice;
       }
-      utterance.rate = 0.65; // slow down slightly for clear phonics
+      utterance.rate = 0.65;
       window.speechSynthesis.speak(utterance);
     } else {
-      // Fallback to tone oscillator
       const pitchMap = { 'A': 440, 'E': 523, 'I': 659, 'O': 783, 'U': 880 };
       playPhonicPitch(pitchMap[vowel] || 440);
     }
@@ -224,20 +224,20 @@ const LessonViewer = () => {
   if (user && user.hearts <= 0) {
     return (
       <div className="page-container" style={{ maxWidth: '600px', textAlign: 'center' }}>
-        <div className="card" style={{ padding: '3rem' }}>
-          <div style={{ display: 'inline-flex', padding: '1.5rem', borderRadius: '50%', background: 'rgba(255, 75, 75, 0.15)', marginBottom: '1.5rem' }}>
-            <Heart size={64} color="#ff4b4b" fill="#ff4b4b" />
+        <div className="card" style={{ padding: '3rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
+          <div style={{ display: 'inline-flex', padding: '1.5rem', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', marginBottom: '1.5rem' }}>
+            <Heart size={64} color="#ef4444" fill="#ef4444" />
           </div>
-          <h1 style={{ fontSize: '2rem', color: 'var(--text-main)', marginBottom: '0.75rem' }}>{t('noHeartsMsg')}</h1>
+          <h1 style={{ fontSize: '2rem', color: 'var(--text-main)', marginBottom: '0.75rem', fontWeight: '800' }}>Out of Hearts!</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: '1.6', marginBottom: '2rem' }}>
-            You need hearts to study a lesson. You can refill your hearts in the Shop or practice to replenish them for free!
+            You need hearts to study lessons. You can refill hearts in the Shop or practice to earn them back.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/shop" className="btn btn-primary" style={{ background: '#ff4b4b', borderColor: '#ff4b4b', padding: '0.75rem 2rem' }}>
-              {t('restoreHeartsTitle')}
+            <Link to="/shop" className="btn btn-primary" style={{ background: '#ef4444', borderColor: '#ef4444', padding: '0.75rem 2rem' }}>
+              Restore Hearts
             </Link>
             <Link to="/practice-hub" className="btn btn-secondary" style={{ padding: '0.75rem 2rem' }}>
-              {t('practiceToRefill')}
+              Practice Hub
             </Link>
           </div>
         </div>
@@ -246,74 +246,106 @@ const LessonViewer = () => {
   }
 
   if (loading) {
-    return <div className="page-container" style={{ textAlign: 'center', padding: '4rem' }}>{t('analyzingProfile')}</div>;
+    return <div className="page-container" style={{ textAlign: 'center', padding: '4rem' }}>Loading lesson...</div>;
   }
 
   if (!lesson) {
     return (
       <div className="page-container" style={{ textAlign: 'center', padding: '4rem' }}>
-        <h2>Lesson not found</h2>
-        <Link to="/courses" className="btn btn-primary" style={{ marginTop: '1rem', display: 'inline-block' }}>{t('courses')}</Link>
+        <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-main)' }}>Lesson Not Found</h2>
+        <Link to="/courses" className="btn btn-primary" style={{ marginTop: '1rem' }}>Browse Courses</Link>
       </div>
     );
   }
 
   return (
-    <div className="page-container" style={{ maxWidth: '850px' }}>
-      <div className="card" style={{ padding: '2.5rem' }}>
+    <div className="page-container" style={{ maxWidth: '900px' }}>
+      <div style={{ marginBottom: '1.25rem' }}>
+        <button 
+          onClick={() => navigate(-1)} 
+          style={{ 
+            background: 'none', 
+            border: 'none', 
+            color: 'var(--text-muted)', 
+            cursor: 'pointer', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '6px',
+            fontSize: '0.9rem',
+            fontWeight: '700'
+          }}
+        >
+          <ArrowLeft size={16} /> Back to Course
+        </button>
+      </div>
+
+      <div className="card" style={{ padding: '2.5rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '8px' }}>
-          <span className="badge badge-blue" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Clock size={12} /> {lesson.duration_minutes} Minutes
-          </span>
+          <Badge variant="cyan" icon={Clock}>{lesson.duration_minutes || 10} Minutes</Badge>
           {completed && (
-            <span className="badge badge-green" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <CheckCircle size={14} /> {t('Lesson Completed')}
-            </span>
+            <Badge variant="green" icon={CheckCircle}>Lesson Completed (+15 XP)</Badge>
           )}
         </div>
 
-        <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--text-main)', lineHeight: '1.3' }}>{t(lesson.title)}</h1>
+        <h1 style={{ fontSize: '2.2rem', fontWeight: '900', marginBottom: '1rem', color: 'var(--text-main)', lineHeight: '1.25' }}>
+          {lesson.title}
+        </h1>
 
         {/* Audio Sound Practice Bar */}
         <div style={{ 
-          background: 'var(--surface-hover)', padding: '1rem 1.25rem', borderRadius: 'var(--radius-md)',
-          display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' 
+          background: 'var(--surface)', padding: '1.25rem', borderRadius: 'var(--radius-lg)',
+          border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.75rem' 
         }}>
-          <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Volume2 size={16} color="var(--primary-color)" /> Audio Practice:
+          <span style={{ fontSize: '0.88rem', color: 'var(--text-main)', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Volume2 size={18} color="var(--primary-color)" /> Audio Practice:
           </span>
-          {getVowelsList().map(s => (
-            <button 
-              key={s.id} 
-              className={`sound-btn ${activeSound === s.id ? 'playing' : ''}`}
-              onClick={() => handleAudio(s.vowel, s.id)}
-              style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}
-            >
-              🔊 {s.label}
-            </button>
-          ))}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            {getVowelsList().map(s => (
+              <button 
+                key={s.id} 
+                className={`btn btn-secondary ${activeSound === s.id ? 'active' : ''}`}
+                onClick={() => handleAudio(s.vowel, s.id)}
+                style={{
+                  padding: '0.5rem 0.9rem',
+                  fontSize: '0.88rem',
+                  fontWeight: '700',
+                  borderRadius: 'var(--radius-md)',
+                  border: activeSound === s.id ? '2px solid var(--primary-color)' : '1px solid var(--border-color)'
+                }}
+              >
+                🔊 {s.label}
+              </button>
+            ))}
+          </div>
         </div>
 
+        {/* Lesson Content Box */}
         <div style={{ 
-          background: 'var(--background)', padding: '1.5rem', borderRadius: 'var(--radius-md)', 
+          background: 'var(--background)', padding: '1.75rem', borderRadius: 'var(--radius-lg)', 
           border: '1px solid var(--border-color)', marginBottom: '2rem', color: 'var(--text-main)',
-          lineHeight: '1.7', whiteSpace: 'pre-wrap'
+          fontSize: '1.05rem', lineHeight: '1.75', whiteSpace: 'pre-wrap'
         }}>
-          {t(lesson.content)}
+          {lesson.content}
         </div>
 
+        {/* Action Controls */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <button 
             className={`btn ${completed ? 'btn-secondary' : 'btn-primary'}`} 
             onClick={markComplete}
             disabled={completing}
+            style={{ padding: '0.85rem 1.75rem', fontWeight: '800', fontSize: '1rem' }}
           >
-            {completed ? `✓ ${t('Lesson Completed')}` : completing ? t('submittingWorkout') : t('Mark as Complete')}
+            {completed ? '✓ Lesson Completed' : completing ? 'Marking Complete...' : 'Mark as Complete 🚀'}
           </button>
 
           {lesson.assessments && lesson.assessments.length > 0 && (
-            <Link to={`/assessments/${lesson.assessments[0].id}`} className="btn btn-accent" style={{ gap: '8px' }}>
-              <HelpCircle size={18} /> {t('Take Lesson Quiz')} <ArrowRight size={16} />
+            <Link 
+              to={`/assessments/${lesson.assessments[0].id}`} 
+              className="btn btn-accent" 
+              style={{ padding: '0.85rem 1.75rem', fontWeight: '800', fontSize: '1rem', gap: '8px', background: 'var(--secondary-color)' }}
+            >
+              <HelpCircle size={20} /> Take Lesson Quiz <ArrowRight size={18} />
             </Link>
           )}
         </div>
