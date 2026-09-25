@@ -258,7 +258,7 @@ const DatabaseExplorer = () => {
 
       {/* TAB 1: LIVE DATA BROWSER */}
       {activeTab === 'data' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '1.5rem', alignItems: 'start' }}>
+        <div className="admin-db-grid">
           {/* Table List Sidebar */}
           <div style={{
             background: 'var(--surface)', border: '1px solid var(--border-color)',
@@ -314,7 +314,7 @@ const DatabaseExplorer = () => {
               </div>
 
               {/* Search & Actions Bar */}
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <button
                   className="btn btn-primary"
                   onClick={openCreateModal}

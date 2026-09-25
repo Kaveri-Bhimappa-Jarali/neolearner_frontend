@@ -122,8 +122,8 @@ const StoryAdventureManagement = () => {
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <div style={{ background: 'var(--background)', padding: '4px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', gap: '4px' }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ background: 'var(--background)', padding: '4px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
             <button
               className={`btn ${activeTab === 'stories' ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => setActiveTab('stories')}
@@ -149,7 +149,7 @@ const StoryAdventureManagement = () => {
       {loading ? (
         <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading records...</div>
       ) : activeTab === 'stories' ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           {stories.map((story) => (
             <div key={story.id} style={{ padding: '1.25rem', borderRadius: '16px', border: '1px solid var(--border-color)', background: 'var(--surface)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
@@ -177,7 +177,7 @@ const StoryAdventureManagement = () => {
           ))}
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           {adventures.map((adv) => (
             <div key={adv.id} style={{ padding: '1.25rem', borderRadius: '16px', border: '1px solid var(--border-color)', background: 'var(--surface)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
@@ -237,7 +237,7 @@ const StoryAdventureManagement = () => {
 
               {activeTab === 'stories' ? (
                 <>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1rem' }}>
                     <div>
                       <label style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>Language Code</label>
                       <input

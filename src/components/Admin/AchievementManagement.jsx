@@ -138,7 +138,7 @@ const AchievementManagement = () => {
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0 0 0.85rem' }}>{ach.description}</p>
               </div>
 
-              <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
+              <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>
                   Unlocked by {ach.unlocked_by_learners_count} Learners
                 </span>
@@ -171,7 +171,7 @@ const AchievementManagement = () => {
             )}
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
                 <div>
                   <label style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>Achievement Name *</label>
                   <input
@@ -193,7 +193,7 @@ const AchievementManagement = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
                 <div>
                   <label style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>Unique Code *</label>
                   <input
@@ -226,7 +226,7 @@ const AchievementManagement = () => {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.75rem' }}>
                 <div>
                   <label style={{ fontSize: '0.75rem', fontWeight: 'bold' }}>Target Threshold</label>
                   <input

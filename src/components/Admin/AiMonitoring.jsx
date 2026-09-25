@@ -34,7 +34,7 @@ const AiMonitoring = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {logs.map((log) => (
             <div key={log.id} style={{ padding: '1rem', borderRadius: '14px', border: '1px solid var(--border-color)', background: 'var(--surface)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.85rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <strong style={{ color: 'var(--primary-color)' }}>Learner: {log.learner_name}</strong>
                 <span style={{ color: 'var(--text-muted)' }}>{new Date(log.created_at).toLocaleString()}</span>
               </div>

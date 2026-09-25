@@ -217,13 +217,13 @@ const ContentManagement = () => {
               <div key={course.id} style={{ border: '1px solid var(--border-color)', borderRadius: '16px', background: 'var(--surface)', overflow: 'hidden' }}>
                 {/* Course Bar */}
                 <div 
-                  style={{ padding: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', background: isExpanded ? 'var(--surface-hover)' : 'transparent' }}
+                  style={{ padding: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', background: isExpanded ? 'var(--surface-hover)' : 'transparent', flexWrap: 'wrap', gap: '0.85rem' }}
                   onClick={() => setExpandedCourseId(isExpanded ? null : course.id)}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                     {isExpanded ? <ChevronDown size={20} color="var(--primary-color)" /> : <ChevronRight size={20} color="var(--text-muted)" />}
                     <div>
-                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px', flexWrap: 'wrap' }}>
                         <span style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)' }}>{course.title}</span>
                         <span className="badge badge-blue">{course.language}</span>
                         <span className={`badge ${course.is_published ? 'badge-green' : 'badge-secondary'}`}>
@@ -236,7 +236,7 @@ const ContentManagement = () => {
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '8px' }} onClick={(e) => e.stopPropagation()}>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }} onClick={(e) => e.stopPropagation()}>
                     <button className="btn btn-secondary" onClick={() => openCreateTopicModal(course.id)} style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <Plus size={14} /> Add Topic
                     </button>
