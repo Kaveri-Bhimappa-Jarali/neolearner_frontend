@@ -217,17 +217,17 @@ const ConversationLab = () => {
           </button>
           <div>
             <h1 style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)', fontWeight: '800', margin: 0, display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-main)' }}>
-              <MessageSquare style={{ color: 'var(--primary-color)' }} /> AI Voice Conversation Lab
+              <MessageSquare style={{ color: 'var(--primary-color)' }} /> {t('aiConversationLabTitle')}
             </h1>
             <p style={{ color: 'var(--text-muted)', margin: '2px 0 0', fontSize: '0.88rem' }}>
-              Real-time interactive voice & text roleplay tutor
+              {t('aiConversationLabSubtitle')}
             </p>
           </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <Badge variant="teal">CEFR {user?.cefr_level || 'A1'}</Badge>
-          <Badge variant="cyan">Target: {user?.target_language?.name || 'Kannada'}</Badge>
+          <Badge variant="cyan">{t('targetTrackLabel')} {user?.target_language?.name || 'Kannada'}</Badge>
         </div>
       </div>
 
@@ -248,7 +248,7 @@ const ConversationLab = () => {
             >
               <div style={{ fontSize: '1.5rem', marginBottom: '4px' }}>{sc.icon}</div>
               <div style={{ fontWeight: '800', fontSize: '0.9rem', color: isSelected ? 'var(--primary-color)' : 'var(--text-main)', whiteSpace: 'nowrap' }}>
-                {sc.name}
+                {sc.nameKey ? t(sc.nameKey) : sc.name}
               </div>
               <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>CEFR {sc.cefr}</div>
             </button>
@@ -272,7 +272,7 @@ const ConversationLab = () => {
           <div className="conversation-messages-list" ref={messagesListRef}>
             {loading ? (
               <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-muted)', fontWeight: '600' }}>
-                Connecting to AI native tutor...
+                {t('connectingToAiTutor')}
               </div>
             ) : (
               messages.map((msg, i) => (
@@ -314,7 +314,7 @@ const ConversationLab = () => {
                         onClick={() => speakText(msg.text, session?.target_language_code || user?.target_language?.code)}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--primary-color)', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '3px' }}
                       >
-                        <Volume2 size={15} /> Listen
+                        <Volume2 size={15} /> {t('listen')}
                       </button>
                       <span>•</span>
                       <button 
@@ -322,7 +322,7 @@ const ConversationLab = () => {
                         onClick={() => speakText(msg.text, session?.target_language_code || user?.target_language?.code, true)}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontWeight: '600' }}
                       >
-                        Slow 🐢
+                        {t('slow')} 🐢
                       </button>
                       {msg.translation && <span style={{ fontStyle: 'italic', wordBreak: 'break-word' }}>• "{msg.translation}"</span>}
                     </div>
@@ -333,7 +333,7 @@ const ConversationLab = () => {
 
             {sending && (
               <div style={{ alignSelf: 'flex-start', padding: '0.75rem 1.15rem', background: 'var(--surface)', borderRadius: '14px', color: 'var(--text-muted)', fontSize: '0.9rem', border: '1px solid var(--border-color)' }}>
-                AI Tutor is formulating response...
+                {t('aiFormulatingReply')}
               </div>
             )}
             <div ref={chatEndRef} />
@@ -342,7 +342,7 @@ const ConversationLab = () => {
           {/* Quick Context Hints Bar */}
           {session?.context_hints && session.context_hints.length > 0 && (
             <div className="conversation-suggestions-bar">
-              <span className="conversation-suggestion-label">SUGGESTIONS:</span>
+              <span className="conversation-suggestion-label">{t('suggestions')}:</span>
               <div className="conversation-suggestions-list">
                 {session.context_hints.map((h, idx) => {
                   const cleanText = h.split('(')[0].trim();
@@ -376,7 +376,7 @@ const ConversationLab = () => {
               <input
                 type="text"
                 className="form-input chat-text-input"
-                placeholder="Type response in target language..."
+                placeholder={t('typeResponsePlaceholder')}
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 disabled={sending || isCompleted}
@@ -385,7 +385,7 @@ const ConversationLab = () => {
                 type="submit"
                 className="btn btn-primary chat-send-btn"
                 disabled={!inputText.trim() || sending || isCompleted}
-                title="Send Message"
+                title={t('send')}
               >
                 <Send size={18} />
               </button>
@@ -396,19 +396,19 @@ const ConversationLab = () => {
                 type="button"
                 onClick={handleMicClick}
                 className={`btn ${isListening ? 'btn-danger' : 'btn-secondary'} chat-speak-btn`}
-                title="Speak in target language"
+                title={t('speak')}
               >
                 <Mic size={20} color={isListening ? '#ffffff' : 'var(--primary-color)'} />
-                <span>{isListening ? 'Listening...' : 'Speak'}</span>
+                <span>{isListening ? t('listeningPrompt') : t('speak')}</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleEndSession}
                 className="btn btn-outline chat-finish-btn"
-                title="Finish conversation and collect XP"
+                title={t('finishConversationTitle')}
               >
-                Finish
+                {t('finish')}
               </button>
             </div>
           </form>
@@ -418,11 +418,11 @@ const ConversationLab = () => {
         {latestFeedback && (
           <div className="card" style={{ padding: '1.25rem', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border-color)', background: 'var(--surface-card)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', color: 'var(--primary-color)', fontWeight: '800', fontSize: '1.05rem' }}>
-              <Sparkles size={20} /> Live AI Feedback
+              <Sparkles size={20} /> {t('liveAiFeedback')}
             </div>
 
             <div style={{ marginBottom: '1.15rem' }}>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '800', letterSpacing: '0.5px' }}>Turn Accuracy</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '800', letterSpacing: '0.5px' }}>{t('turnAccuracy')}</div>
               <div style={{ fontSize: '1.6rem', fontWeight: '900', color: 'var(--primary-color)' }}>
                 {Math.round(latestFeedback.turnScore)}%
               </div>
@@ -430,14 +430,14 @@ const ConversationLab = () => {
 
             {latestFeedback.correction && (
               <div style={{ marginBottom: '1.15rem', padding: '0.85rem 1rem', background: 'rgba(245, 158, 11, 0.12)', borderRadius: 'var(--radius-md)', borderLeft: '4px solid var(--accent-gold)' }}>
-                <div style={{ fontWeight: '800', fontSize: '0.82rem', color: 'var(--accent-gold)', marginBottom: '4px' }}>Grammar Coaching</div>
+                <div style={{ fontWeight: '800', fontSize: '0.82rem', color: 'var(--accent-gold)', marginBottom: '4px' }}>{t('grammarCoaching')}</div>
                 <div style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.45' }}>{latestFeedback.correction}</div>
               </div>
             )}
 
             {latestFeedback.tips && latestFeedback.tips.length > 0 && (
               <div style={{ marginBottom: '1.15rem' }}>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '800', marginBottom: '6px' }}>Pronunciation Tips</div>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '800', marginBottom: '6px' }}>{t('pronunciationTips')}</div>
                 {latestFeedback.tips.map((tItem, idx) => (
                   <div key={idx} style={{ fontSize: '0.88rem', color: 'var(--text-main)', marginBottom: '4px' }}>
                     🎙️ {tItem}
@@ -448,7 +448,7 @@ const ConversationLab = () => {
 
             {latestFeedback.vocab && latestFeedback.vocab.length > 0 && (
               <div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '800', marginBottom: '8px' }}>Recommended Vocabulary</div>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '800', marginBottom: '8px' }}>{t('recommendedVocabulary')}</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {latestFeedback.vocab.map((v, idx) => (
                     <Badge key={idx} variant="cyan" size="small">{v}</Badge>
@@ -471,23 +471,23 @@ const ConversationLab = () => {
           <div className="card" style={{ maxWidth: '520px', width: '100%', padding: '2.5rem 2rem', textAlign: 'center', borderRadius: 'var(--radius-xl)', background: 'var(--surface-card)' }}>
             <div style={{ fontSize: '3.5rem', marginBottom: '0.75rem' }}>🎉</div>
             <h2 style={{ fontSize: '1.85rem', fontWeight: '900', marginBottom: '0.5rem', color: 'var(--text-main)' }}>
-              Roleplay Session Complete!
+              {t('roleplaySessionComplete')}
             </h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.98rem' }}>
-              Successfully completed {finalSummary.total_turns} conversation exchanges.
+              {t('completedExchangesDesc', { count: finalSummary.total_turns })}
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.85rem', marginBottom: '1.75rem' }}>
               <div style={{ padding: '1rem', background: 'var(--surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '800' }}>Grammar</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '800' }}>{t('grammar')}</div>
                 <div style={{ fontSize: '1.4rem', fontWeight: '900', color: 'var(--primary-color)' }}>{finalSummary.grammar_score}%</div>
               </div>
               <div style={{ padding: '1rem', background: 'var(--surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '800' }}>Speaking</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '800' }}>{t('speaking')}</div>
                 <div style={{ fontSize: '1.4rem', fontWeight: '900', color: 'var(--accent-cyan)' }}>{finalSummary.pronunciation_score}%</div>
               </div>
               <div style={{ padding: '1rem', background: 'var(--surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '800' }}>Vocab</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '800' }}>{t('vocab')}</div>
                 <div style={{ fontSize: '1.4rem', fontWeight: '900', color: 'var(--accent-gold)' }}>{finalSummary.vocabulary_score}%</div>
               </div>
             </div>
@@ -507,14 +507,14 @@ const ConversationLab = () => {
                 className="btn btn-secondary"
                 style={{ flex: 1, padding: '0.85rem', fontWeight: '800' }}
               >
-                Practice Again
+                {t('practiceAgain')}
               </button>
               <button 
                 onClick={() => navigate('/dashboard')}
                 className="btn btn-primary"
                 style={{ flex: 1, padding: '0.85rem', fontWeight: '800' }}
               >
-                Dashboard
+                {t('dashboard')}
               </button>
             </div>
           </div>

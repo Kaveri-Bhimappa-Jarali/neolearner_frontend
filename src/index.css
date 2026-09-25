@@ -2122,11 +2122,18 @@ a:hover {
     overflow-x: hidden;
   }
 
+  .conversation-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+
   .conversation-chat-card {
-    padding: 0.85rem;
-    height: clamp(380px, 58vh, 560px);
-    min-height: 350px;
-    max-height: 65vh;
+    padding: 0.75rem;
+    height: clamp(360px, 54vh, 520px);
+    min-height: 340px;
+    max-height: 60vh;
     border-radius: var(--radius-lg);
     width: 100%;
     max-width: 100%;
@@ -2137,12 +2144,25 @@ a:hover {
     flex-direction: column;
     gap: 0.5rem;
     margin-top: 0.5rem;
+    width: 100%;
   }
 
   .chat-input-row {
     width: 100%;
     display: flex;
     gap: 6px;
+  }
+
+  .chat-text-input {
+    font-size: 16px; /* Prevents auto-zoom on iOS mobile browsers */
+    padding: 0.75rem 0.85rem;
+    min-height: 44px;
+  }
+
+  .chat-send-btn {
+    padding: 0.75rem 1rem;
+    min-height: 44px;
+    min-width: 48px;
   }
 
   .chat-controls-row {
@@ -2153,8 +2173,9 @@ a:hover {
 
   .chat-speak-btn, .chat-finish-btn {
     flex: 1;
-    min-height: 42px;
+    min-height: 44px;
     font-size: 0.88rem;
+    padding: 0.75rem 0.5rem;
   }
 
   .scenario-card-btn {
@@ -2188,7 +2209,7 @@ a:hover {
     flex: 0 0 auto;
     font-size: 0.82rem;
     padding: 6px 12px;
-    min-height: 36px;
+    min-height: 38px;
     width: auto;
   }
 }
@@ -2206,7 +2227,8 @@ a:hover {
 
   .chat-speak-btn, .chat-finish-btn {
     font-size: 0.85rem;
-    padding: 0.65rem 0.75rem;
+    padding: 0.65rem 0.5rem;
+    min-height: 44px;
   }
 }
 
