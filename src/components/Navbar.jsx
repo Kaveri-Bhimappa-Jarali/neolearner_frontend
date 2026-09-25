@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { 
-  BookOpen, LayoutDashboard, User, LogOut, Flame, Gem, Heart, 
-  Award, Sparkles, Zap, Menu, X, ShieldAlert, Compass, MoreHorizontal, MessageSquare, Trophy
-} from 'lucide-react';
 import { useTranslation } from '../utils/i18n';
+import LanguageSelector from './LanguageSelector';
+import { 
+  BookOpen, LayoutDashboard, Compass, Trophy, Zap, 
+  User, LogOut, ShieldAlert, Sparkles, MessageSquare, Gem, Flame, Award, Heart, Menu, X, MoreHorizontal
+} from 'lucide-react';
+import './Navbar.css';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -15,27 +17,29 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    setMobileMenuOpen(false);
     logout();
+    setMobileMenuOpen(false);
     navigate('/login');
   };
 
   const isActive = (path) => location.pathname === path;
+
   const closeMenu = () => setMobileMenuOpen(false);
 
   return (
     <>
       <nav className="navbar">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <div className="navbar-container">
           
-          {/* Brand */}
-          <Link to="/" onClick={closeMenu} className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ 
-              background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))', 
-              padding: '8px', 
-              borderRadius: '12px', 
-              display: 'flex', 
-              alignItems: 'center', 
+          {/* Brand Logo */}
+          <Link to={user ? "/dashboard" : "/"} className="navbar-brand">
+            <div style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--accent-purple) 100%)',
+              display: 'flex',
+              alignItems: 'center',
               justifyContent: 'center',
               boxShadow: 'var(--shadow-teal)'
             }}>
@@ -52,9 +56,11 @@ const Navbar = () => {
 
           {/* Desktop Links & Stats */}
           <div className="nav-links desktop-nav-links">
-            <Link to="/insights" className={`nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`}>
-              <Sparkles size={18} /> {t('showcaseInsights') || 'Showcase'}
-            </Link>
+            {!user && (
+              <Link to="/insights" className={`nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`}>
+                <Sparkles size={18} /> {t('showcaseInsights') || 'Showcase'}
+              </Link>
+            )}
 
             <Link to="/courses" className={`nav-item ${isActive('/courses') ? 'active' : ''}`}>
               <BookOpen size={18} /> {t('courses')}
@@ -70,28 +76,28 @@ const Navbar = () => {
                     <ShieldAlert size={18} /> {t('adminPortal') || 'Admin Portal'}
                   </Link>
                 )}
-                {user.has_completed_placement_test && (
-                  <>
-                    <Link to="/learning-path" className={`nav-item ${isActive('/learning-path') ? 'active' : ''}`}>
-                      <Compass size={18} /> {t('learningPath')}
-                    </Link>
-                    <Link to="/practice-hub" className={`nav-item ${isActive('/practice-hub') ? 'active' : ''}`}>
-                      <Zap size={18} /> {t('practiceHub')}
-                    </Link>
-                    <Link to="/conversation" className={`nav-item ${isActive('/conversation') ? 'active' : ''}`}>
-                      <MessageSquare size={18} /> {t('aiLab')}
-                    </Link>
-                    <Link to="/stories" className={`nav-item ${isActive('/stories') ? 'active' : ''}`}>
-                      <BookOpen size={18} /> {t('stories')}
-                    </Link>
-                    <Link to="/friends" className={`nav-item ${isActive('/friends') ? 'active' : ''}`}>
-                      <Trophy size={18} /> {t('social')}
-                    </Link>
-                    <Link to="/shop" className={`nav-item ${isActive('/shop') ? 'active' : ''}`}>
-                      <Gem size={18} /> {t('shop')}
-                    </Link>
-                  </>
-                )}
+
+                <Link to="/initial-exam" className={`nav-item ${isActive('/initial-exam') ? 'active' : ''}`}>
+                  <Compass size={18} /> {t('initialAssessment') || 'Initial Assessment'}
+                </Link>
+                <Link to="/conversation" className={`nav-item ${isActive('/conversation') ? 'active' : ''}`}>
+                  <MessageSquare size={18} /> {t('aiLab') || 'AI Lab'}
+                </Link>
+                <Link to="/learning-path" className={`nav-item ${isActive('/learning-path') ? 'active' : ''}`}>
+                  <Compass size={18} /> {t('learningPath')}
+                </Link>
+                <Link to="/practice-hub" className={`nav-item ${isActive('/practice-hub') ? 'active' : ''}`}>
+                  <Zap size={18} /> {t('practiceHub')}
+                </Link>
+                <Link to="/stories" className={`nav-item ${isActive('/stories') ? 'active' : ''}`}>
+                  <BookOpen size={18} /> {t('stories')}
+                </Link>
+                <Link to="/friends" className={`nav-item ${isActive('/friends') ? 'active' : ''}`}>
+                  <Trophy size={18} /> {t('social')}
+                </Link>
+                <Link to="/shop" className={`nav-item ${isActive('/shop') ? 'active' : ''}`}>
+                  <Gem size={18} /> {t('shop')}
+                </Link>
               </>
             )}
 
@@ -173,9 +179,11 @@ const Navbar = () => {
             )}
 
             <div className="mobile-drawer-links">
-              <Link to="/insights" onClick={closeMenu} className={`mobile-nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`}>
-                <Sparkles size={20} /> {t('showcaseInsights') || 'Showcase'}
-              </Link>
+              {!user && (
+                <Link to="/insights" onClick={closeMenu} className={`mobile-nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`}>
+                  <Sparkles size={20} /> {t('showcaseInsights') || 'Showcase'}
+                </Link>
+              )}
               <Link to="/courses" onClick={closeMenu} className={`mobile-nav-item ${isActive('/courses') ? 'active' : ''}`}>
                 <BookOpen size={20} /> {t('courses')}
               </Link>
@@ -190,28 +198,27 @@ const Navbar = () => {
                       <ShieldAlert size={20} /> {t('adminPortal') || 'Admin Portal'}
                     </Link>
                   )}
-                  {user.has_completed_placement_test && (
-                    <>
-                      <Link to="/learning-path" onClick={closeMenu} className={`mobile-nav-item ${isActive('/learning-path') ? 'active' : ''}`}>
-                        <Compass size={20} /> {t('learningPath')}
-                      </Link>
-                      <Link to="/practice-hub" onClick={closeMenu} className={`mobile-nav-item ${isActive('/practice-hub') ? 'active' : ''}`}>
-                        <Zap size={20} /> {t('practiceHub')}
-                      </Link>
-                      <Link to="/conversation" onClick={closeMenu} className={`mobile-nav-item ${isActive('/conversation') ? 'active' : ''}`}>
-                        <MessageSquare size={20} /> {t('aiLab')}
-                      </Link>
-                      <Link to="/stories" onClick={closeMenu} className={`mobile-nav-item ${isActive('/stories') ? 'active' : ''}`}>
-                        <BookOpen size={20} /> {t('stories')}
-                      </Link>
-                      <Link to="/friends" onClick={closeMenu} className={`mobile-nav-item ${isActive('/friends') ? 'active' : ''}`}>
-                        <Trophy size={20} /> {t('social')}
-                      </Link>
-                      <Link to="/shop" onClick={closeMenu} className={`mobile-nav-item ${isActive('/shop') ? 'active' : ''}`}>
-                        <Gem size={20} /> {t('shop')}
-                      </Link>
-                    </>
-                  )}
+                  <Link to="/initial-exam" onClick={closeMenu} className={`mobile-nav-item ${isActive('/initial-exam') ? 'active' : ''}`}>
+                    <Compass size={20} /> {t('initialAssessment') || 'Initial Assessment'}
+                  </Link>
+                  <Link to="/conversation" onClick={closeMenu} className={`mobile-nav-item ${isActive('/conversation') ? 'active' : ''}`}>
+                    <MessageSquare size={20} /> {t('aiLab') || 'AI Lab'}
+                  </Link>
+                  <Link to="/learning-path" onClick={closeMenu} className={`mobile-nav-item ${isActive('/learning-path') ? 'active' : ''}`}>
+                    <Compass size={20} /> {t('learningPath')}
+                  </Link>
+                  <Link to="/practice-hub" onClick={closeMenu} className={`mobile-nav-item ${isActive('/practice-hub') ? 'active' : ''}`}>
+                    <Zap size={20} /> {t('practiceHub')}
+                  </Link>
+                  <Link to="/stories" onClick={closeMenu} className={`mobile-nav-item ${isActive('/stories') ? 'active' : ''}`}>
+                    <BookOpen size={20} /> {t('stories')}
+                  </Link>
+                  <Link to="/friends" onClick={closeMenu} className={`mobile-nav-item ${isActive('/friends') ? 'active' : ''}`}>
+                    <Trophy size={20} /> {t('social')}
+                  </Link>
+                  <Link to="/shop" onClick={closeMenu} className={`mobile-nav-item ${isActive('/shop') ? 'active' : ''}`}>
+                    <Gem size={20} /> {t('shop')}
+                  </Link>
                   <Link to="/profile" onClick={closeMenu} className={`mobile-nav-item ${isActive('/profile') ? 'active' : ''}`}>
                     <User size={20} /> {t('profile')}
                   </Link>
