@@ -1723,8 +1723,14 @@ const translateDynamicTitle = (key, lang, translationsDict) => {
 export const useTranslation = () => {
   const { user } = useAuth();
   
-  // Detect language code from preferred language, default to 'en'
-  const langCode = user?.preferred_language?.code || 'en';
+  // Detect language code from preferred language, preferred_language_code, or localStorage
+  const langCode = user?.preferred_language?.code || 
+                   (typeof user?.preferred_language === 'string' ? user.preferred_language : '') || 
+                   user?.preferred_language_code || 
+                   user?.interface_language || 
+                   localStorage.getItem('preferred_language_code') || 
+                   localStorage.getItem('interface_lang') || 
+                   'en';
   const lang = translations[langCode] ? langCode : 'en';
   
   const t = (key, replacements = {}) => {
@@ -1738,7 +1744,7 @@ export const useTranslation = () => {
       text = translations['en'][key];
     }
     
-    // Replace placeholders like {name}, {count}, {language}, {days}, {tier}
+    // Replace placeholders like {name}, {count}, {language}, {days}, {tier}, {index}, {gems}, {target}, {interface}
     Object.entries(replacements).forEach(([k, v]) => {
       text = text.replace(new RegExp(`{${k}}`, 'g'), v);
     });

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axios';
+import { useTranslation } from '../../utils/i18n';
 import { Gem, Flame, Heart, Sparkles, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
 import Badge from '../ui/Badge';
 
 const Shop = () => {
   const { user, setUser } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [buying, setBuying] = useState(null);
   const [message, setMessage] = useState(null);
@@ -37,9 +39,9 @@ const Shop = () => {
     return (
       <div className="page-container" style={{ textAlign: 'center', padding: '4rem 1rem' }}>
         <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1rem' }}>
-          Please Log In
+          {t('login')}
         </h2>
-        <Link to="/login" className="btn btn-primary">Log In to Access Rewards Shop</Link>
+        <Link to="/login" className="btn btn-primary">{t('login')}</Link>
       </div>
     );
   }
@@ -61,13 +63,13 @@ const Shop = () => {
       >
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '0.65rem 1.75rem', background: 'rgba(6, 182, 212, 0.15)', borderRadius: '9999px', color: 'var(--accent-cyan)', fontWeight: '800', fontSize: '1.3rem', marginBottom: '1rem', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
           <Gem fill="var(--accent-cyan)" size={26} />
-          <span>{user.gems} Gems Available</span>
+          <span>{t('gemsAvailable', { gems: user.gems })}</span>
         </div>
         <h1 style={{ fontSize: '2.2rem', fontWeight: '900', color: 'var(--text-main)', margin: '0 0 0.5rem' }}>
-          Rewards & Power-Ups Shop
+          {t('shopTitle')}
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', margin: 0 }}>
-          Exchange your earned gems for streak protection, heart refills, and bonus multipliers
+          {t('shopSubtitle')}
         </p>
       </div>
 
@@ -108,11 +110,11 @@ const Shop = () => {
               <Flame fill="var(--accent-gold)" size={36} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.35rem' }}>Streak Freeze</h3>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.35rem' }}>{t('streakFreeze')}</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', margin: '0 0 0.5rem', lineHeight: '1.45' }}>
-                Protects your daily learning streak if you miss a day of practice.
+                {t('streakFreezeDesc')}
               </p>
-              <Badge variant="gold">Owned: {user.streak_freeze_count}</Badge>
+              <Badge variant="gold">{user.streak_freeze_count} {t('done')}</Badge>
             </div>
           </div>
           <button 
@@ -121,7 +123,7 @@ const Shop = () => {
             disabled={buying !== null || user.gems < 200}
             style={{ minWidth: '140px', background: 'var(--accent-gold)', borderColor: 'var(--accent-gold)', padding: '0.85rem 1.5rem', fontWeight: '800' }}
           >
-            {buying === 'streak_freeze' ? 'Buying...' : '200 Gems'}
+            {buying === 'streak_freeze' ? '...' : '200 Gems'}
           </button>
         </div>
 
@@ -145,11 +147,11 @@ const Shop = () => {
               <Heart fill="var(--error)" size={36} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.35rem' }}>Refill Hearts</h3>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.35rem' }}>{t('refillHearts')}</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', margin: '0 0 0.5rem', lineHeight: '1.45' }}>
-                Instantly restores all 5 hearts so you can resume study sessions.
+                {t('refillHeartsDesc')}
               </p>
-              <Badge variant="red">Current: {user.hearts} / 5 Hearts</Badge>
+              <Badge variant="red">{user.hearts} / 5 ❤️</Badge>
             </div>
           </div>
           <button 
@@ -158,7 +160,7 @@ const Shop = () => {
             disabled={buying !== null || user.gems < 150 || user.hearts >= 5}
             style={{ minWidth: '140px', background: 'var(--error)', borderColor: 'var(--error)', padding: '0.85rem 1.5rem', fontWeight: '800' }}
           >
-            {user.hearts >= 5 ? 'Hearts Full' : buying === 'heart_refill' ? 'Refilling...' : '150 Gems'}
+            {user.hearts >= 5 ? '5 / 5 ❤️' : buying === 'heart_refill' ? '...' : '150 Gems'}
           </button>
         </div>
 
@@ -182,12 +184,12 @@ const Shop = () => {
               <Sparkles size={36} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.35rem' }}>Double or Nothing</h3>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 0.35rem' }}>{t('doubleOrNothing')}</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', margin: '0 0 0.5rem', lineHeight: '1.45' }}>
-                Wager 50 gems to receive 100 gems back if you maintain a 7-day streak.
+                {t('doubleOrNothingDesc')}
               </p>
               {user.double_or_nothing_active && (
-                <Badge variant="teal">Active Bet: {user.double_or_nothing_streak} / 7 Days</Badge>
+                <Badge variant="teal">{user.double_or_nothing_streak} / 7 {t('daysLeft')}</Badge>
               )}
             </div>
           </div>
@@ -197,7 +199,7 @@ const Shop = () => {
             disabled={buying !== null || user.gems < 50 || user.double_or_nothing_active}
             style={{ minWidth: '140px', padding: '0.85rem 1.5rem', fontWeight: '800' }}
           >
-            {user.double_or_nothing_active ? 'Already Active' : buying === 'double_or_nothing' ? 'Activating...' : '50 Gems'}
+            {user.double_or_nothing_active ? '✓' : buying === 'double_or_nothing' ? '...' : '50 Gems'}
           </button>
         </div>
 
@@ -217,13 +219,13 @@ const Shop = () => {
           }}
         >
           <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.5rem' }}>
-            Low on Hearts?
+            {t('lowOnHearts')}
           </h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem', marginBottom: '1.5rem', maxWidth: '600px', margin: '0 auto 1.5rem auto', lineHeight: '1.5' }}>
-            Complete a free literacy practice drill to restore 1 heart and earn bonus XP!
+            {t('freeHeartsPromo')}
           </p>
           <Link to="/practice-hub" className="btn btn-primary" style={{ padding: '0.85rem 2rem', fontWeight: '800', fontSize: '1rem', gap: '8px' }}>
-            Practice for Free Hearts <ArrowRight size={18} />
+            {t('practiceForFreeHearts')} <ArrowRight size={18} />
           </Link>
         </div>
       )}

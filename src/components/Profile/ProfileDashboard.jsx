@@ -133,7 +133,7 @@ const ProfileDashboard = () => {
                 onClick={() => { setIsEditing(true); setError(''); setSuccessMsg(''); }}
                 style={{ padding: '0.75rem 1.5rem', fontWeight: '800', gap: '8px' }}
               >
-                <Edit3 size={18} /> Edit Profile
+                <Edit3 size={18} /> {t('editProfile')}
               </button>
             ) : (
               <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -143,7 +143,7 @@ const ProfileDashboard = () => {
                   onClick={() => { setIsEditing(false); setError(''); }}
                   style={{ padding: '0.75rem 1.25rem', fontWeight: '700', gap: '6px' }}
                 >
-                  <X size={18} /> Cancel
+                  <X size={18} /> {t('cancel')}
                 </button>
                 <button 
                   type="button"
@@ -152,7 +152,7 @@ const ProfileDashboard = () => {
                   disabled={loading}
                   style={{ padding: '0.75rem 1.5rem', fontWeight: '800', gap: '6px' }}
                 >
-                  <Save size={18} /> {loading ? 'Saving...' : 'Save Changes'}
+                  <Save size={18} /> {loading ? (t('saving') || 'Saving...') : (t('save') || 'Save')}
                 </button>
               </div>
             )}
@@ -178,11 +178,11 @@ const ProfileDashboard = () => {
             {/* Column 1: Personal Information */}
             <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--primary-color)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <User size={20} /> Personal Information
+                <User size={20} /> {t('personalInformation') || 'Personal Information'}
               </h3>
 
               <div className="form-group" style={{ marginBottom: '1.1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Full Name *</label>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>{t('fullName') || 'Full Name'} *</label>
                 {isEditing ? (
                   <input 
                     name="full_name" 
@@ -201,7 +201,7 @@ const ProfileDashboard = () => {
               </div>
 
               <div className="form-group" style={{ marginBottom: '1.1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Age</label>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>{t('age') || 'Age'}</label>
                 {isEditing ? (
                   <input 
                     name="age" 
@@ -216,23 +216,23 @@ const ProfileDashboard = () => {
                   />
                 ) : (
                   <div style={{ fontWeight: '600', color: 'var(--text-muted)' }}>
-                    {user.age ? `${user.age} years old` : 'Not specified'}
+                    {user.age ? `${user.age}` : '-'}
                   </div>
                 )}
               </div>
 
               <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Daily Learning Goal</label>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>{t('dailyLearningGoal') || 'Daily Learning Goal'}</label>
                 {isEditing ? (
                   <select name="daily_minutes_goal" className="form-select" value={formData.daily_minutes_goal || '15'} onChange={handleChange} style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}>
-                    <option value="5">⚡ 5 mins/day (Casual)</option>
-                    <option value="15">🔥 15 mins/day (Regular)</option>
-                    <option value="30">🚀 30 mins/day (Serious)</option>
-                    <option value="60">🏆 60 mins/day (Intensive)</option>
+                    <option value="5">⚡ 5 {t('dailyGoalMinutes', { minutes: 5 })}</option>
+                    <option value="15">🔥 15 {t('dailyGoalMinutes', { minutes: 15 })}</option>
+                    <option value="30">🚀 30 {t('dailyGoalMinutes', { minutes: 30 })}</option>
+                    <option value="60">🏆 60 {t('dailyGoalMinutes', { minutes: 60 })}</option>
                   </select>
                 ) : (
                   <div style={{ fontWeight: '600', color: 'var(--text-muted)' }}>
-                    {user.daily_minutes_goal || 15} minutes / day
+                    {t('dailyGoalMinutes', { minutes: user.daily_minutes_goal || 15 })}
                   </div>
                 )}
               </div>
@@ -241,11 +241,11 @@ const ProfileDashboard = () => {
             {/* Column 2: Language & Proficiency */}
             <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--accent-cyan)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Globe size={20} /> Language Settings
+                <Globe size={20} /> {t('settingsTitle')}
               </h3>
 
               <div className="form-group" style={{ marginBottom: '1.1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Target Language</label>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>{t('targetLang')}</label>
                 {isEditing ? (
                   <select name="target_language_id" className="form-select" value={formData.target_language_id || ''} onChange={handleChange} style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}>
                     <option value="">Select Target Language</option>
@@ -255,16 +255,16 @@ const ProfileDashboard = () => {
                   </select>
                 ) : (
                   <div style={{ fontWeight: '800', color: 'var(--accent-cyan)' }}>
-                    🌐 {user.target_language?.name || 'Not selected'}
+                    🌐 {user.target_language?.name || '-'}
                   </div>
                 )}
               </div>
 
               <div className="form-group" style={{ marginBottom: '1.1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Native / Interface Language</label>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>{t('prefLang')}</label>
                 {isEditing ? (
                   <select name="preferred_language_id" className="form-select" value={formData.preferred_language_id || ''} onChange={handleChange} style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}>
-                    <option value="">Select Native Language</option>
+                    <option value="">Select Interface Language</option>
                     {languages.map(l => (
                       <option key={l.id} value={l.id}>{l.name} ({l.native_name || l.code})</option>
                     ))}
@@ -277,7 +277,7 @@ const ProfileDashboard = () => {
               </div>
 
               <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>Proficiency & CEFR Level</label>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', display: 'block', marginBottom: '6px' }}>{t('profLevel')}</label>
                 {isEditing ? (
                   <select name="proficiency_level" className="form-select" value={formData.proficiency_level || 'Beginner'} onChange={handleChange} style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--background)', color: 'var(--text-main)' }}>
                     <option value="Beginner">Beginner (A0 - A1)</option>
@@ -298,10 +298,10 @@ const ProfileDashboard = () => {
 
       {/* Stats KPI Overview */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
-        <StatCard title="Streak" value={`${user.streak} 🔥`} subtitle="Consecutive days" icon={Flame} color="gold" />
-        <StatCard title="Total XP" value={`${user.xp} XP`} subtitle="Lifetime experience points" icon={Zap} color="teal" />
-        <StatCard title="Gems Balance" value={`${user.gems} 💎`} subtitle="Store currency" icon={Globe} color="cyan" />
-        <StatCard title="Hearts Remaining" value={`${user.hearts} / 5 ❤️`} subtitle="Lesson capacity" icon={Shield} color="red" />
+        <StatCard title={t('dayStreak')} value={`${user.streak} 🔥`} subtitle={t('consecutiveActiveDays')} icon={Flame} color="gold" />
+        <StatCard title={t('xpEarned')} value={`${user.xp} XP`} subtitle="XP" icon={Zap} color="teal" />
+        <StatCard title={t('gemsAvailable', { gems: user.gems })} value={`${user.gems} 💎`} subtitle="Gems" icon={Globe} color="cyan" />
+        <StatCard title={t('restoreHeartsTitle')} value={`${user.hearts} / 5 ❤️`} subtitle="Hearts" icon={Shield} color="red" />
       </div>
 
     </div>

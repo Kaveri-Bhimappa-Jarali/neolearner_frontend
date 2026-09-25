@@ -188,14 +188,14 @@ const LearnerDashboard = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
             <span style={{ fontSize: '1.6rem' }}>{getLangFlag(user?.target_language?.code)}</span>
             <h1 style={{ fontSize: '1.85rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, lineHeight: '1.2' }}>
-              Welcome back, {user?.full_name?.split(' ')[0] || 'Learner'} 👋
+              {t('welcomeUser', { name: user?.full_name?.split(' ')[0] || 'Learner', interfaceLang: user?.preferred_language?.name || 'English' }).split('!')[0] || `Welcome back, ${user?.full_name?.split(' ')[0] || 'Learner'}`} 👋
             </h1>
             <Badge variant={getCEFRVariant(currentCEFR)}>
               {currentCEFR} Level
             </Badge>
           </div>
           <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.98rem' }}>
-            Learning {user?.target_language?.name || 'Kannada'} in {user?.preferred_language?.name || 'English'}
+            {t('learningTargetInInterface', { target: user?.target_language?.name || 'Kannada', interface: user?.preferred_language?.name || 'English' }) || `Learning ${user?.target_language?.name || 'Kannada'} in ${user?.preferred_language?.name || 'English'}`}
           </p>
         </div>
 
@@ -206,7 +206,7 @@ const LearnerDashboard = () => {
               className="btn btn-primary"
               style={{ padding: '0.65rem 1.25rem', fontSize: '0.88rem', fontWeight: '800', background: 'linear-gradient(135deg, var(--accent-purple), var(--secondary-color))' }}
             >
-              👑 Admin Portal
+              👑 {t('adminPortal') || 'Admin Portal'}
             </Link>
           )}
           <button
@@ -214,7 +214,7 @@ const LearnerDashboard = () => {
             onClick={() => setShowReportModal(true)}
             style={{ padding: '0.65rem 1.25rem', fontSize: '0.88rem', fontWeight: '700' }}
           >
-            📊 Learning Analytics
+            📊 {t('learningAnalytics') || 'Learning Analytics'}
           </button>
           
           <div style={{
@@ -230,7 +230,7 @@ const LearnerDashboard = () => {
             gap: '8px'
           }}>
             <Clock size={16} />
-            <span>{user?.daily_minutes_goal || 15} min / day goal</span>
+            <span>{t('dailyGoalMinutes', { minutes: user?.daily_minutes_goal || 15 })}</span>
           </div>
         </div>
       </div>
@@ -260,15 +260,15 @@ const LearnerDashboard = () => {
             </div>
             <div>
               <h3 style={{ margin: '0 0 6px', fontSize: '1.35rem', color: 'var(--text-main)', fontWeight: '800' }}>
-                Diagnostic Placement Test Required
+                {t('diagnosticPlacementRequired') || 'Diagnostic Placement Test Required'}
               </h3>
               <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.98rem', maxWidth: '650px', lineHeight: '1.5' }}>
-                Take our 10-minute diagnostic test across vocabulary, reading, listening, and speaking to unlock your personalized learning path.
+                {t('diagnosticPlacementDesc') || 'Take our 10-minute diagnostic test across vocabulary, reading, listening, and speaking to unlock your personalized learning path.'}
               </p>
             </div>
           </div>
           <Link to="/initial-exam" className="btn btn-primary" style={{ padding: '0.9rem 2rem', fontWeight: '800', fontSize: '1.05rem', boxShadow: 'var(--shadow-teal)' }}>
-            Start Diagnostic Test 🚀
+            {t('startInitialExam') || 'Start Diagnostic Test 🚀'}
           </Link>
         </div>
       )}
@@ -279,30 +279,30 @@ const LearnerDashboard = () => {
       {/* Top Stat KPI Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
         <StatCard 
-          title="Lessons Completed" 
+          title={t('lessonsCompleted')} 
           value={completedCount} 
-          subtitle="Total finished units" 
+          subtitle={t('totalCompletedUnits')} 
           icon={BookOpen} 
           color="teal" 
         />
         <StatCard 
-          title="Assessments Taken" 
+          title={t('assessmentsTaken')} 
           value={resultsList.length} 
-          subtitle="Quizzes & level tests" 
+          subtitle={t('quizzesAndTests')} 
           icon={Target} 
           color="indigo" 
         />
         <StatCard 
-          title="Average Score" 
+          title={t('avgScore')} 
           value={`${avgScore}%`} 
-          subtitle="Overall accuracy" 
+          subtitle={t('overAllSubmissions')} 
           icon={TrendingUp} 
           color="cyan" 
         />
         <StatCard 
-          title="Day Streak" 
+          title={t('dayStreak')} 
           value={`${user?.streak || 0} 🔥`} 
-          subtitle="Consecutive daily practice" 
+          subtitle={t('consecutiveActiveDays')} 
           icon={Flame} 
           color="gold" 
         />
@@ -325,9 +325,9 @@ const LearnerDashboard = () => {
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <Badge variant="teal" icon={Compass}>Active Learning Track</Badge>
+                <Badge variant="teal" icon={Compass}>{t('activeLearningTrack')}</Badge>
                 <span style={{ fontSize: '0.88rem', fontWeight: '800', color: 'var(--primary-color)' }}>
-                  {learningPath.completion_rate}% Complete
+                  {t('completeRate', { rate: learningPath.completion_rate })}
                 </span>
               </div>
 
@@ -335,7 +335,7 @@ const LearnerDashboard = () => {
                 {learningPath.course_title}
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.25rem' }}>
-                Target: {learningPath.target_language_name} • {learningPath.total_nodes} Checkpoint Modules
+                {t('targetTrackLabel')} {learningPath.target_language_name} • {t('checkpointModulesCount', { count: learningPath.total_nodes })}
               </p>
 
               {/* Progress Bar */}
@@ -363,7 +363,7 @@ const LearnerDashboard = () => {
                 }}>
                   <div>
                     <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary-color)', fontWeight: '800', letterSpacing: '0.5px' }}>
-                      Up Next (Node {nextNode.order})
+                      {t('upNextNode', { order: nextNode.order })}
                     </span>
                     <h4 style={{ margin: '4px 0 2px 0', fontSize: '1.05rem', color: 'var(--text-main)', fontWeight: '800' }}>
                       {nextNode.title}
@@ -378,13 +378,13 @@ const LearnerDashboard = () => {
                     className="btn btn-primary" 
                     style={{ padding: '0.7rem 1.35rem', fontWeight: '800', fontSize: '0.92rem', gap: '6px', whiteSpace: 'nowrap' }}
                   >
-                    <PlayCircle size={18} /> Continue
+                    <PlayCircle size={18} /> {t('continueBtn')}
                   </Link>
                 </div>
               )}
 
               <Link to="/learning-path" className="btn btn-secondary" style={{ width: '100%', justifyContent: 'center', fontWeight: '700' }}>
-                Open Full Interactive Path →
+                {t('openInteractivePath')}
               </Link>
             </div>
           )}
@@ -394,7 +394,7 @@ const LearnerDashboard = () => {
             <div className="card" style={{ padding: '1.75rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                 <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <BarChart2 size={20} color="var(--primary-color)" /> Competency Radar
+                  <BarChart2 size={20} color="var(--primary-color)" /> {t('cefrDiagnosticProfileTitle')}
                 </h3>
                 <Badge variant="cyan">{currentCEFR} Level</Badge>
               </div>
@@ -406,7 +406,7 @@ const LearnerDashboard = () => {
                 {strengths.length > 0 && (
                   <div style={{ background: 'var(--surface)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
                     <span style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--success)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '6px' }}>
-                      ✨ Strengths
+                      {t('keyStrengths')}
                     </span>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                       {strengths.map((s, idx) => (
@@ -419,7 +419,7 @@ const LearnerDashboard = () => {
                 {weakAreas.length > 0 && (
                   <div style={{ background: 'var(--surface)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
                     <span style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--accent-orange)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '6px' }}>
-                      🎯 Focus Target Areas
+                      {t('needsFocus')}
                     </span>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                       {weakAreas.map((w, idx) => (
@@ -440,7 +440,7 @@ const LearnerDashboard = () => {
           {/* Daily Quests Widget */}
           <div className="card" style={{ padding: '1.75rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Target size={20} color="var(--primary-color)" /> Daily Quests
+              <Target size={20} color="var(--primary-color)" /> {t('dailyQuests')}
             </h3>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
@@ -467,7 +467,7 @@ const LearnerDashboard = () => {
           {/* Weekly Practice Heatmap Calendar */}
           <div className="card" style={{ padding: '1.75rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Calendar size={20} color="var(--accent-gold)" /> Weekly Activity
+              <Calendar size={20} color="var(--accent-gold)" /> {t('weeklyActivityCalendar')}
             </h3>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', textAlign: 'center' }}>
@@ -499,25 +499,25 @@ const LearnerDashboard = () => {
           {/* Practice Boosters & Features */}
           <div className="card" style={{ padding: '1.75rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Zap size={20} color="var(--primary-color)" /> Practice Hub
+              <Zap size={20} color="var(--primary-color)" /> {t('practiceHub')}
             </h3>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
               <Link to="/conversation" className="btn btn-secondary" style={{ flexDirection: 'column', padding: '1.15rem 0.85rem', alignItems: 'center', gap: '8px', textAlign: 'center' }}>
                 <Mic size={22} color="var(--primary-color)" />
-                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>AI Voice Lab</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>{t('aiLab')}</span>
               </Link>
               <Link to="/stories" className="btn btn-secondary" style={{ flexDirection: 'column', padding: '1.15rem 0.85rem', alignItems: 'center', gap: '8px', textAlign: 'center' }}>
                 <BookOpen size={22} color="var(--secondary-color)" />
-                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>Stories</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>{t('stories')}</span>
               </Link>
               <Link to="/flashcards" className="btn btn-secondary" style={{ flexDirection: 'column', padding: '1.15rem 0.85rem', alignItems: 'center', gap: '8px', textAlign: 'center' }}>
                 <Layers size={22} color="var(--accent-gold)" />
-                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>Flashcards</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>{t('flashcardsTitle')}</span>
               </Link>
               <Link to="/review/srs" className="btn btn-secondary" style={{ flexDirection: 'column', padding: '1.15rem 0.85rem', alignItems: 'center', gap: '8px', textAlign: 'center' }}>
                 <Clock size={22} color="var(--accent-purple)" />
-                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>SRS Drills</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>{t('srsTitle')}</span>
               </Link>
             </div>
           </div>

@@ -53,7 +53,7 @@ const Navbar = () => {
           {/* Desktop Links & Stats */}
           <div className="nav-links desktop-nav-links">
             <Link to="/insights" className={`nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`}>
-              <Sparkles size={18} /> Showcase
+              <Sparkles size={18} /> {t('showcaseInsights') || 'Showcase'}
             </Link>
 
             <Link to="/courses" className={`nav-item ${isActive('/courses') ? 'active' : ''}`}>
@@ -67,7 +67,7 @@ const Navbar = () => {
                 </Link>
                 {user.is_admin && (
                   <Link to="/admin" className={`nav-item ${isActive('/admin') ? 'active' : ''}`} style={{ color: 'var(--accent-purple)', fontWeight: '700' }}>
-                    <ShieldAlert size={18} /> Admin Portal
+                    <ShieldAlert size={18} /> {t('adminPortal') || 'Admin Portal'}
                   </Link>
                 )}
                 {user.has_completed_placement_test && (
@@ -161,59 +161,59 @@ const Navbar = () => {
             {user && (
               <div className="mobile-drawer-stats">
                 <div className="mobile-stat-badge" style={{ color: '#ef4444' }}>
-                  <Heart size={18} fill="#ef4444" /> <span>{user.hearts} Hearts</span>
+                  <Heart size={18} fill="#ef4444" /> <span>{user.hearts}</span>
                 </div>
                 <div className="mobile-stat-badge" style={{ color: '#06b6d4' }}>
-                  <Gem size={18} fill="#06b6d4" /> <span>{user.gems} Gems</span>
+                  <Gem size={18} fill="#06b6d4" /> <span>{user.gems}</span>
                 </div>
                 <div className="mobile-stat-badge" style={{ color: '#f59e0b' }}>
-                  <Flame size={18} fill="#f59e0b" /> <span>{user.streak} Streak</span>
+                  <Flame size={18} fill="#f59e0b" /> <span>{user.streak}</span>
                 </div>
               </div>
             )}
 
             <div className="mobile-drawer-links">
               <Link to="/insights" onClick={closeMenu} className={`mobile-nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`}>
-                <Sparkles size={20} /> Showcase & Insights
+                <Sparkles size={20} /> {t('showcaseInsights') || 'Showcase'}
               </Link>
               <Link to="/courses" onClick={closeMenu} className={`mobile-nav-item ${isActive('/courses') ? 'active' : ''}`}>
-                <BookOpen size={20} /> Course Catalog
+                <BookOpen size={20} /> {t('courses')}
               </Link>
 
               {user && (
                 <>
                   <Link to="/dashboard" onClick={closeMenu} className={`mobile-nav-item ${isActive('/dashboard') ? 'active' : ''}`}>
-                    <LayoutDashboard size={20} /> Learner Dashboard
+                    <LayoutDashboard size={20} /> {t('dashboard')}
                   </Link>
                   {user.is_admin && (
                     <Link to="/admin" onClick={closeMenu} className={`mobile-nav-item ${isActive('/admin') ? 'active' : ''}`} style={{ color: 'var(--accent-purple)' }}>
-                      <ShieldAlert size={20} /> Admin Portal
+                      <ShieldAlert size={20} /> {t('adminPortal') || 'Admin Portal'}
                     </Link>
                   )}
                   {user.has_completed_placement_test && (
                     <>
                       <Link to="/learning-path" onClick={closeMenu} className={`mobile-nav-item ${isActive('/learning-path') ? 'active' : ''}`}>
-                        <Compass size={20} /> Learning Path
+                        <Compass size={20} /> {t('learningPath')}
                       </Link>
                       <Link to="/practice-hub" onClick={closeMenu} className={`mobile-nav-item ${isActive('/practice-hub') ? 'active' : ''}`}>
-                        <Zap size={20} /> Practice Hub
+                        <Zap size={20} /> {t('practiceHub')}
                       </Link>
                       <Link to="/conversation" onClick={closeMenu} className={`mobile-nav-item ${isActive('/conversation') ? 'active' : ''}`}>
-                        <MessageSquare size={20} /> AI Voice Tutor
+                        <MessageSquare size={20} /> {t('aiLab')}
                       </Link>
                       <Link to="/stories" onClick={closeMenu} className={`mobile-nav-item ${isActive('/stories') ? 'active' : ''}`}>
-                        <BookOpen size={20} /> Interactive Stories
+                        <BookOpen size={20} /> {t('stories')}
                       </Link>
                       <Link to="/friends" onClick={closeMenu} className={`mobile-nav-item ${isActive('/friends') ? 'active' : ''}`}>
-                        <Trophy size={20} /> Social & Leagues
+                        <Trophy size={20} /> {t('social')}
                       </Link>
                       <Link to="/shop" onClick={closeMenu} className={`mobile-nav-item ${isActive('/shop') ? 'active' : ''}`}>
-                        <Gem size={20} /> Rewards Shop
+                        <Gem size={20} /> {t('shop')}
                       </Link>
                     </>
                   )}
                   <Link to="/profile" onClick={closeMenu} className={`mobile-nav-item ${isActive('/profile') ? 'active' : ''}`}>
-                    <User size={20} /> My Profile & Preferences
+                    <User size={20} /> {t('profile')}
                   </Link>
                 </>
               )}
@@ -222,12 +222,12 @@ const Navbar = () => {
             <div className="mobile-drawer-footer">
               {user ? (
                 <button onClick={handleLogout} className="btn btn-outline" style={{ width: '100%', justifyContent: 'center' }}>
-                  <LogOut size={18} /> Logout
+                  <LogOut size={18} /> {t('logout')}
                 </button>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <Link to="/login" onClick={closeMenu} className="btn btn-secondary" style={{ justifyContent: 'center' }}>Login</Link>
-                  <Link to="/register" onClick={closeMenu} className="btn btn-primary" style={{ justifyContent: 'center' }}>Get Started</Link>
+                  <Link to="/login" onClick={closeMenu} className="btn btn-secondary" style={{ justifyContent: 'center' }}>{t('login')}</Link>
+                  <Link to="/register" onClick={closeMenu} className="btn btn-primary" style={{ justifyContent: 'center' }}>{t('getStarted')}</Link>
                 </div>
               )}
             </div>
@@ -240,23 +240,23 @@ const Navbar = () => {
         <div className="mobile-bottom-nav">
           <Link to="/dashboard" className={`bottom-nav-item ${isActive('/dashboard') ? 'active' : ''}`}>
             <LayoutDashboard size={20} />
-            <span>Dashboard</span>
+            <span>{t('dashboard')}</span>
           </Link>
           <Link to="/learning-path" className={`bottom-nav-item ${isActive('/learning-path') || isActive('/courses') ? 'active' : ''}`}>
             <Compass size={20} />
-            <span>Learn</span>
+            <span>{t('learningPath')}</span>
           </Link>
           <Link to="/conversation" className={`bottom-nav-item ${isActive('/conversation') ? 'active' : ''}`}>
             <MessageSquare size={20} />
-            <span>AI Tutor</span>
+            <span>{t('aiLab')}</span>
           </Link>
           <Link to="/practice-hub" className={`bottom-nav-item ${isActive('/practice-hub') ? 'active' : ''}`}>
             <Zap size={20} />
-            <span>Practice</span>
+            <span>{t('practiceHub')}</span>
           </Link>
           <button onClick={() => setMobileMenuOpen(true)} className="bottom-nav-item">
             <MoreHorizontal size={20} />
-            <span>More</span>
+            <span>{t('more') || 'More'}</span>
           </button>
         </div>
       )}

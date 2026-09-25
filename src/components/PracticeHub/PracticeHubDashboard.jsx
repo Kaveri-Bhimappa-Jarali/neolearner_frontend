@@ -78,7 +78,7 @@ const PracticeHubDashboard = () => {
               <Heart size={20} color="#ff4b4b" fill="#ff4b4b" />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>HEARTS</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>{t('restoreHeartsTitle').split(' ')[0] || 'HEARTS'}</div>
               <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)' }}>{overview?.current_hearts ?? 5} / 5</div>
             </div>
           </div>
@@ -88,8 +88,8 @@ const PracticeHubDashboard = () => {
               <RotateCcw size={20} color="#1cb0f6" />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>SRS DUE</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)' }}>{overview?.due_srs_count ?? 0} Cards</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>{t('spacedRepetitionReviews').split(' ')[0] || 'SRS DUE'}</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)' }}>{overview?.due_srs_count ?? 0}</div>
             </div>
           </div>
 
@@ -98,8 +98,8 @@ const PracticeHubDashboard = () => {
               <Target size={20} color="#ff9600" />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>MISTAKES</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)' }}>{overview?.mistakes_count ?? 0} Items</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>{t('mistakesPractice').split(' ')[0] || 'MISTAKES'}</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)' }}>{overview?.mistakes_count ?? 0}</div>
             </div>
           </div>
 
@@ -108,8 +108,8 @@ const PracticeHubDashboard = () => {
               <Layers size={20} color="var(--primary-color)" />
             </div>
             <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>FLASHCARDS</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)' }}>{overview?.flashcards_deck_size ?? 20} In Deck</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold' }}>{t('flashcardsTitle').split(' ')[1] || 'FLASHCARDS'}</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)' }}>{overview?.flashcards_deck_size ?? 20}</div>
             </div>
           </div>
         </div>
