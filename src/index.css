@@ -1407,7 +1407,8 @@ a:hover {
 
 @media (max-width: 520px) {
   .admin-metrics-ribbon {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem !important;
   }
 
   .insights-hero-card {

@@ -121,8 +121,8 @@ const LearnerManagement = () => {
     <div>
       {/* Search & Actions Bar */}
       <div className="card" style={{ padding: '1.25rem', borderRadius: '18px', marginBottom: '1.5rem', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-        <form onSubmit={handleSearch} style={{ display: 'flex', gap: '0.75rem', flex: 1, flexWrap: 'wrap', width: '100%' }}>
-          <div style={{ flex: 1, minWidth: '200px', position: 'relative' }}>
+        <form onSubmit={handleSearch} style={{ display: 'flex', gap: '0.75rem', flex: '1 1 280px', minWidth: '240px' }}>
+          <div style={{ flex: 1, position: 'relative' }}>
             <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input
               type="text"
@@ -133,12 +133,12 @@ const LearnerManagement = () => {
               style={{ paddingLeft: '40px' }}
             />
           </div>
-          <button type="submit" className="btn btn-secondary" style={{ padding: '0.6rem 1.25rem', fontWeight: 'bold' }}>
+          <button type="submit" className="btn btn-secondary" style={{ padding: '0.6rem 1.25rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
             Search
           </button>
         </form>
 
-        <button className="btn btn-primary" onClick={openCreateModal} style={{ padding: '0.6rem 1.25rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', width: '100%' }}>
+        <button className="btn btn-primary" onClick={openCreateModal} style={{ padding: '0.6rem 1.25rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap', width: 'auto' }}>
           <Plus size={18} /> Add New Learner / Admin
         </button>
       </div>

@@ -281,7 +281,7 @@ const ConversationLab = () => {
                   key={i} 
                   style={{ 
                     alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                    maxWidth: '92%',
+                    maxWidth: msg.sender === 'user' ? '82%' : '85%',
                     width: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
@@ -290,11 +290,11 @@ const ConversationLab = () => {
                   }}
                 >
                   <div style={{
-                    padding: '0.85rem 1.15rem',
-                    borderRadius: msg.sender === 'user' ? '20px 20px 4px 20px' : '20px 20px 20px 4px',
+                    padding: '0.75rem 1.1rem',
+                    borderRadius: msg.sender === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                     background: msg.sender === 'user' ? 'var(--primary-color)' : 'var(--surface)',
                     color: msg.sender === 'user' ? '#ffffff' : 'var(--text-main)',
-                    fontSize: '0.95rem',
+                    fontSize: '0.92rem',
                     lineHeight: '1.5',
                     fontWeight: '600',
                     border: msg.sender === 'user' ? 'none' : '1px solid var(--border-color)',
@@ -302,6 +302,7 @@ const ConversationLab = () => {
                     wordBreak: 'break-word',
                     overflowWrap: 'break-word',
                     whiteSpace: 'pre-wrap',
+                    overflowX: 'auto',
                     maxWidth: '100%',
                     boxSizing: 'border-box'
                   }}>
