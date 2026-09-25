@@ -259,8 +259,36 @@ const DatabaseExplorer = () => {
       {/* TAB 1: LIVE DATA BROWSER */}
       {activeTab === 'data' && (
         <div className="admin-db-grid">
-          {/* Table List Sidebar */}
-          <div style={{
+          {/* Mobile Select Dropdown for Tables */}
+          <div className="admin-mobile-table-select-wrapper" style={{ marginBottom: '1rem' }}>
+            <label style={{ fontSize: '0.8rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.4rem', display: 'block' }}>
+              Select Table to Inspect:
+            </label>
+            <select
+              className="form-select admin-mobile-table-select"
+              value={selectedTable}
+              onChange={(e) => handleTableChange(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '0.75rem 1rem',
+                borderRadius: 'var(--radius-md)',
+                background: 'var(--surface-card)',
+                color: 'var(--primary-color)',
+                border: '1px solid var(--border-color)',
+                fontWeight: '800',
+                fontSize: '0.9rem'
+              }}
+            >
+              {overview?.tables?.map(t => (
+                <option key={t.name} value={t.name}>
+                  📊 Table: {t.name} ({t.row_count} rows)
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Table List Sidebar (Desktop/Tablet) */}
+          <div className="admin-desktop-table-sidebar" style={{
             background: 'var(--surface)', border: '1px solid var(--border-color)',
             borderRadius: '14px', padding: '1rem', overflow: 'hidden'
           }}>

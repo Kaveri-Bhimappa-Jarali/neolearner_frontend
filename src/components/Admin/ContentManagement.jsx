@@ -251,21 +251,21 @@ const ContentManagement = () => {
 
                 {/* Expanded Topics List */}
                 {isExpanded && (
-                  <div style={{ padding: '1rem 1.25rem 1.25rem 2.5rem', borderTop: '1px solid var(--border-color)', background: 'var(--background)' }}>
+                  <div className="content-topic-expanded-pad" style={{ borderTop: '1px solid var(--border-color)', background: 'var(--background)' }}>
                     {course.topics && course.topics.length > 0 ? (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         {course.topics.map((topic) => {
                           const isTopicExpanded = expandedTopicId === topic.id;
                           return (
                             <div key={topic.id} style={{ border: '1px solid var(--border-color)', borderRadius: '12px', background: 'var(--surface)', padding: '1rem' }}>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }} onClick={() => setExpandedTopicId(isTopicExpanded ? null : topic.id)}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', flexWrap: 'wrap' }} onClick={() => setExpandedTopicId(isTopicExpanded ? null : topic.id)}>
                                   <Layers size={18} color="#6366f1" />
                                   <span style={{ fontWeight: '800', fontSize: '1rem' }}>Topic #{topic.order}: {topic.title}</span>
                                   <span className="badge badge-purple" style={{ fontSize: '0.75rem' }}>{topic.cefr_level}</span>
                                 </div>
 
-                                <div style={{ display: 'flex', gap: '6px' }}>
+                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                   <button className="btn btn-secondary" onClick={() => openCreateLessonModal(topic.id)} style={{ padding: '4px 8px', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '3px' }}>
                                     <Plus size={13} /> Add Lesson
                                   </button>
@@ -282,8 +282,8 @@ const ContentManagement = () => {
                               <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px dashed var(--border-color)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                                 {topic.lessons && topic.lessons.length > 0 ? (
                                   topic.lessons.map((lesson) => (
-                                    <div key={lesson.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 10px', borderRadius: '8px', background: 'var(--background)', fontSize: '0.85rem' }}>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div key={lesson.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 10px', borderRadius: '8px', background: 'var(--background)', fontSize: '0.85rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                                         <FileText size={15} color="#10b981" />
                                         <span><strong>Lesson #{lesson.order}:</strong> {lesson.title}</span>
                                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>({lesson.duration_minutes} mins)</span>
@@ -364,7 +364,7 @@ const ContentManagement = () => {
                     </select>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1rem' }}>
                     <div>
                       <label style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>Level</label>
                       <select
@@ -403,7 +403,7 @@ const ContentManagement = () => {
               )}
 
               {modalType === 'topic' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1rem' }}>
                   <div>
                     <label style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>Sequence Order</label>
                     <input
@@ -426,7 +426,7 @@ const ContentManagement = () => {
               )}
 
               {modalType === 'lesson' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1rem' }}>
                   <div>
                     <label style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>Sequence Order</label>
                     <input

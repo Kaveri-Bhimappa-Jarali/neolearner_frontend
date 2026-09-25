@@ -99,7 +99,38 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      {/* Navigation Tabs Bar */}
+      {/* Mobile Select Tab Switcher (Visible on mobile screens) */}
+      <div className="admin-mobile-tab-wrapper" style={{ marginBottom: '1.25rem' }}>
+        <label style={{ fontSize: '0.8rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.4rem', display: 'block' }}>
+          Select Admin Module:
+        </label>
+        <select
+          className="form-select admin-mobile-tab-select"
+          value={activeTab}
+          onChange={(e) => setActiveTab(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '0.85rem 1rem',
+            borderRadius: 'var(--radius-md)',
+            background: 'var(--surface-card)',
+            color: 'var(--text-main)',
+            border: '1.5px solid var(--primary-color)',
+            fontWeight: '800',
+            fontSize: '0.95rem'
+          }}
+        >
+          <option value="overview">👥 Learner Management</option>
+          <option value="content">📖 Curriculum Studio</option>
+          <option value="achievements">🏆 Achievements Manager</option>
+          <option value="stories_adventures">🧭 Stories & Roleplay</option>
+          <option value="vocabulary">🔄 Vocabulary & SRS</option>
+          <option value="analytics">📊 Learning Analytics</option>
+          <option value="ai_monitoring">✨ AI & Recommendations</option>
+          <option value="database">🗄️ Universal DB Inspector</option>
+        </select>
+      </div>
+
+      {/* Desktop/Tablet Navigation Tabs Bar */}
       <div className="admin-tabs-bar" style={{ display: 'flex', gap: '0.65rem', overflowX: 'auto', paddingBottom: '0.75rem', marginBottom: '1.75rem', scrollbarWidth: 'thin' }}>
         {[
           { id: 'overview', label: 'Learner Management', icon: <Users size={16} /> },
