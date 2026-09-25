@@ -158,6 +158,7 @@ const LearnerManagement = () => {
                 <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '0.8rem', textTransform: 'uppercase' }}>
                   <th style={{ padding: '0.75rem' }}>Learner Name</th>
                   <th style={{ padding: '0.75rem' }}>Email</th>
+                  <th style={{ padding: '0.75rem' }}>Verification</th>
                   <th style={{ padding: '0.75rem' }}>Track</th>
                   <th style={{ padding: '0.75rem' }}>CEFR Level</th>
                   <th style={{ padding: '0.75rem' }}>Proficiency</th>
@@ -171,6 +172,17 @@ const LearnerManagement = () => {
                   <tr key={l.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                     <td style={{ padding: '0.85rem', fontWeight: 'bold', color: 'var(--text-main)' }}>{l.full_name}</td>
                     <td style={{ padding: '0.85rem', color: 'var(--text-muted)' }}>{l.email}</td>
+                    <td style={{ padding: '0.85rem' }}>
+                      {l.is_verified ? (
+                        <span className="badge" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#16a34a', border: '1px solid rgba(34, 197, 94, 0.4)', padding: '2px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '700' }}>
+                          Verified ✅
+                        </span>
+                      ) : (
+                        <span className="badge" style={{ background: 'rgba(234, 179, 8, 0.15)', color: '#ca8a04', border: '1px solid rgba(234, 179, 8, 0.4)', padding: '2px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '700' }} title={l.verification_code ? `Verification Code: ${l.verification_code}` : 'Unverified'}>
+                          Pending ⏳ {l.verification_code ? `(${l.verification_code})` : ''}
+                        </span>
+                      )}
+                    </td>
                     <td style={{ padding: '0.85rem' }}>
                       <span className="badge badge-blue">{l.target_language}</span>
                     </td>
@@ -209,6 +221,7 @@ const LearnerManagement = () => {
           <div className="card" style={{ maxWidth: '600px', width: '100%', padding: '2rem', borderRadius: '20px' }}>
             <h3 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '1rem' }}>Learner Profile: {selectedLearner.full_name}</h3>
             <p><strong>Email:</strong> {selectedLearner.email}</p>
+            <p><strong>Verification Status:</strong> {selectedLearner.is_verified ? 'Verified ✅' : `Pending ⏳ (Code: ${selectedLearner.verification_code || 'N/A'})`}</p>
             <p><strong>Target Language:</strong> {selectedLearner.target_language}</p>
             <p><strong>CEFR & Benchmark:</strong> {selectedLearner.cefr_level} — {selectedLearner.benchmark_level}</p>
             <p><strong>Predicted Proficiency Index:</strong> {selectedLearner.predicted_score}%</p>
