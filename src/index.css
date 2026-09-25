@@ -2203,6 +2203,52 @@ a:hover {
   .conversation-suggestions-list::-webkit-scrollbar {
     display: none;
   }
+}
+
+@media (max-width: 480px) {
+  .conversation-lab-wrapper {
+    padding: 0.45rem 0.45rem 7rem 0.45rem;
+  }
+
+  .conversation-header {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .conversation-header > div:first-child {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .scenario-card-btn {
+    min-width: 118px;
+    padding: 0.6rem 0.7rem;
+  }
+
+  .chat-controls-row,
+  .chat-input-row {
+    flex-wrap: wrap;
+  }
+
+  .chat-send-btn {
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .chat-speak-btn,
+  .chat-finish-btn {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 0;
+  }
+
+  .conversation-suggestion-label {
+    white-space: normal;
+  }
+
+  .conversation-suggestions-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 
   .conversation-suggestion-chip {
     white-space: nowrap;
@@ -2211,24 +2257,6 @@ a:hover {
     padding: 6px 12px;
     min-height: 38px;
     width: auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .conversation-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .chat-controls-row {
-    flex-direction: row;
-  }
-
-  .chat-speak-btn, .chat-finish-btn {
-    font-size: 0.85rem;
-    padding: 0.65rem 0.5rem;
-    min-height: 44px;
   }
 }
 
