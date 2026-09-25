@@ -2413,5 +2413,27 @@ a:hover {
   }
 }
 
+/* ==========================================
+   Admin Test Management Responsive Rules
+   ========================================== */
+@media (max-width: 640px) {
+  .admin-test-desktop-view {
+    display: none !important;
+  }
+  .admin-test-mobile-view {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 641px) {
+  .admin-test-desktop-view {
+    display: block !important;
+  }
+  .admin-test-mobile-view {
+    display: none !important;
+  }
+}
+
+
 
 

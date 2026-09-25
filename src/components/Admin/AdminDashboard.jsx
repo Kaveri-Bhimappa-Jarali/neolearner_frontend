@@ -15,8 +15,10 @@ import AchievementManagement from './AchievementManagement';
 import DatabaseExplorer from './DatabaseExplorer';
 import StoryAdventureManagement from './StoryAdventureManagement';
 import VocabularyManagement from './VocabularyManagement';
+import TestManagement from './TestManagement';
 import Badge from '../ui/Badge';
 import StatCard from '../ui/StatCard';
+import { FileCheck2 } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -120,6 +122,7 @@ const AdminDashboard = () => {
           }}
         >
           <option value="overview">👥 Learner Management</option>
+          <option value="tests">📝 Assessment Tests</option>
           <option value="content">📖 Curriculum Studio</option>
           <option value="achievements">🏆 Achievements Manager</option>
           <option value="stories_adventures">🧭 Stories & Roleplay</option>
@@ -134,6 +137,7 @@ const AdminDashboard = () => {
       <div className="admin-tabs-bar" style={{ display: 'flex', gap: '0.65rem', overflowX: 'auto', paddingBottom: '0.75rem', marginBottom: '1.75rem', scrollbarWidth: 'thin' }}>
         {[
           { id: 'overview', label: 'Learner Management', icon: <Users size={16} /> },
+          { id: 'tests', label: 'Assessment Tests', icon: <FileCheck2 size={16} /> },
           { id: 'content', label: 'Curriculum Studio', icon: <BookOpen size={16} /> },
           { id: 'achievements', label: 'Achievements Manager', icon: <Award size={16} /> },
           { id: 'stories_adventures', label: 'Stories & Roleplay', icon: <Compass size={16} /> },
@@ -164,6 +168,7 @@ const AdminDashboard = () => {
 
       {/* Active Tab Panel Body */}
       {activeTab === 'overview' && <LearnerManagement />}
+      {activeTab === 'tests' && <TestManagement />}
       {activeTab === 'content' && <ContentManagement />}
       {activeTab === 'achievements' && <AchievementManagement />}
       {activeTab === 'stories_adventures' && <StoryAdventureManagement />}
