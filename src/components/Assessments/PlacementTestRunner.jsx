@@ -52,13 +52,8 @@ const PlacementTestRunner = () => {
       setSubmissions([]);
     } catch (err) {
       console.error('Failed to start Initial Exam:', err);
-      if (err.response?.status === 401) {
-        setError('Authentication required. Please log in again.');
-        setTimeout(() => navigate('/login'), 2000);
-      } else {
-        const detailMsg = err.response?.data?.detail || (err.message === 'Network Error' ? 'Cannot connect to backend server.' : 'Could not generate Initial Assessment. Please try again.');
-        setError(detailMsg);
-      }
+      const detailMsg = err.response?.data?.detail || (err.message === 'Network Error' ? 'Cannot connect to backend server. Please try again.' : 'Could not generate Initial Assessment. Please try again.');
+      setError(detailMsg);
     } finally {
       setLoading(false);
     }
