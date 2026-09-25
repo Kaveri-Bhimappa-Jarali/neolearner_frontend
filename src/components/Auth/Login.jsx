@@ -20,9 +20,12 @@ const Login = () => {
   const [customGoogleName, setCustomGoogleName] = useState('');
 
   const [isResetMode, setIsResetMode] = useState(false);
+  const [isVerifyMode, setIsVerifyMode] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [devCode, setDevCode] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  const { user, login, googleLogin, resetPassword } = useAuth();
+  const { user, login, googleLogin, resetPassword, verifyEmail, resendCode } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -119,9 +122,48 @@ const Login = () => {
       }
     } catch (err) {
       const msg = err.response?.data?.detail || (err.message === 'Network Error' ? 'Cannot connect to backend server. Please check your connection.' : 'Invalid email or password');
+      if (msg.toLowerCase().includes('not verified')) {
+        setIsVerifyMode(true);
+      }
       setError(msg);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleVerifySubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMsg('');
+
+    if (!verificationCode.trim()) {
+      setError('Please enter the 6-digit verification code');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await verifyEmail(email.trim().toLowerCase(), verificationCode.trim(), password);
+    } catch (err) {
+      const msg = err.response?.data?.detail || 'Invalid verification code. Please check and try again.';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    setError('');
+    setSuccessMsg('');
+    try {
+      const res = await resendCode(email.trim().toLowerCase());
+      if (res.data?.verification_code) {
+        setDevCode(res.data.verification_code);
+      }
+      setSuccessMsg('A new 6-digit verification code has been generated!');
+    } catch (err) {
+      const msg = err.response?.data?.detail || 'Failed to resend verification code.';
+      setError(msg);
     }
   };
 
@@ -304,54 +346,116 @@ const Login = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
-            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
-                <Mail size={16} color="var(--primary-color)" /> Email Address
-              </label>
-              <input 
-                type="email" 
-                className="form-input" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                required 
-                placeholder="learner@example.com"
-                style={{
-                  width: '100%',
-                  padding: '0.85rem 1rem',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--border-color)',
-                  color: 'var(--text-main)',
-                  background: 'var(--background)',
-                  fontSize: '0.95rem'
-                }}
-              />
-            </div>
-
-            <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-                <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-main)', fontSize: '0.88rem', margin: 0 }}>
-                  <Lock size={16} color="var(--primary-color)" /> {isResetMode ? 'New Password (min 6 chars)' : 'Password'}
-                </label>
-                <button
-                  type="button"
-                  onClick={() => { setIsResetMode(!isResetMode); setError(''); setSuccessMsg(''); }}
-                  style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontSize: '0.82rem', fontWeight: '700', cursor: 'pointer', padding: 0 }}
-                >
-                  {isResetMode ? '← Back to Login' : 'Forgot / Reset Password?'}
-                </button>
+          {isVerifyMode ? (
+            <form onSubmit={handleVerifySubmit}>
+              <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+                <div style={{ padding: '0.85rem', background: 'rgba(20, 184, 166, 0.12)', color: 'var(--primary-color)', borderRadius: '50%', width: 'fit-content', margin: '0 auto 1rem' }}>
+                  <Mail size={32} />
+                </div>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.3rem' }}>Account Verification Required</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                  Please enter the 6-digit code sent to <strong style={{ color: 'var(--text-main)' }}>{email}</strong>
+                </p>
               </div>
-              <div style={{ position: 'relative' }}>
+
+              {devCode && (
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(99, 102, 241, 0.12))',
+                  border: '2px dashed var(--primary-color)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '1rem',
+                  marginBottom: '1.25rem',
+                  textAlign: 'center'
+                }}>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--primary-color)', fontWeight: '800', textTransform: 'uppercase', marginBottom: '4px' }}>
+                    🔑 Verification Code (On-Device Helper)
+                  </div>
+                  <div style={{ fontSize: '2.2rem', fontWeight: '900', color: 'var(--text-main)', letterSpacing: '6px', fontFamily: 'monospace' }}>
+                    {devCode}
+                  </div>
+                </div>
+              )}
+
+              {error && (
+                <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', fontSize: '0.88rem' }}>
+                  ⚠️ {error}
+                </div>
+              )}
+
+              {successMsg && (
+                <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--success-bg)', color: 'var(--success)', borderRadius: 'var(--radius-md)', fontSize: '0.88rem' }}>
+                  ✅ {successMsg}
+                </div>
+              )}
+
+              <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+                <label className="form-label" style={{ fontWeight: 700, marginBottom: '0.4rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+                  6-Digit Verification Code
+                </label>
                 <input 
-                  type={showPassword ? 'text' : 'password'} 
-                  className="form-input" 
-                  value={password} 
-                  onChange={(e) => setPassword(e.target.value)} 
-                  required 
-                  placeholder="••••••••"
+                  type="text"
+                  maxLength="6"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value.replace(/[^0-9]/g, ''))}
+                  required
+                  placeholder="123456"
                   style={{
                     width: '100%',
-                    padding: '0.85rem 2.8rem 0.85rem 1rem',
+                    padding: '0.85rem',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-color)',
+                    fontSize: '1.75rem',
+                    textAlign: 'center',
+                    letterSpacing: '8px',
+                    fontWeight: '900',
+                    color: 'var(--text-main)',
+                    background: 'var(--background)'
+                  }}
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="btn btn-primary" 
+                style={{ width: '100%', padding: '0.95rem', borderRadius: 'var(--radius-md)', fontWeight: '800', fontSize: '1rem' }} 
+                disabled={loading}
+              >
+                {loading ? 'VERIFYING...' : 'VERIFY & LOG IN 🚀'}
+              </button>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.25rem', fontSize: '0.88rem' }}>
+                <button 
+                  type="button" 
+                  onClick={handleResendCode}
+                  style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontWeight: 800, cursor: 'pointer', padding: 0 }}
+                >
+                  Resend Code
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => { setIsVerifyMode(false); setError(''); setSuccessMsg(''); }}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontWeight: 600, cursor: 'pointer', padding: 0 }}
+                >
+                  Back to Login
+                </button>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+                <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+                  <Mail size={16} color="var(--primary-color)" /> Email Address
+                </label>
+                <input 
+                  type="email" 
+                  className="form-input" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  required 
+                  placeholder="learner@example.com"
+                  style={{
+                    width: '100%',
+                    padding: '0.85rem 1rem',
                     borderRadius: 'var(--radius-md)',
                     border: '1px solid var(--border-color)',
                     color: 'var(--text-main)',
@@ -359,65 +463,110 @@ const Login = () => {
                     fontSize: '0.95rem'
                   }}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{
-                    position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
-                    background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px'
-                  }}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
               </div>
-            </div>
-            
-            {successMsg && (
-              <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--success-bg)', color: 'var(--success)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem' }}>
-                ✅ {successMsg}
-              </div>
-            )}
 
-            {error && (
-              <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(239,68,68,0.3)', fontSize: '0.9rem' }}>
-                ⚠️ {error}
-                {error.includes('No account found') && (
-                  <div style={{ marginTop: '0.5rem' }}>
-                    <Link to="/register" style={{ fontWeight: '700', color: 'var(--primary-color)', textDecoration: 'underline' }}>
-                      Click here to Create a Free Account →
-                    </Link>
-                  </div>
-                )}
-                {error.includes('Incorrect password') && (
-                  <div style={{ marginTop: '0.65rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                    <button
-                      type="button"
-                      onClick={() => { setIsResetMode(true); setError(''); }}
-                      style={{ background: 'var(--primary-color)', color: '#fff', border: 'none', padding: '0.45rem 0.85rem', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', fontSize: '0.82rem' }}
-                    >
-                      🔑 Reset Password for {email}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleOpenGoogleModal}
-                      style={{ background: 'var(--surface)', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.45rem 0.85rem', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', fontSize: '0.82rem' }}
-                    >
-                      Sign In with Google
-                    </button>
-                  </div>
-                )}
+              <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                  <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-main)', fontSize: '0.88rem', margin: 0 }}>
+                    <Lock size={16} color="var(--primary-color)" /> {isResetMode ? 'New Password (min 6 chars)' : 'Password'}
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => { setIsResetMode(!isResetMode); setError(''); setSuccessMsg(''); }}
+                    style={{ background: 'none', border: 'none', color: 'var(--primary-color)', fontSize: '0.82rem', fontWeight: '700', cursor: 'pointer', padding: 0 }}
+                  >
+                    {isResetMode ? '← Back to Login' : 'Forgot / Reset Password?'}
+                  </button>
+                </div>
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type={showPassword ? 'text' : 'password'} 
+                    className="form-input" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    required 
+                    placeholder="••••••••"
+                    style={{
+                      width: '100%',
+                      padding: '0.85rem 2.8rem 0.85rem 1rem',
+                      borderRadius: 'var(--radius-md)',
+                      border: '1px solid var(--border-color)',
+                      color: 'var(--text-main)',
+                      background: 'var(--background)',
+                      fontSize: '0.95rem'
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+                      background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px'
+                    }}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
-            )}
+              
+              {successMsg && (
+                <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--success-bg)', color: 'var(--success)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem' }}>
+                  ✅ {successMsg}
+                </div>
+              )}
 
-            <button 
-              type="submit" 
-              className="btn btn-primary" 
-              style={{ width: '100%', padding: '0.95rem', borderRadius: 'var(--radius-md)', fontWeight: '800', fontSize: '1rem' }} 
-              disabled={loading}
-            >
-              {loading ? (isResetMode ? 'RESETTING...' : 'LOGGING IN...') : (isResetMode ? 'RESET PASSWORD & LOG IN' : 'LOG IN TO NEOLEARNER')}
-            </button>
-          </form>
+              {error && (
+                <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(239,68,68,0.3)', fontSize: '0.9rem' }}>
+                  ⚠️ {error}
+                  {error.toLowerCase().includes('not verified') && (
+                    <div style={{ marginTop: '0.65rem' }}>
+                      <button
+                        type="button"
+                        onClick={() => { setIsVerifyMode(true); setError(''); }}
+                        style={{ background: 'var(--primary-color)', color: '#fff', border: 'none', padding: '0.55rem 1rem', borderRadius: 'var(--radius-md)', fontWeight: '800', cursor: 'pointer', fontSize: '0.88rem' }}
+                      >
+                        🔑 Enter 6-Digit Verification Code →
+                      </button>
+                    </div>
+                  )}
+                  {error.includes('No account found') && (
+                    <div style={{ marginTop: '0.5rem' }}>
+                      <Link to="/register" style={{ fontWeight: '700', color: 'var(--primary-color)', textDecoration: 'underline' }}>
+                        Click here to Create a Free Account →
+                      </Link>
+                    </div>
+                  )}
+                  {error.includes('Incorrect password') && (
+                    <div style={{ marginTop: '0.65rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      <button
+                        type="button"
+                        onClick={() => { setIsResetMode(true); setError(''); }}
+                        style={{ background: 'var(--primary-color)', color: '#fff', border: 'none', padding: '0.45rem 0.85rem', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', fontSize: '0.82rem' }}
+                      >
+                        🔑 Reset Password for {email}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleOpenGoogleModal}
+                        style={{ background: 'var(--surface)', color: 'var(--text-main)', border: '1px solid var(--border-color)', padding: '0.45rem 0.85rem', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', fontSize: '0.82rem' }}
+                      >
+                        Sign In with Google
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <button 
+                type="submit" 
+                className="btn btn-primary" 
+                style={{ width: '100%', padding: '0.95rem', borderRadius: 'var(--radius-md)', fontWeight: '800', fontSize: '1rem' }} 
+                disabled={loading}
+              >
+                {loading ? (isResetMode ? 'RESETTING...' : 'LOGGING IN...') : (isResetMode ? 'RESET PASSWORD & LOG IN' : 'LOG IN TO NEOLEARNER')}
+              </button>
+            </form>
+          )}
 
           <div style={{ textAlign: 'center', marginTop: '1.75rem', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-muted)' }}>
             Don't have an account yet? <Link to="/register" style={{ color: 'var(--primary-color)', fontWeight: 800 }}>Create One Now</Link>

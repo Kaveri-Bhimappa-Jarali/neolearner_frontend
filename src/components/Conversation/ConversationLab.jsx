@@ -51,10 +51,12 @@ const ConversationLab = () => {
   const [finalSummary, setFinalSummary] = useState(null);
   const [error, setError] = useState('');
 
-  const chatEndRef = useRef(null);
+  const messagesListRef = useRef(null);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesListRef.current) {
+      messagesListRef.current.scrollTop = messagesListRef.current.scrollHeight;
+    }
   }, [messages, sending]);
 
   const handleStartSession = async (scenarioId) => {
@@ -264,7 +266,7 @@ const ConversationLab = () => {
         <div className="card conversation-chat-card">
           
           {/* Chat Messages Log */}
-          <div className="conversation-messages-list">
+          <div className="conversation-messages-list" ref={messagesListRef}>
             {loading ? (
               <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-muted)', fontWeight: '600' }}>
                 Connecting to AI native tutor...
