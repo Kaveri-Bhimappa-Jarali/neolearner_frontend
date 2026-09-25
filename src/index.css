@@ -2027,10 +2027,12 @@ a:hover {
 
 .conversation-main-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
   align-items: start;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   box-sizing: border-box;
 }
 
@@ -2052,15 +2054,22 @@ a:hover {
   box-shadow: var(--shadow-md);
   box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .conversation-messages-list {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
   padding-right: 0.4rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -2072,6 +2081,8 @@ a:hover {
   padding: 0.75rem 0;
   border-top: 1px solid var(--border-color);
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   box-sizing: border-box;
 }
 
@@ -2089,6 +2100,8 @@ a:hover {
   gap: 8px;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .conversation-suggestion-chip {
@@ -2108,6 +2121,8 @@ a:hover {
   min-height: 40px;
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .conversation-suggestion-chip:hover,
@@ -2124,6 +2139,7 @@ a:hover {
   gap: 0.65rem;
   margin-top: 0.85rem;
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
 }
 
@@ -2131,7 +2147,9 @@ a:hover {
   display: flex;
   gap: 8px;
   width: 100%;
+  min-width: 0;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .chat-text-input {
@@ -2144,6 +2162,7 @@ a:hover {
   background: var(--background);
   color: var(--text-main);
   min-height: 44px;
+  box-sizing: border-box;
 }
 
 .chat-send-btn {
@@ -2154,13 +2173,16 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .chat-controls-row {
   display: flex;
   gap: 8px;
   width: 100%;
+  min-width: 0;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .chat-speak-btn,
@@ -2173,6 +2195,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  box-sizing: border-box;
 }
 
 @media (min-width: 640px) {

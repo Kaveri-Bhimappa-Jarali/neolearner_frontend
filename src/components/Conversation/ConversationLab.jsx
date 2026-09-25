@@ -55,10 +55,11 @@ const ConversationLab = () => {
   const chatEndRef = useRef(null);
 
   useEffect(() => {
-    if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    } else if (messagesListRef.current) {
-      messagesListRef.current.scrollTop = messagesListRef.current.scrollHeight;
+    if (messagesListRef.current) {
+      messagesListRef.current.scrollTo({
+        top: messagesListRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
     }
   }, [messages, sending]);
 
