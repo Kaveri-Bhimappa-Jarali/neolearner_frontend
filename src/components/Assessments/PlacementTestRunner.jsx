@@ -96,6 +96,42 @@ const PlacementTestRunner = () => {
     );
   };
 
+  const handleLeftClick = (leftWord) => {
+    if (isAnswered || matchedPairs[leftWord]) return;
+    if (selectedLeft === leftWord) {
+      setSelectedLeft(null);
+      return;
+    }
+    setSelectedLeft(leftWord);
+    if (selectedRight) {
+      checkMatchPair(leftWord, selectedRight);
+    }
+  };
+
+  const handleRightClick = (rightWord) => {
+    if (isAnswered || Object.values(matchedPairs).includes(rightWord)) return;
+    if (selectedRight === rightWord) {
+      setSelectedRight(null);
+      return;
+    }
+    setSelectedRight(rightWord);
+    if (selectedLeft) {
+      checkMatchPair(selectedLeft, rightWord);
+    }
+  };
+
+  const checkMatchPair = (left, right) => {
+    const isPairCorrect = matchPairData.rawPairs.some(p => p === `${left}:${right}`);
+    if (isPairCorrect) {
+      try { if (sounds.playChime) sounds.playChime(); else if (sounds.playCorrect) sounds.playCorrect(); } catch (e) {}
+      setMatchedPairs(prev => ({ ...prev, [left]: right }));
+    } else {
+      try { if (sounds.playIncorrect) sounds.playIncorrect(); } catch (e) {}
+    }
+    setSelectedLeft(null);
+    setSelectedRight(null);
+  };
+
   const handleCheckAnswer = () => {
     if (isAnswered) return;
 
@@ -119,13 +155,15 @@ const PlacementTestRunner = () => {
                 (cleanTrans && cleanUser === cleanTrans);
       expText = correctAns?.explanation || (correct ? 'Correct spelling!' : `Expected: ${correctAns?.text}`);
     } else if (currentQ.type === 'match_pairs') {
-      correct = true;
-      expText = 'All vocabulary pairs matched successfully!';
+      const totalPairsCount = matchPairData.leftWords.length;
+      const matchedCount = Object.keys(matchedPairs).length;
+      correct = totalPairsCount > 0 ? matchedCount === totalPairsCount : true;
+      expText = correct ? 'All vocabulary pairs matched successfully!' : `Matched ${matchedCount} of ${totalPairsCount} pairs.`;
     } else {
-      const chosenAns = currentQ.answers.find(a => a.id === selectedAnswer);
+      const chosenAns = currentQ.answers?.find(a => a.id === selectedAnswer);
       correct = !!chosenAns?.is_correct;
-      const correctAns = currentQ.answers.find(a => a.is_correct);
-      expText = chosenAns?.explanation || correctAns?.explanation || (correct ? 'Correct!' : `Correct answer: ${correctAns?.text}`);
+      const correctAns = currentQ.answers?.find(a => a.is_correct);
+      expText = chosenAns?.explanation || correctAns?.explanation || (correct ? 'Correct!' : `Correct answer: ${correctAns?.text || ''}`);
     }
 
     setIsCorrect(correct);
@@ -351,10 +389,10 @@ const PlacementTestRunner = () => {
           {currentQ?.text}
         </h2>
 
-        {/* Question Options */}
-        {currentQ?.type === 'multiple_choice' && (
+        {/* Question Options for multiple_choice, listening, translation, mcq, or any question with options */}
+        {(currentQ?.type === 'multiple_choice' || currentQ?.type === 'listening' || currentQ?.type === 'translation' || currentQ?.type === 'mcq' || (currentQ?.answers?.length > 1 && currentQ?.type !== 'match_pairs')) && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-            {currentQ.answers.map(ans => {
+            {currentQ.answers?.map(ans => {
               const isSelected = selectedAnswer === ans.id;
               let bg = 'var(--surface)';
               let border = 'var(--border-color)';
@@ -386,7 +424,7 @@ const PlacementTestRunner = () => {
                     color: 'var(--text-main)',
                     display: 'flex',
                     alignItems: 'center',
-                    justify: 'space-between',
+                    justifyContent: 'space-between',
                     transition: 'all 0.2s ease'
                   }}
                 >
@@ -421,6 +459,103 @@ const PlacementTestRunner = () => {
                   <Mic size={20} color={isListening ? '#ffffff' : 'var(--primary-color)'} />
                 </button>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Match Pairs UI */}
+        {currentQ?.type === 'match_pairs' && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', margin: '1rem 0' }}>
+            {/* Left Column */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Target Language Word
+              </div>
+              {matchPairData.leftWords.map((lw, idx) => {
+                const isMatched = matchedPairs[lw];
+                const isSelected = selectedLeft === lw;
+                let bg = 'var(--surface)';
+                let border = 'var(--border-color)';
+                if (isMatched) {
+                  bg = 'rgba(16, 185, 129, 0.15)';
+                  border = 'var(--success)';
+                } else if (isSelected) {
+                  bg = 'rgba(20, 184, 166, 0.15)';
+                  border = 'var(--primary-color)';
+                }
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleLeftClick(lw)}
+                    disabled={isAnswered || Boolean(isMatched)}
+                    style={{
+                      padding: '0.95rem 1.15rem',
+                      borderRadius: 'var(--radius-md)',
+                      border: `2px solid ${border}`,
+                      background: bg,
+                      fontWeight: '700',
+                      fontSize: '1rem',
+                      color: 'var(--text-main)',
+                      textAlign: 'left',
+                      cursor: (isAnswered || isMatched) ? 'default' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      boxShadow: isSelected ? 'var(--shadow-teal)' : 'none'
+                    }}
+                  >
+                    <span>{lw}</span>
+                    {isMatched && <CheckCircle2 size={18} color="var(--success)" />}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Right Column */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Meaning / Translation
+              </div>
+              {matchPairData.rightWords.map((rw, idx) => {
+                const isMatched = Object.values(matchedPairs).includes(rw);
+                const isSelected = selectedRight === rw;
+                let bg = 'var(--surface)';
+                let border = 'var(--border-color)';
+                if (isMatched) {
+                  bg = 'rgba(16, 185, 129, 0.15)';
+                  border = 'var(--success)';
+                } else if (isSelected) {
+                  bg = 'rgba(20, 184, 166, 0.15)';
+                  border = 'var(--primary-color)';
+                }
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleRightClick(rw)}
+                    disabled={isAnswered || isMatched}
+                    style={{
+                      padding: '0.95rem 1.15rem',
+                      borderRadius: 'var(--radius-md)',
+                      border: `2px solid ${border}`,
+                      background: bg,
+                      fontWeight: '700',
+                      fontSize: '1rem',
+                      color: 'var(--text-main)',
+                      textAlign: 'left',
+                      cursor: (isAnswered || isMatched) ? 'default' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justify: 'space-between',
+                      boxShadow: isSelected ? 'var(--shadow-teal)' : 'none'
+                    }}
+                  >
+                    <span>{rw}</span>
+                    {isMatched && <CheckCircle2 size={18} color="var(--success)" />}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
