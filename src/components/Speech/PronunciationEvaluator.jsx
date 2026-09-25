@@ -132,17 +132,17 @@ const PronunciationEvaluator = ({
     >
       
       {/* Target Word / Phrase Box */}
-      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+      <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
         <Badge variant="teal" icon={Sparkles}>Target Phonetic Phrase</Badge>
 
-        <h2 style={{ fontSize: '2.4rem', fontWeight: '900', color: 'var(--text-main)', margin: '1rem 0', lineHeight: '1.3' }}>
+        <h2 style={{ fontSize: 'clamp(1.4rem, 4.5vw, 2.2rem)', fontWeight: '900', color: 'var(--text-main)', margin: '0.85rem 0', lineHeight: '1.3', wordBreak: 'break-word' }}>
           "{targetText}"
         </h2>
 
         <button 
           onClick={handlePlayAudio}
           className="btn btn-secondary"
-          style={{ padding: '0.65rem 1.5rem', fontSize: '0.92rem', gap: '8px', borderRadius: '9999px', fontWeight: '700' }}
+          style={{ padding: '0.65rem 1.25rem', fontSize: '0.88rem', gap: '8px', borderRadius: '9999px', fontWeight: '700' }}
         >
           <Volume2 size={18} color="var(--primary-color)" /> Listen Target Audio
         </button>
@@ -150,7 +150,7 @@ const PronunciationEvaluator = ({
 
       {/* Voice Recorder Control Box */}
       <div style={{
-        background: 'var(--surface)', padding: '2rem 1.5rem', borderRadius: 'var(--radius-lg)', textAlign: 'center',
+        background: 'var(--surface)', padding: '1.5rem 1rem', borderRadius: 'var(--radius-lg)', textAlign: 'center',
         border: isListening ? '2px solid var(--primary-color)' : '1px solid var(--border-color)',
         boxShadow: isListening ? 'var(--shadow-teal)' : 'none',
         marginBottom: '1.5rem', transition: 'all 0.3s ease'
@@ -161,28 +161,28 @@ const PronunciationEvaluator = ({
           type="button"
           onClick={isListening ? handleStopListening : handleStartListening}
           style={{
-            width: '88px', height: '88px', borderRadius: '50%', border: 'none',
+            width: '76px', height: '76px', borderRadius: '50%', border: 'none',
             background: isListening ? 'var(--error)' : 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))',
             color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center',
             margin: '0 auto 1.25rem', cursor: 'pointer', transition: 'transform 0.2s ease',
             boxShadow: isListening ? '0 0 25px rgba(239, 68, 68, 0.5)' : 'var(--shadow-teal)'
           }}
         >
-          {isListening ? <MicOff size={40} /> : <Mic size={40} />}
+          {isListening ? <MicOff size={36} /> : <Mic size={36} />}
         </button>
 
-        <div style={{ fontWeight: '800', fontSize: '1.05rem', color: isListening ? 'var(--error)' : 'var(--text-main)', marginBottom: '0.5rem' }}>
+        <div style={{ fontWeight: '800', fontSize: '1rem', color: isListening ? 'var(--error)' : 'var(--text-main)', marginBottom: '0.5rem' }}>
           {isListening ? 'Listening... Speak Now' : 'Click Microphone & Pronounce Phrase'}
         </div>
 
         {/* Recognized Transcript Display */}
-        <div style={{ minHeight: '52px', padding: '0.85rem', background: 'var(--background)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', marginTop: '1rem' }}>
+        <div style={{ minHeight: '48px', padding: '0.75rem', background: 'var(--background)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', marginTop: '1rem', wordBreak: 'break-word' }}>
           {transcript ? (
-            <span style={{ fontSize: '1.15rem', fontWeight: '700', color: 'var(--primary-color)' }}>
+            <span style={{ fontSize: '1.05rem', fontWeight: '700', color: 'var(--primary-color)' }}>
               "{transcript}"
             </span>
           ) : (
-            <span style={{ fontSize: '0.92rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+            <span style={{ fontSize: '0.88rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
               Recorded speech transcript will appear here...
             </span>
           )}
@@ -216,7 +216,7 @@ const PronunciationEvaluator = ({
           className="btn btn-primary"
           onClick={handleSubmitSpeech}
           disabled={loading || !transcript.trim()}
-          style={{ width: '100%', padding: '0.95rem', fontSize: '1.05rem', fontWeight: '800', borderRadius: 'var(--radius-md)' }}
+          style={{ width: '100%', padding: '0.85rem', fontSize: '1rem', fontWeight: '800', borderRadius: 'var(--radius-md)' }}
         >
           {loading ? 'Evaluating Pronunciation Accuracy...' : 'Evaluate My Pronunciation 🚀'}
         </button>
@@ -225,19 +225,19 @@ const PronunciationEvaluator = ({
       {/* Assessment Result Breakdown */}
       {evalResult && (
         <div style={{
-          background: 'var(--surface)', borderRadius: 'var(--radius-lg)', padding: '1.75rem',
+          background: 'var(--surface)', borderRadius: 'var(--radius-lg)', padding: '1.25rem',
           border: `2px solid ${evalResult.overall_score >= 75 ? 'var(--primary-color)' : 'var(--accent-gold)'}`,
           marginTop: '1.5rem', animation: 'fadeIn 0.3s ease'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: '900', fontSize: '1.3rem', color: evalResult.overall_score >= 75 ? 'var(--primary-color)' : 'var(--accent-gold)' }}>
-              <Award size={26} /> Overall Score: {evalResult.overall_score}%
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: '900', fontSize: '1.2rem', color: evalResult.overall_score >= 75 ? 'var(--primary-color)' : 'var(--accent-gold)' }}>
+              <Award size={24} /> Overall Score: {evalResult.overall_score}%
             </div>
             <Badge variant="teal">+{evalResult.xp_earned} XP</Badge>
           </div>
 
           {/* Sub-Scores Ribbon */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.85rem', marginBottom: '1.25rem' }}>
             <div style={{ background: 'var(--surface-card)', padding: '1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-color)' }}>
               <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: '800' }}>WORD ACCURACY</div>
               <div style={{ fontSize: '1.4rem', fontWeight: '900', color: 'var(--text-main)' }}>{evalResult.accuracy_score}%</div>

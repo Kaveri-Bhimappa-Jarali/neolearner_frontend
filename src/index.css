@@ -2310,7 +2310,7 @@ a:hover {
 
 @media (max-width: 480px) {
   .conversation-lab-wrapper {
-    padding: 0.45rem 0.45rem 7rem 0.45rem;
+    padding: 0.45rem 0.45rem 6.5rem 0.45rem;
   }
 
   .conversation-header {
@@ -2324,28 +2324,54 @@ a:hover {
   }
 
   .scenario-card-btn {
-    min-width: 118px;
-    padding: 0.6rem 0.7rem;
+    min-width: 110px;
+    padding: 0.55rem 0.65rem;
   }
 
-  .chat-controls-row,
+  .chat-input-action-bar {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
   .chat-input-row {
-    flex-wrap: wrap;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    gap: 6px !important;
+  }
+
+  .chat-text-input {
+    flex: 1 !important;
+    min-width: 0 !important;
   }
 
   .chat-send-btn {
-    width: 100%;
-    flex-basis: 100%;
+    width: 46px !important;
+    height: 44px !important;
+    min-width: 46px !important;
+    flex: 0 0 46px !important;
+    padding: 0 !important;
+  }
+
+  .chat-controls-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    gap: 6px !important;
   }
 
   .chat-speak-btn,
   .chat-finish-btn {
-    flex: 1 1 calc(50% - 6px);
-    min-width: 0;
+    flex: 1 !important;
+    min-width: 0 !important;
+    font-size: 0.84rem !important;
+    padding: 0.65rem 0.4rem !important;
   }
 
   .conversation-suggestion-label {
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .conversation-suggestions-bar {
@@ -2358,7 +2384,7 @@ a:hover {
     flex: 0 0 auto;
     font-size: 0.82rem;
     padding: 6px 12px;
-    min-height: 38px;
+    min-height: 36px;
     width: auto;
   }
 }
