@@ -125,6 +125,36 @@ a:hover {
   box-sizing: border-box;
 }
 
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.nav-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
 .nav-brand {
   font-size: 1.35rem;
   font-weight: 800;
@@ -337,6 +367,27 @@ a:hover {
   transition: all 0.2s ease;
   letter-spacing: 0.2px;
   line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* Table Responsive Mobile Controls */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  margin-bottom: 0.5rem;
+}
+
+.table-responsive table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-responsive table th,
+.table-responsive table td {
+  white-space: nowrap !important;
+  vertical-align: middle !important;
 }
 
 .btn-primary {

@@ -27,9 +27,9 @@ const Navbar = () => {
   return (
     <>
       <nav className="navbar">
-        <div className="navbar-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            {/* Mobile Menu Toggle Button (Left Side) */}
+        <div className="navbar-container">
+          {/* Left Brand & Mobile Menu Toggle */}
+          <div className="nav-left">
             <button 
               className="mobile-menu-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -38,7 +38,6 @@ const Navbar = () => {
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            {/* Brand Logo */}
             <Link to={user ? "/dashboard" : "/"} className="navbar-brand">
               <div style={{
                 width: '38px',
@@ -62,7 +61,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Links & Stats */}
+          {/* Center Links (Desktop) */}
           <div className="nav-links desktop-nav-links">
             {!user && (
               <Link to="/insights" className={`nav-item ${isActive('/insights') || isActive('/') ? 'active' : ''}`}>
@@ -129,9 +128,12 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
+          </div>
 
+          {/* Right Actions (Login / Get Started or Profile / Logout) */}
+          <div className="nav-actions">
             {user ? (
-              <div className="nav-action-buttons">
+              <div className="nav-action-buttons desktop-only">
                 <Link to="/profile" className="btn btn-secondary nav-action-btn">
                   <User size={16} /> {t('profile')}
                 </Link>
