@@ -67,19 +67,21 @@ const AdminDashboard = () => {
     <div className="admin-container" style={{ maxWidth: '1250px', margin: '0 auto', padding: '1rem', animation: 'fadeIn 0.3s ease' }}>
       
       {/* Header Banner */}
-      <div className="card admin-header-card" style={{ background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)', padding: '2.25rem', border: '1px solid var(--border-color)', marginBottom: '2rem', boxShadow: 'var(--shadow-md)' }}>
-        <div className="admin-header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
-          <div>
-            <Badge variant="purple" icon={ShieldAlert}>ADMINISTRATOR CONTROL PORTAL</Badge>
-            <h1 className="page-title" style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: '900', color: 'var(--text-main)', margin: '0.5rem 0 0.35rem' }}>
+      <div className="card admin-header-card" style={{ background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)', padding: 'clamp(1.25rem, 4vw, 2.25rem)', border: '1px solid var(--border-color)', marginBottom: '2rem', boxShadow: 'var(--shadow-md)', width: '100%', boxSizing: 'border-box' }}>
+        <div className="admin-header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.25rem' }}>
+          <div style={{ flex: '1 1 320px', minWidth: 0, textAlign: 'left' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.4rem' }}>
+              <Badge variant="purple" icon={ShieldAlert}>ADMINISTRATOR CONTROL PORTAL</Badge>
+            </div>
+            <h1 style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', fontWeight: '900', color: 'var(--text-main)', margin: '0.4rem 0 0.35rem', lineHeight: '1.3', display: 'block', textAlign: 'left', wordBreak: 'break-word' }}>
               NeoLearner Admin Operations
             </h1>
-            <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>
+            <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: 'clamp(0.88rem, 2.2vw, 0.98rem)', lineHeight: '1.55', maxWidth: '720px', textAlign: 'left', wordBreak: 'break-word' }}>
               Manage learners, monitor AI engines, configure curricula, and inspect system database records.
             </p>
           </div>
 
-          <div className="admin-header-actions" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="admin-header-actions" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap', flexShrink: 0 }}>
             <Link to="/dashboard" className="btn btn-secondary" style={{ padding: '0.65rem 1.25rem', fontSize: '0.88rem', fontWeight: '700', gap: '6px' }}>
               <Eye size={16} /> Learner View
             </Link>

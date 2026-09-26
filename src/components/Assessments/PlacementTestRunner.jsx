@@ -239,29 +239,31 @@ const PlacementTestRunner = () => {
   // Render Result Screen
   if (result) {
     return (
-      <div className="page-container" style={{ maxWidth: '800px', margin: '2rem auto', animation: 'fadeIn 0.3s ease' }}>
+      <div className="page-container" style={{ maxWidth: '800px', margin: '1.5rem auto', padding: '0 1rem', width: '100%', boxSizing: 'border-box', animation: 'fadeIn 0.3s ease' }}>
         <div 
           className="card" 
           style={{
-            padding: '3rem 2rem',
+            padding: 'clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3.5vw, 2rem)',
             textAlign: 'center',
             background: 'var(--surface-card)',
             borderRadius: 'var(--radius-xl)',
             border: '1px solid var(--border-color)',
-            boxShadow: 'var(--shadow-lg)'
+            boxShadow: 'var(--shadow-lg)',
+            width: '100%',
+            boxSizing: 'border-box'
           }}
         >
-          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🎉</div>
+          <div style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', marginBottom: '1rem' }}>🎉</div>
           <Badge variant="gold" icon={Trophy} size="large">Diagnostic Assessment Complete!</Badge>
 
-          <h1 style={{ fontSize: '2.4rem', fontWeight: '900', color: 'var(--text-main)', margin: '1rem 0 0.5rem' }}>
+          <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', fontWeight: '900', color: 'var(--text-main)', margin: '1rem 0 0.5rem', wordBreak: 'break-word' }}>
             Calculated CEFR: {result.cefr_level || 'A1'}
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', marginBottom: '2rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)', marginBottom: '2rem' }}>
             Diagnostic Score: <strong style={{ color: 'var(--primary-color)' }}>{result.overall_score}% Accuracy</strong> ({result.total_correct} of {result.total_questions} correct)
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem', textAlign: 'left' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '2rem', textAlign: 'left' }}>
             <div style={{ background: 'var(--surface)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)' }}>
               <span style={{ fontSize: '0.8rem', fontWeight: '800', color: 'var(--success)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '6px' }}>
                 ✨ Strengths Identified
@@ -288,7 +290,7 @@ const PlacementTestRunner = () => {
           <button
             onClick={() => navigate('/dashboard')}
             className="btn btn-primary"
-            style={{ padding: '0.95rem 2.5rem', fontWeight: '800', fontSize: '1.1rem', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-teal)' }}
+            style={{ padding: '0.95rem 2rem', fontWeight: '800', fontSize: '1.05rem', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-teal)', width: '100%', maxWidth: '360px' }}
           >
             Enter Learner Dashboard 🚀
           </button>
@@ -300,26 +302,28 @@ const PlacementTestRunner = () => {
   // Pre-test Intro Screen
   if (!hasStarted) {
     return (
-      <div className="page-container" style={{ maxWidth: '800px', margin: '2rem auto' }}>
+      <div className="page-container" style={{ maxWidth: '800px', margin: '1.5rem auto', padding: '0 1rem', width: '100%', boxSizing: 'border-box' }}>
         <div 
           className="card" 
           style={{
-            padding: '3rem 2.25rem',
+            padding: 'clamp(1.75rem, 5vw, 3rem) clamp(1rem, 4vw, 2.25rem)',
             textAlign: 'center',
             background: 'var(--surface-card)',
             borderRadius: 'var(--radius-xl)',
             border: '1px solid var(--border-color)',
-            boxShadow: 'var(--shadow-lg)'
+            boxShadow: 'var(--shadow-lg)',
+            width: '100%',
+            boxSizing: 'border-box'
           }}
         >
           <div style={{ padding: '1.25rem', background: 'rgba(20, 184, 166, 0.12)', color: 'var(--primary-color)', borderRadius: '50%', width: 'fit-content', margin: '0 auto 1.5rem' }}>
             <Compass size={48} />
           </div>
 
-          <h1 style={{ fontSize: '2.2rem', fontWeight: '900', color: 'var(--text-main)', marginBottom: '0.75rem' }}>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 4.5vw, 2.2rem)', fontWeight: '900', color: 'var(--text-main)', marginBottom: '0.75rem', lineHeight: '1.3' }}>
             Diagnostic Literacy Placement
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: '1.6', maxWidth: '640px', margin: '0 auto 2rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)', lineHeight: '1.6', maxWidth: '640px', margin: '0 auto 2rem' }}>
             This 15-question diagnostic evaluates vocabulary, grammar, reading comprehension, listening, and speaking in your target language to calibrate your CEFR level.
           </p>
 
@@ -333,7 +337,7 @@ const PlacementTestRunner = () => {
             onClick={handleStartTest}
             disabled={loading}
             className="btn btn-primary"
-            style={{ padding: '1rem 2.5rem', fontWeight: '800', fontSize: '1.1rem', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-teal)' }}
+            style={{ padding: '0.95rem 2rem', fontWeight: '800', fontSize: '1.05rem', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-teal)', width: '100%', maxWidth: '380px' }}
           >
             {loading ? 'Generating Diagnostic Assessment...' : 'Start Diagnostic Assessment 🚀'}
           </button>
@@ -343,11 +347,11 @@ const PlacementTestRunner = () => {
   }
 
   return (
-    <div className="page-container" style={{ maxWidth: '880px', margin: '1rem auto' }}>
+    <div className="page-container" style={{ maxWidth: '880px', margin: '1rem auto', padding: '0 1rem', width: '100%', boxSizing: 'border-box' }}>
       
       {/* Top Progress Tracker Bar */}
       <div style={{ marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.65rem' }}>
           <Badge variant="cyan">Question {currentIndex + 1} of {totalQ}</Badge>
           <span style={{ fontSize: '0.88rem', fontWeight: '800', color: 'var(--text-muted)' }}>
             {currentQ?.competency_tag || 'Multi-Skill Evaluation'}
@@ -362,15 +366,17 @@ const PlacementTestRunner = () => {
       <div 
         className="card" 
         style={{ 
-          padding: '2.25rem', 
+          padding: 'clamp(1.25rem, 4vw, 2.25rem)', 
           background: 'var(--surface-card)', 
           borderRadius: 'var(--radius-xl)', 
           border: '1px solid var(--border-color)',
           boxShadow: 'var(--shadow-md)',
-          marginBottom: '1.5rem'
+          marginBottom: '1.5rem',
+          width: '100%',
+          boxSizing: 'border-box'
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
           <span style={{ fontSize: '0.8rem', fontWeight: '800', color: 'var(--primary-color)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             {currentQ?.type?.replace('_', ' ')} • Difficulty Level {currentQ?.difficulty_level || 1}
           </span>
@@ -385,7 +391,7 @@ const PlacementTestRunner = () => {
           )}
         </div>
 
-        <h2 style={{ fontSize: '1.65rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1.5rem', lineHeight: '1.35' }}>
+        <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.65rem)', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1.5rem', lineHeight: '1.35', wordBreak: 'break-word' }}>
           {currentQ?.text}
         </h2>
 
@@ -414,23 +420,25 @@ const PlacementTestRunner = () => {
                   key={ans.id}
                   onClick={() => !isAnswered && setSelectedAnswer(ans.id)}
                   style={{
-                    padding: '1.15rem 1.35rem',
+                    padding: 'clamp(0.85rem, 3vw, 1.15rem) clamp(0.9rem, 3vw, 1.35rem)',
                     borderRadius: 'var(--radius-lg)',
                     border: `2px solid ${border}`,
                     background: bg,
                     cursor: isAnswered ? 'default' : 'pointer',
                     fontWeight: '700',
-                    fontSize: '1.02rem',
+                    fontSize: 'clamp(0.92rem, 2.5vw, 1.02rem)',
                     color: 'var(--text-main)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    transition: 'all 0.2s ease'
+                    gap: '0.75rem',
+                    transition: 'all 0.2s ease',
+                    wordBreak: 'break-word'
                   }}
                 >
-                  <span>{ans.text}</span>
-                  {isAnswered && ans.is_correct && <CheckCircle2 color="var(--success)" size={22} />}
-                  {isAnswered && isSelected && !isCorrect && <XCircle color="var(--error)" size={22} />}
+                  <span style={{ flex: 1, minWidth: 0 }}>{ans.text}</span>
+                  {isAnswered && ans.is_correct && <CheckCircle2 color="var(--success)" size={22} style={{ flexShrink: 0 }} />}
+                  {isAnswered && isSelected && !isCorrect && <XCircle color="var(--error)" size={22} style={{ flexShrink: 0 }} />}
                 </div>
               );
             })}
@@ -440,7 +448,7 @@ const PlacementTestRunner = () => {
         {/* Fill in Blank / Speaking Text Inputs */}
         {(currentQ?.type === 'fill_in_blank' || currentQ?.type === 'speaking') && (
           <div style={{ marginBottom: '1rem' }}>
-            <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1rem' }}>
               <input
                 type="text"
                 className="form-input"
@@ -448,13 +456,13 @@ const PlacementTestRunner = () => {
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
                 disabled={isAnswered}
-                style={{ flex: 1, padding: '0.9rem 1.15rem', borderRadius: 'var(--radius-md)', fontSize: '1.05rem', background: 'var(--surface)', color: 'var(--text-main)', border: '1px solid var(--border-color)' }}
+                style={{ flex: '1 1 200px', minWidth: 0, padding: '0.85rem 1rem', borderRadius: 'var(--radius-md)', fontSize: '1rem', background: 'var(--surface)', color: 'var(--text-main)', border: '1px solid var(--border-color)' }}
               />
               {currentQ.type === 'speaking' && (
                 <button
                   onClick={handleVoiceInput}
                   className={`btn ${isListening ? 'btn-danger' : 'btn-secondary'}`}
-                  style={{ padding: '0.9rem 1.25rem', borderRadius: 'var(--radius-md)', fontWeight: '800' }}
+                  style={{ padding: '0.85rem 1.25rem', borderRadius: 'var(--radius-md)', fontWeight: '800', flexShrink: 0 }}
                 >
                   <Mic size={20} color={isListening ? '#ffffff' : 'var(--primary-color)'} />
                 </button>
@@ -465,11 +473,11 @@ const PlacementTestRunner = () => {
 
         {/* Match Pairs UI */}
         {currentQ?.type === 'match_pairs' && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', margin: '1rem 0' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 'clamp(0.5rem, 2vw, 1.25rem)', margin: '1rem 0' }}>
             {/* Left Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ fontSize: '0.82rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                Target Language Word
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', minWidth: 0 }}>
+              <div style={{ fontSize: 'clamp(0.72rem, 2vw, 0.82rem)', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Target Word
               </div>
               {matchPairData.leftWords.map((lw, idx) => {
                 const isMatched = matchedPairs[lw];
@@ -490,32 +498,36 @@ const PlacementTestRunner = () => {
                     onClick={() => handleLeftClick(lw)}
                     disabled={isAnswered || Boolean(isMatched)}
                     style={{
-                      padding: '0.95rem 1.15rem',
+                      padding: 'clamp(0.65rem, 2vw, 0.95rem) clamp(0.5rem, 2vw, 1.15rem)',
                       borderRadius: 'var(--radius-md)',
                       border: `2px solid ${border}`,
                       background: bg,
                       fontWeight: '700',
-                      fontSize: '1rem',
+                      fontSize: 'clamp(0.8rem, 2.2vw, 1rem)',
                       color: 'var(--text-main)',
                       textAlign: 'left',
                       cursor: (isAnswered || isMatched) ? 'default' : 'pointer',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
+                      gap: '4px',
+                      wordBreak: 'break-word',
+                      overflow: 'hidden',
+                      minHeight: '44px',
                       boxShadow: isSelected ? 'var(--shadow-teal)' : 'none'
                     }}
                   >
-                    <span>{lw}</span>
-                    {isMatched && <CheckCircle2 size={18} color="var(--success)" />}
+                    <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{lw}</span>
+                    {isMatched && <CheckCircle2 size={16} color="var(--success)" style={{ flexShrink: 0 }} />}
                   </button>
                 );
               })}
             </div>
 
             {/* Right Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ fontSize: '0.82rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                Meaning / Translation
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', minWidth: 0 }}>
+              <div style={{ fontSize: 'clamp(0.72rem, 2vw, 0.82rem)', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Meaning
               </div>
               {matchPairData.rightWords.map((rw, idx) => {
                 const isMatched = Object.values(matchedPairs).includes(rw);
@@ -536,23 +548,27 @@ const PlacementTestRunner = () => {
                     onClick={() => handleRightClick(rw)}
                     disabled={isAnswered || isMatched}
                     style={{
-                      padding: '0.95rem 1.15rem',
+                      padding: 'clamp(0.65rem, 2vw, 0.95rem) clamp(0.5rem, 2vw, 1.15rem)',
                       borderRadius: 'var(--radius-md)',
                       border: `2px solid ${border}`,
                       background: bg,
                       fontWeight: '700',
-                      fontSize: '1rem',
+                      fontSize: 'clamp(0.8rem, 2.2vw, 1rem)',
                       color: 'var(--text-main)',
                       textAlign: 'left',
                       cursor: (isAnswered || isMatched) ? 'default' : 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      justify: 'space-between',
+                      justifyContent: 'space-between',
+                      gap: '4px',
+                      wordBreak: 'break-word',
+                      overflow: 'hidden',
+                      minHeight: '44px',
                       boxShadow: isSelected ? 'var(--shadow-teal)' : 'none'
                     }}
                   >
-                    <span>{rw}</span>
-                    {isMatched && <CheckCircle2 size={18} color="var(--success)" />}
+                    <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{rw}</span>
+                    {isMatched && <CheckCircle2 size={16} color="var(--success)" style={{ flexShrink: 0 }} />}
                   </button>
                 );
               })}
@@ -565,17 +581,17 @@ const PlacementTestRunner = () => {
           <div 
             style={{
               marginTop: '1.5rem',
-              padding: '1.25rem',
+              padding: '1rem 1.25rem',
               borderRadius: 'var(--radius-lg)',
               background: isCorrect ? 'var(--success-bg)' : 'var(--error-bg)',
               border: `1px solid ${isCorrect ? 'var(--success)' : 'var(--error)'}`,
               animation: 'fadeIn 0.2s ease'
             }}
           >
-            <div style={{ fontWeight: '800', fontSize: '1.05rem', color: isCorrect ? 'var(--success)' : 'var(--error)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div style={{ fontWeight: '800', fontSize: '1.02rem', color: isCorrect ? 'var(--success)' : 'var(--error)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
               {isCorrect ? '✅ Excellent! Correct Answer' : '❌ Incorrect'}
             </div>
-            <p style={{ margin: 0, color: 'var(--text-main)', fontSize: '0.95rem', lineHeight: '1.5' }}>
+            <p style={{ margin: 0, color: 'var(--text-main)', fontSize: '0.95rem', lineHeight: '1.5', wordBreak: 'break-word' }}>
               {explanation}
             </p>
           </div>
@@ -583,13 +599,13 @@ const PlacementTestRunner = () => {
       </div>
 
       {/* Control Buttons */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', width: '100%' }}>
         {!isAnswered ? (
           <button
             onClick={handleCheckAnswer}
             disabled={!selectedAnswer && !textInput.trim() && currentQ?.type !== 'match_pairs'}
             className="btn btn-primary"
-            style={{ padding: '0.9rem 2.25rem', fontWeight: '800', fontSize: '1rem', borderRadius: 'var(--radius-md)' }}
+            style={{ padding: '0.85rem 2rem', fontWeight: '800', fontSize: '1rem', borderRadius: 'var(--radius-md)', minWidth: '160px' }}
           >
             Check Answer
           </button>
@@ -598,7 +614,7 @@ const PlacementTestRunner = () => {
             onClick={handleNext}
             disabled={submitting}
             className="btn btn-primary"
-            style={{ padding: '0.9rem 2.25rem', fontWeight: '800', fontSize: '1rem', borderRadius: 'var(--radius-md)' }}
+            style={{ padding: '0.85rem 2rem', fontWeight: '800', fontSize: '1rem', borderRadius: 'var(--radius-md)', minWidth: '160px' }}
           >
             {submitting ? 'Submitting Assessment...' : (currentIndex + 1 === totalQ ? 'Finish & See Results 🚀' : 'Next Question →')}
           </button>

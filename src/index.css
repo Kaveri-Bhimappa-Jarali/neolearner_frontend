@@ -671,6 +671,67 @@ a:hover {
   border-collapse: collapse;
 }
 
+/* Table & Admin Panel Text Alignment Standards */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+table th {
+  vertical-align: middle;
+  text-align: left;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+table td {
+  vertical-align: middle;
+  text-align: left;
+  line-height: 1.5;
+}
+
+table th[style*="text-align: center"],
+table td[style*="text-align: center"],
+th.text-center, td.text-center {
+  text-align: center !important;
+}
+
+table th[style*="text-align: right"],
+table td[style*="text-align: right"],
+th.text-right, td.text-right {
+  text-align: right !important;
+}
+
+table .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  vertical-align: middle;
+  line-height: 1.25;
+}
+
+table .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.admin-container h1,
+.admin-container h2,
+.admin-container h3,
+.admin-container h4 {
+  display: flex;
+  align-items: center;
+  line-height: 1.35;
+}
+
+.admin-container .card {
+  box-sizing: border-box;
+}
+
 /* Admin Dashboard & Controls Responsive Styles */
 .admin-container {
   max-width: 1200px;
@@ -705,6 +766,18 @@ a:hover {
   scrollbar-color: var(--secondary-color) transparent;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
+}
+
+/* Diagnostic Placement Banner & Text Alignment */
+.diagnostic-banner {
+  box-sizing: border-box;
+}
+
+.diagnostic-placement-desc {
+  text-align: left !important;
+  line-height: 1.55 !important;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .admin-tabs-bar .btn,

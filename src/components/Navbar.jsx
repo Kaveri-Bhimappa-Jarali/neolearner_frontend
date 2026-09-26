@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from '../utils/i18n';
-import LanguageSelector from './LanguageSelector';
 import { 
   BookOpen, LayoutDashboard, Compass, Trophy, Zap, 
   User, LogOut, ShieldAlert, Sparkles, MessageSquare, Gem, Flame, Award, Heart, Menu, X, MoreHorizontal
 } from 'lucide-react';
-import './Navbar.css';
 
 const Navbar = () => {
   const { user, logout } = useAuth();

@@ -241,33 +241,36 @@ const LearnerDashboard = () => {
           background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
           border: '2px dashed var(--primary-color)',
           borderRadius: 'var(--radius-xl)',
-          padding: '2rem',
+          padding: 'clamp(1.25rem, 4vw, 2rem)',
           marginBottom: '2rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: '1.5rem',
-          boxShadow: 'var(--shadow-teal)'
+          gap: '1.25rem',
+          boxShadow: 'var(--shadow-teal)',
+          width: '100%',
+          boxSizing: 'border-box'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.25rem', flex: '1 1 300px', minWidth: 0 }}>
             <div style={{
-              width: '64px', height: '64px', borderRadius: '50%',
+              width: '56px', height: '56px', borderRadius: '50%',
               background: 'var(--primary-color)', color: '#fff',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              marginTop: '2px'
             }}>
-              <Compass size={34} />
+              <Compass size={30} />
             </div>
-            <div>
-              <h3 style={{ margin: '0 0 6px', fontSize: '1.35rem', color: 'var(--text-main)', fontWeight: '800' }}>
+            <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
+              <h3 style={{ margin: '0 0 6px', fontSize: 'clamp(1.15rem, 3vw, 1.35rem)', color: 'var(--text-main)', fontWeight: '800', lineHeight: '1.3', textAlign: 'left' }}>
                 {t('diagnosticPlacementRequired') || 'Diagnostic Placement Test Required'}
               </h3>
-              <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.98rem', maxWidth: '650px', lineHeight: '1.5' }}>
+              <p className="diagnostic-placement-desc" style={{ margin: 0, color: 'var(--text-muted)', fontSize: 'clamp(0.88rem, 2.2vw, 0.98rem)', maxWidth: '680px', lineHeight: '1.55', textAlign: 'left', wordBreak: 'break-word' }}>
                 {t('diagnosticPlacementDesc') || 'Take our 10-minute diagnostic test across vocabulary, reading, listening, and speaking to unlock your personalized learning path.'}
               </p>
             </div>
           </div>
-          <Link to="/initial-exam" className="btn btn-primary" style={{ padding: '0.9rem 2rem', fontWeight: '800', fontSize: '1.05rem', boxShadow: 'var(--shadow-teal)' }}>
+          <Link to="/initial-exam" className="btn btn-primary" style={{ padding: '0.85rem 1.85rem', fontWeight: '800', fontSize: '1rem', boxShadow: 'var(--shadow-teal)', whiteSpace: 'nowrap', flexShrink: 0 }}>
             {t('startInitialExam') || 'Start Diagnostic Test 🚀'}
           </Link>
         </div>
