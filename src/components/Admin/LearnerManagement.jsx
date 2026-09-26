@@ -151,6 +151,17 @@ const LearnerManagement = () => {
 
         {loading ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading learners database...</div>
+        ) : learners.length === 0 ? (
+          <div style={{ padding: '3rem 1.5rem', textAlign: 'center', background: 'var(--surface)', borderRadius: '16px', border: '1px dashed var(--border-color)', margin: '1rem 0' }}>
+            <UserCheck size={48} color="var(--primary-color)" style={{ marginBottom: '1rem' }} />
+            <h4 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.4rem' }}>No Learners Found</h4>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', marginBottom: '1.25rem' }}>
+              {searchTerm ? `No registered learner matches "${searchTerm}". Try clearing the search.` : 'No registered learners found in the database.'}
+            </p>
+            <button className="btn btn-primary" onClick={openCreateModal} style={{ margin: '0 auto', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <Plus size={16} /> Add First Learner / Admin
+            </button>
+          </div>
         ) : (
           <div className="table-responsive">
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem', textAlign: 'left' }}>
