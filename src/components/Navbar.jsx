@@ -27,30 +27,40 @@ const Navbar = () => {
   return (
     <>
       <nav className="navbar">
-        <div className="navbar-container">
-          
-          {/* Brand Logo */}
-          <Link to={user ? "/dashboard" : "/"} className="navbar-brand">
-            <div style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--accent-purple) 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: 'var(--shadow-teal)'
-            }}>
-              <BookOpen color="#ffffff" size={22} />
-            </div>
-            <span style={{ 
-              fontWeight: '800', 
-              letterSpacing: '-0.5px',
-              background: 'linear-gradient(135deg, #ffffff 0%, var(--primary-color) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>NeoLearner</span>
-          </Link>
+        <div className="navbar-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            {/* Mobile Menu Toggle Button (Left Side) */}
+            <button 
+              className="mobile-menu-btn"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+
+            {/* Brand Logo */}
+            <Link to={user ? "/dashboard" : "/"} className="navbar-brand">
+              <div style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--accent-purple) 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: 'var(--shadow-teal)'
+              }}>
+                <BookOpen color="#ffffff" size={22} />
+              </div>
+              <span style={{ 
+                fontWeight: '800', 
+                letterSpacing: '-0.5px',
+                background: 'linear-gradient(135deg, #ffffff 0%, var(--primary-color) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}>NeoLearner</span>
+            </Link>
+          </div>
 
           {/* Desktop Links & Stats */}
           <div className="nav-links desktop-nav-links">
@@ -136,15 +146,6 @@ const Navbar = () => {
               </div>
             )}
           </div>
-
-          {/* Mobile Menu Toggle Button */}
-          <button 
-            className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
       </nav>
 

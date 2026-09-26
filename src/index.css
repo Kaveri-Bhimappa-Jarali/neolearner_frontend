@@ -183,7 +183,7 @@ a:hover {
   justify-content: center;
 }
 
-/* Mobile Drawer Overlay */
+/* Mobile Drawer Overlay (Left Aligned) */
 .mobile-drawer-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -191,7 +191,7 @@ a:hover {
   backdrop-filter: blur(12px);
   z-index: 1000;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   animation: fadeIn 0.2s ease;
 }
 
@@ -200,12 +200,23 @@ a:hover {
   max-width: 360px;
   height: 100%;
   background: var(--surface);
-  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  border-left: none;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   overflow-y: auto;
+  animation: slideInLeft 0.25s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 .mobile-drawer-header {
