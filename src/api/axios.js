@@ -1,19 +1,17 @@
 import axios from 'axios';
 
-// Get base URL from environment variable
-let rawBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').trim();
+// Default backend production deployment URL
+const DEFAULT_PROD_BACKEND = 'https://neolerner-backend.vercel.app/api';
 
-// Strip any trailing slashes
+// Get base URL from environment variable if configured
+let rawBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').trim();
 rawBaseUrl = rawBaseUrl.replace(/\/+$/, '');
 
-// Default to relative /api in production or http://localhost:8000/api in local dev
-let baseURL = '/api';
+let baseURL = DEFAULT_PROD_BACKEND;
 
 if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
   baseURL = 'http://localhost:8000/api';
-}
-
-if (rawBaseUrl) {
+} else if (rawBaseUrl) {
   if (rawBaseUrl.endsWith('/api')) {
     baseURL = rawBaseUrl;
   } else {
