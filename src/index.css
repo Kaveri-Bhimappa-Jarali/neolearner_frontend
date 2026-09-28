@@ -1376,16 +1376,29 @@ table .btn {
 
   .admin-header-actions {
     width: 100% !important;
-    flex-direction: row !important;
-    justify-content: flex-start !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
     gap: 0.5rem !important;
   }
 
   .admin-header-actions .btn {
-    flex: 1 !important;
-    min-width: 0 !important;
+    flex: 1 1 calc(50% - 0.25rem) !important;
+    min-width: 110px !important;
     font-size: 0.82rem !important;
-    padding: 0.55rem 0.75rem !important;
+    padding: 0.55rem 0.5rem !important;
+    white-space: nowrap !important;
+    justify-content: center !important;
+  }
+
+  .admin-header-actions .badge,
+  .admin-header-actions [class*="badge"] {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin-top: 0.25rem !important;
+    box-sizing: border-box !important;
   }
 
   .admin-metrics-ribbon {
