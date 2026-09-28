@@ -84,8 +84,8 @@ const Navbar = () => {
                   </Link>
                 )}
 
-                <Link to="/initial-exam" className={`nav-item ${isActive('/initial-exam') ? 'active' : ''}`}>
-                  <Compass size={18} /> {t('initialAssessment') || 'Initial Assessment'}
+                <Link to="/initial-exam" className={`nav-item ${isActive('/initial-exam') || isActive('/placement-test') ? 'active' : ''}`}>
+                  <Compass size={18} /> {t('placementHubNav') || 'Placement Hub'}
                 </Link>
                 <Link to="/conversation" className={`nav-item ${isActive('/conversation') ? 'active' : ''}`}>
                   <MessageSquare size={18} /> {t('aiLab') || 'AI Lab'}
@@ -199,8 +199,8 @@ const Navbar = () => {
                       <ShieldAlert size={20} /> {t('adminPortal') || 'Admin Portal'}
                     </Link>
                   )}
-                  <Link to="/initial-exam" onClick={closeMenu} className={`mobile-nav-item ${isActive('/initial-exam') ? 'active' : ''}`}>
-                    <Compass size={20} /> {t('initialAssessment') || 'Initial Assessment'}
+                  <Link to="/initial-exam" onClick={closeMenu} className={`mobile-nav-item ${isActive('/initial-exam') || isActive('/placement-test') ? 'active' : ''}`}>
+                    <Compass size={20} /> {t('placementHubNav') || 'Placement Hub'}
                   </Link>
                   <Link to="/conversation" onClick={closeMenu} className={`mobile-nav-item ${isActive('/conversation') ? 'active' : ''}`}>
                     <MessageSquare size={20} /> {t('aiLab') || 'AI Lab'}

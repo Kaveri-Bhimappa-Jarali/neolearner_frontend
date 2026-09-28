@@ -370,71 +370,52 @@ const Register = () => {
   }
 
   return (
-    <div style={{ width: '100%', maxWidth: '1100px', margin: '1.5rem auto', animation: 'fadeIn 0.3s ease' }}>
-      <div 
-        style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-          background: 'var(--surface-card)', 
-          borderRadius: 'var(--radius-xl)', 
-          border: '1px solid var(--border-color)',
-          overflow: 'hidden',
-          boxShadow: 'var(--shadow-lg)'
-        }}
-      >
+    <div className="register-container" style={{ width: '100%', maxWidth: '1100px', margin: '1rem auto 4rem', padding: '0 0.75rem', boxSizing: 'border-box', animation: 'fadeIn 0.3s ease' }}>
+      <div className="register-card-grid">
         {/* Left Hero Column */}
-        <div 
-          style={{ 
-            background: 'linear-gradient(135deg, #0d172a 0%, #111c33 50%, #08111f 100%)', 
-            padding: '3rem 2.5rem', 
-            display: 'flex', 
-            flexDirection: 'column', 
-            justify: 'space-between',
-            borderRight: '1px solid var(--border-color)'
-          }}
-        >
+        <div className="register-hero-col">
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '2.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.75rem' }}>
               <div style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))', padding: '10px', borderRadius: '14px', display: 'flex' }}>
                 <BookOpen size={26} color="#ffffff" />
               </div>
               <span style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--text-main)' }}>NeoLearner</span>
             </div>
 
-            <h1 style={{ fontSize: '2.2rem', fontWeight: '900', lineHeight: 1.25, color: 'var(--text-main)', marginBottom: '1.25rem' }}>
+            <h1 style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', fontWeight: '900', lineHeight: 1.25, color: 'var(--text-main)', marginBottom: '1rem', wordBreak: 'break-word' }}>
               Create Your Account & Start Learning Today ✨
             </h1>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(0.9rem, 2vw, 1.05rem)', lineHeight: 1.6, marginBottom: '1.5rem', wordBreak: 'break-word' }}>
               Join thousands of learners mastering Kannada, Telugu, Hindi, Marathi, Spanish, and English through AI voice practice.
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)', fontWeight: '600' }}>
-                <CheckCircle2 size={20} color="var(--primary-color)" />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)', fontWeight: '600', fontSize: '0.92rem' }}>
+                <CheckCircle2 size={18} color="var(--primary-color)" style={{ flexShrink: 0 }} />
                 <span>Instant diagnostic literacy assessment</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)', fontWeight: '600' }}>
-                <CheckCircle2 size={20} color="var(--primary-color)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)', fontWeight: '600', fontSize: '0.92rem' }}>
+                <CheckCircle2 size={18} color="var(--primary-color)" style={{ flexShrink: 0 }} />
                 <span>Gamified XP, Streak, and League Rewards</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)', fontWeight: '600' }}>
-                <CheckCircle2 size={20} color="var(--primary-color)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-main)', fontWeight: '600', fontSize: '0.92rem' }}>
+                <CheckCircle2 size={18} color="var(--primary-color)" style={{ flexShrink: 0 }} />
                 <span>Spaced repetition (SM-2) memory drills</span>
               </div>
             </div>
           </div>
 
-          <div style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-            <ShieldCheck size={18} color="var(--primary-color)" />
+          <div style={{ marginTop: '2rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+            <ShieldCheck size={18} color="var(--primary-color)" style={{ flexShrink: 0 }} />
             <span>No credit card required — 100% Free Access</span>
           </div>
         </div>
 
         {/* Right Form Column */}
-        <div style={{ padding: '3rem 2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <div style={{ marginBottom: '1.75rem' }}>
-            <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.4rem' }}>Create Free Account 🚀</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.98rem' }}>Set up your preferred language and learning goals</p>
+        <div className="register-form-col">
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.3rem', wordBreak: 'break-word' }}>Create Free Account 🚀</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem' }}>Set up your preferred language and learning goals</p>
           </div>
 
           {/* Google SSO Button */}
@@ -444,24 +425,24 @@ const Register = () => {
             disabled={googleLoading}
             style={{
               width: '100%',
-              padding: '0.9rem',
+              padding: '0.85rem 1rem',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--border-color)',
               background: 'var(--surface)',
               color: 'var(--text-main)',
               fontWeight: '700',
-              fontSize: '0.95rem',
+              fontSize: '0.92rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '0.75rem',
               cursor: 'pointer',
-              marginBottom: '1.5rem',
+              marginBottom: '1.25rem',
               transition: 'all 0.2s ease',
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24">
+            <svg width="20" height="20" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
               <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
@@ -470,15 +451,15 @@ const Register = () => {
             {googleLoading ? 'Connecting...' : 'Sign Up with Google'}
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
             <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
-            <span style={{ color: 'var(--text-subtle)', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.5px' }}>OR REGISTER WITH EMAIL</span>
+            <span style={{ color: 'var(--text-subtle)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.5px' }}>OR REGISTER WITH EMAIL</span>
             <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="form-group" style={{ marginBottom: '1.1rem' }}>
-              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+            <div className="form-group" style={{ marginBottom: '1rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.35rem', color: 'var(--text-main)', fontSize: '0.85rem' }}>
                 <User size={16} color="var(--primary-color)" /> Full Name
               </label>
               <input 
@@ -489,12 +470,12 @@ const Register = () => {
                 onChange={handleChange} 
                 required 
                 placeholder="John Doe"
-                style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--background)' }}
+                style={{ width: '100%', padding: '0.8rem 0.9rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--background)', fontSize: '0.92rem' }}
               />
             </div>
 
-            <div className="form-group" style={{ marginBottom: '1.1rem' }}>
-              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+            <div className="form-group" style={{ marginBottom: '1rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.35rem', color: 'var(--text-main)', fontSize: '0.85rem' }}>
                 <Mail size={16} color="var(--primary-color)" /> Email Address
               </label>
               <input 
@@ -505,12 +486,12 @@ const Register = () => {
                 onChange={handleChange} 
                 required 
                 placeholder="learner@example.com"
-                style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--background)' }}
+                style={{ width: '100%', padding: '0.8rem 0.9rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--background)', fontSize: '0.92rem' }}
               />
             </div>
 
-            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+            <div className="form-group" style={{ marginBottom: '1.1rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.35rem', color: 'var(--text-main)', fontSize: '0.85rem' }}>
                 <Lock size={16} color="var(--primary-color)" /> Password (min 6 characters)
               </label>
               <input 
@@ -521,16 +502,16 @@ const Register = () => {
                 onChange={handleChange} 
                 required 
                 placeholder="••••••••"
-                style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--background)' }}
+                style={{ width: '100%', padding: '0.8rem 0.9rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--background)', fontSize: '0.92rem' }}
               />
             </div>
 
             {/* Interactive Native Language Selector */}
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.5rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+            <div style={{ marginBottom: '1.1rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.45rem', color: 'var(--text-main)', fontSize: '0.85rem' }}>
                 <Globe size={16} color="var(--primary-color)" /> I Speak (Native Language)
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.5rem' }}>
+              <div className="register-lang-grid">
                 {languages.map(l => {
                   const isSelected = formData.preferred_language_code === l.code;
                   return (
@@ -539,19 +520,20 @@ const Register = () => {
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, preferred_language_code: l.code }))}
                       style={{
-                        padding: '0.65rem 0.5rem',
+                        padding: '0.6rem 0.4rem',
                         borderRadius: 'var(--radius-md)',
                         border: isSelected ? '2px solid var(--primary-color)' : '1px solid var(--border-color)',
                         background: isSelected ? 'rgba(20, 184, 166, 0.15)' : 'var(--surface)',
                         color: isSelected ? 'var(--primary-color)' : 'var(--text-main)',
                         fontWeight: '700',
-                        fontSize: '0.85rem',
+                        fontSize: '0.82rem',
                         cursor: 'pointer',
                         textAlign: 'center',
-                        transition: 'all 0.15s ease'
+                        transition: 'all 0.15s ease',
+                        wordBreak: 'break-word'
                       }}
                     >
-                      <span style={{ fontSize: '1rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
+                      <span style={{ fontSize: '0.95rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
                       {l.name}
                     </button>
                   );
@@ -560,11 +542,11 @@ const Register = () => {
             </div>
 
             {/* Interactive Target Language Selector */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.5rem', color: 'var(--text-main)', fontSize: '0.88rem' }}>
+            <div style={{ marginBottom: '1.35rem' }}>
+              <label className="form-label" style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.45rem', color: 'var(--text-main)', fontSize: '0.85rem' }}>
                 <Sparkles size={16} color="var(--secondary-color)" /> I Want to Learn (Target Language)
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.5rem' }}>
+              <div className="register-lang-grid">
                 {languages.map(l => {
                   const isSelected = formData.target_language_code === l.code;
                   const isSameAsPref = formData.preferred_language_code === l.code;
@@ -575,20 +557,21 @@ const Register = () => {
                       disabled={isSameAsPref}
                       onClick={() => setFormData(prev => ({ ...prev, target_language_code: l.code }))}
                       style={{
-                        padding: '0.65rem 0.5rem',
+                        padding: '0.6rem 0.4rem',
                         borderRadius: 'var(--radius-md)',
                         border: isSelected ? '2px solid var(--secondary-color)' : '1px solid var(--border-color)',
                         background: isSelected ? 'rgba(99, 102, 241, 0.18)' : (isSameAsPref ? 'var(--surface)' : 'var(--surface)'),
                         color: isSelected ? 'var(--secondary-color)' : (isSameAsPref ? 'var(--text-subtle)' : 'var(--text-main)'),
                         fontWeight: '700',
-                        fontSize: '0.85rem',
+                        fontSize: '0.82rem',
                         cursor: isSameAsPref ? 'not-allowed' : 'pointer',
                         opacity: isSameAsPref ? 0.4 : 1,
                         textAlign: 'center',
-                        transition: 'all 0.15s ease'
+                        transition: 'all 0.15s ease',
+                        wordBreak: 'break-word'
                       }}
                     >
-                      <span style={{ fontSize: '1rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
+                      <span style={{ fontSize: '0.95rem', marginRight: '4px' }}>{l.flag || '🌐'}</span>
                       {l.name}
                     </button>
                   );
@@ -597,10 +580,10 @@ const Register = () => {
             </div>
 
             {error && (
-              <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(239,68,68,0.3)', fontSize: '0.9rem' }}>
+              <div style={{ marginBottom: '1.1rem', padding: '0.75rem 0.9rem', background: 'var(--error-bg)', color: 'var(--error)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(239,68,68,0.3)', fontSize: '0.88rem' }}>
                 ⚠️ {error}
                 {error.toLowerCase().includes('already registered') && (
-                  <div style={{ marginTop: '0.65rem' }}>
+                  <div style={{ marginTop: '0.5rem' }}>
                     <button
                       type="button"
                       onClick={() => navigate('/login', { state: { email: formData.email } })}
@@ -608,11 +591,11 @@ const Register = () => {
                         background: 'var(--primary-color)',
                         color: '#ffffff',
                         border: 'none',
-                        padding: '0.55rem 1.1rem',
+                        padding: '0.5rem 1rem',
                         borderRadius: 'var(--radius-md)',
                         fontWeight: '800',
                         cursor: 'pointer',
-                        fontSize: '0.88rem',
+                        fontSize: '0.85rem',
                         boxShadow: 'var(--shadow-sm)'
                       }}
                     >
@@ -625,15 +608,26 @@ const Register = () => {
 
             <button 
               type="submit" 
-              className="btn btn-primary" 
-              style={{ width: '100%', padding: '0.95rem', borderRadius: 'var(--radius-md)', fontWeight: '800', fontSize: '1rem' }} 
+              className="btn btn-primary register-submit-btn" 
+              style={{
+                width: '100%',
+                padding: '0.9rem 1rem',
+                borderRadius: 'var(--radius-md)',
+                fontWeight: '800',
+                fontSize: 'clamp(0.85rem, 2.5vw, 1rem)',
+                lineHeight: '1.35',
+                whiteSpace: 'normal',
+                wordBreak: 'break-word',
+                textAlign: 'center',
+                boxSizing: 'border-box'
+              }} 
               disabled={loading}
             >
               {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT & START LEARNING'}
             </button>
           </form>
 
-          <div style={{ textAlign: 'center', marginTop: '1.5rem', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+          <div style={{ textAlign: 'center', marginTop: '1.25rem', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-muted)' }}>
             Already have an account? <Link to="/login" style={{ color: 'var(--primary-color)', fontWeight: 800 }}>Log In</Link>
           </div>
         </div>
