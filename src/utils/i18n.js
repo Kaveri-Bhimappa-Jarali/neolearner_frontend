@@ -323,7 +323,11 @@ const translations = {
     "No Mistakes to Practice!": "No Mistakes to Practice!",
     "Start Boost Workout": "Start Boost Workout",
     "Retake Diagnostic Test →": "Retake Diagnostic Test →",
-    "ENTER VISUAL LEARNING PATH →": "ENTER VISUAL LEARNING PATH →"
+    "ENTER VISUAL LEARNING PATH →": "ENTER VISUAL LEARNING PATH →",
+    "placementHubNav": "Placement Hub",
+    "showcaseInsights": "Showcase",
+    "adminPortal": "Admin Portal",
+    "aiLab": "AI Lab"
   },
   kn: {
     "promptSpeaking": "🎙️ ಆಲಿಸಿ, ನಂತರ ಈ ಪದವನ್ನು ಉಚ್ಚರಿಸಿ:",
@@ -651,7 +655,11 @@ const translations = {
     "No Mistakes to Practice!": "ಅಭ್ಯಾಸ ಮಾಡಲು ಯಾವುದೇ ತಪ್ಪುಗಳಿಲ್ಲ!",
     "Start Boost Workout": "ಬೂಸ್ಟ್ ವರ್ಕ್‌ಔಟ್ ಪ್ರಾರಂಭಿಸಿ",
     "Retake Diagnostic Test →": "ರೋಗನಿರ್ಣಯ ಪರೀಕ್ಷೆಯನ್ನು ಮತ್ತೆ ತೆಗೆದುಕೊಳ್ಳಿ →",
-    "ENTER VISUAL LEARNING PATH →": "ಕಲಿಕಾ ಹಾದಿಯನ್ನು ತೆರೆಯಿರಿ →"
+    "ENTER VISUAL LEARNING PATH →": "ಕಲಿಕಾ ಹಾದಿಯನ್ನು ತೆರೆಯಿರಿ →",
+    "placementHubNav": "ಸಾಮರ್ಥ್ಯ ಪರೀಕ್ಷೆ ಹಬ್",
+    "showcaseInsights": "ವಿವರಣೆ ಶೋಕೇಸ್",
+    "adminPortal": "ಅಡ್ಮಿನ್ ಪೋರ್ಟಲ್",
+    "aiLab": "AI ಲ್ಯಾಬ್"
   },
   te: {
     "promptSpeaking": "🎙️ వినండి, ఆపై ఈ పదాన్ని ఉచ్చరించండి:",
@@ -971,7 +979,11 @@ const translations = {
     "No Mistakes to Practice!": "సాధన చేయడానికి ఎలాంటి తప్పులు లేవు!",
     "Start Boost Workout": "బూస్ట్ సాధన ప్రారంభించండి",
     "Retake Diagnostic Test →": "డయాగ్నోస్టిక్ పరీక్ష మళ్లీ రాయండి →",
-    "ENTER VISUAL LEARNING PATH →": "లెర్నింగ్ పాత్ తెరవండి →"
+    "ENTER VISUAL LEARNING PATH →": "లెర్నింగ్ పాత్ తెరవండి →",
+    "placementHubNav": "స్థానీకరణ హబ్",
+    "showcaseInsights": "షోకేస్",
+    "adminPortal": "అడ్మిన్ పోర్టల్",
+    "aiLab": "AI ల్యాబ్"
   },
   mr: {
     "promptSpeaking": "🎙️ ऐका, नंतर या शब्दाचा उच्चार करा:",
@@ -1291,7 +1303,11 @@ const translations = {
     "No Mistakes to Practice!": "सरावासाठी कोणत्याही चुका नाहीत!",
     "Start Boost Workout": "बूस्ट सराव सुरू करा",
     "Retake Diagnostic Test →": "निदान चाचणी पुन्हा द्या →",
-    "ENTER VISUAL LEARNING PATH →": "शिकण्याचा मार्ग उघडा →"
+    "ENTER VISUAL LEARNING PATH →": "शिकण्याचा मार्ग उघडा →",
+    "placementHubNav": "पात्रता चाचणी हब",
+    "showcaseInsights": "शोकेस",
+    "adminPortal": "ॲडमिन पोर्टल",
+    "aiLab": "AI लॅब"
   },
   hi: {
     "promptSpeaking": "🎙️ सुनें, फिर इस शब्द का उच्चारण करें:",
@@ -1611,7 +1627,11 @@ const translations = {
     "No Mistakes to Practice!": "अभ्यास के लिए कोई गलती नहीं है!",
     "Start Boost Workout": "बूस्ट अभ्यास शुरू करें",
     "Retake Diagnostic Test →": "प्रारंभिक परीक्षा पुनः दें →",
-    "ENTER VISUAL LEARNING PATH →": "सीखने का मार्ग खोलें →"
+    "ENTER VISUAL LEARNING PATH →": "सीखने का मार्ग खोलें →",
+    "placementHubNav": "मूल्यांकन हब",
+    "showcaseInsights": "शोकेस",
+    "adminPortal": "एडमिन पोर्टल",
+    "aiLab": "एआई लैब"
   }
 };
 
