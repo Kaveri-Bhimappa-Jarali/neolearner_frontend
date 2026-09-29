@@ -1726,17 +1726,29 @@ const translateDynamicTitle = (key, lang, translationsDict) => {
 
 export const useTranslation = () => {
   const { user } = useAuth();
-  
-  // Detect language code from preferred language, preferred_language_code, or localStorage
-  const langCode = user?.preferred_language?.code || 
-                   (typeof user?.preferred_language === 'string' ? user.preferred_language : '') || 
-                   user?.preferred_language_code || 
-                   user?.interface_language || 
-                   localStorage.getItem('preferred_language_code') || 
-                   localStorage.getItem('interface_lang') || 
-                   'en';
-  const lang = translations[langCode] ? langCode : 'en';
-  
+  const [overrideLang, setOverrideLang] = React.useState(() => localStorage.getItem('preferred_language_code') || localStorage.getItem('interface_lang') || 'en');
+
+  React.useEffect(() => {
+    const handleLangChange = () => {
+      const current = localStorage.getItem('preferred_language_code') || localStorage.getItem('interface_lang') || 'en';
+      setOverrideLang(current);
+    };
+    window.addEventListener('language-change', handleLangChange);
+    window.addEventListener('storage', handleLangChange);
+    return () => {
+      window.removeEventListener('language-change', handleLangChange);
+      window.removeEventListener('storage', handleLangChange);
+    };
+  }, []);
+
+  const rawLangCode = user?.preferred_language?.code || 
+                      (typeof user?.preferred_language === 'string' ? user.preferred_language : '') || 
+                      user?.preferred_language_code || 
+                      user?.interface_language || 
+                      overrideLang || 
+                      'en';
+  const lang = translations[rawLangCode] ? rawLangCode : 'en';
+
   const t = (key, replacements = {}) => {
     if (!key) return "";
     

@@ -89,13 +89,35 @@ export const AuthProvider = ({ children }) => {
     return userRes.data;
   };
 
+  const updateInterfaceLanguage = async (langCode) => {
+    localStorage.setItem('preferred_language_code', langCode);
+    localStorage.setItem('interface_lang', langCode);
+    window.dispatchEvent(new Event('language-change'));
+    
+    if (user) {
+      try {
+        const resL = await api.get('/languages/');
+        const list = Array.isArray(resL.data) ? resL.data : (resL.data?.languages || []);
+        const targetLangObj = list.find(l => l.code === langCode);
+        if (targetLangObj) {
+          const res = await api.put('/learners/me', { preferred_language_id: targetLangObj.id });
+          setUser(res.data);
+        } else {
+          setUser(prev => prev ? { ...prev, preferred_language_code: langCode, preferred_language: { ...(prev.preferred_language || {}), code: langCode } } : null);
+        }
+      } catch (e) {
+        setUser(prev => prev ? { ...prev, preferred_language_code: langCode, preferred_language: { ...(prev.preferred_language || {}), code: langCode } } : null);
+      }
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('access_token');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, googleLogin, verifyEmail, resendCode, resetPassword, logout, loading, setUser }}>
+    <AuthContext.Provider value={{ user, login, register, googleLogin, verifyEmail, resendCode, resetPassword, updateInterfaceLanguage, logout, loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );

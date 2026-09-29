@@ -4,15 +4,34 @@ import { useAuth } from '../context/AuthContext';
 import { useTranslation } from '../utils/i18n';
 import { 
   BookOpen, LayoutDashboard, Compass, Trophy, Zap, 
-  User, LogOut, ShieldAlert, Sparkles, MessageSquare, Gem, Flame, Award, Heart, Menu, X, MoreHorizontal
+  User, LogOut, ShieldAlert, Sparkles, MessageSquare, Gem, Flame, Award, Heart, Menu, X, MoreHorizontal, Globe
 } from 'lucide-react';
 
+const INTERFACE_LANGUAGES = [
+  { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
+  { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', flag: '🇮🇳' },
+  { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: '🇮🇳' },
+  { code: 'mr', name: 'Marathi', native: 'मराठी', flag: '🇮🇳' },
+  { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' },
+  { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸' }
+];
+
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, updateInterfaceLanguage } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, langCode } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleLanguageChange = (e) => {
+    const newCode = e.target.value;
+    if (updateInterfaceLanguage) {
+      updateInterfaceLanguage(newCode);
+    } else {
+      localStorage.setItem('preferred_language_code', newCode);
+      window.dispatchEvent(new Event('language-change'));
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -130,8 +149,34 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Right Actions (Login / Get Started or Profile / Logout) */}
-          <div className="nav-actions">
+          {/* Right Actions (Interface Language Selector + Login / Get Started or Profile / Logout) */}
+          <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: '10px' }}>
+              <Globe size={16} style={{ color: 'var(--primary-color, #06b6d4)' }} />
+              <select
+                value={langCode}
+                onChange={handleLanguageChange}
+                title={t('interfaceLanguage') || 'Interface Language'}
+                aria-label="Interface Language"
+                style={{
+                  padding: '4px 8px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  background: 'var(--bg-card, #1e293b)',
+                  color: 'var(--text-main, #ffffff)',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                {INTERFACE_LANGUAGES.map(l => (
+                  <option key={l.code} value={l.code} style={{ background: '#1e293b', color: '#ffffff' }}>
+                    {l.flag} {l.native}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {user ? (
               <div className="nav-action-buttons desktop-only">
                 <Link to="/profile" className="btn btn-secondary nav-action-btn">
