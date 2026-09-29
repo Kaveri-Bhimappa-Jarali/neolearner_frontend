@@ -1,25 +1,32 @@
 :root {
-  /* NeoLearner Premium Design System Palette */
-  --bg-dark: #08111f;
-  --background: #0d172a;
-  --surface: #111c33;
-  --surface-card: #162238;
-  --surface-hover: #1c2b47;
-  --border-color: rgba(255, 255, 255, 0.09);
-  --border-focus: #14b8a6;
+  /* NeoLearner Royal SaaS Design System Palette */
+  --bg-dark: #070a12;
+  --background: #0b0f19;
+  --surface: #111726;
+  --surface-card: #161e33;
+  --surface-hover: #1d2845;
+  --border-color: rgba(212, 175, 55, 0.16);
+  --border-gold: rgba(212, 175, 55, 0.4);
+  --border-focus: #fbbf24;
 
-  --primary-color: #14b8a6; /* Teal / Cyan Accent */
-  --primary-hover: #0d9488;
-  --secondary-color: #6366f1; /* Indigo / Violet Accent */
-  --secondary-hover: #4f46e5;
-  --accent-cyan: #06b6d4;
-  --accent-purple: #8b5cf6;
+  --primary-color: #6d28d9; /* Royal Purple Accent */
+  --primary-hover: #5b21b6;
+  --secondary-color: #d97706; /* Royal Gold / Amber Accent */
+  --secondary-hover: #b45309;
+  --accent-cyan: #38bdf8;
+  --accent-purple: #a855f7;
   --accent-gold: #f59e0b;
+  --accent-gold-bright: #fbbf24;
   --accent-orange: #f97316;
+
+  --royal-navy: #0b0f19;
+  --royal-purple: #4c1d95;
+  --royal-gold: #d97706;
 
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-subtle: #64748b;
+  --text-gold: #fbbf24;
 
   --error: #ef4444;
   --error-bg: rgba(239, 68, 68, 0.12);
@@ -28,14 +35,15 @@
   --warning: #f59e0b;
 
   --font-main: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45);
-  --shadow-teal: 0 8px 24px rgba(20, 184, 166, 0.25);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.55);
+  --shadow-gold: 0 8px 28px rgba(212, 175, 55, 0.2);
+  --shadow-purple: 0 8px 28px rgba(109, 40, 217, 0.25);
 }
 
 * {
