@@ -379,7 +379,7 @@ const Register = () => {
               <div style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))', padding: '10px', borderRadius: '14px', display: 'flex' }}>
                 <BookOpen size={26} color="#ffffff" />
               </div>
-              <span style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--text-main)' }}>NeoLearner</span>
+              <span style={{ fontSize: '1.5rem', fontWeight: '800', letterSpacing: '0.02em', whiteSpace: 'nowrap', color: 'var(--text-main)' }}>NeoLearner</span>
             </div>
 
             <h1 style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', fontWeight: '900', lineHeight: 1.25, color: 'var(--text-main)', marginBottom: '1rem', wordBreak: 'break-word' }}>

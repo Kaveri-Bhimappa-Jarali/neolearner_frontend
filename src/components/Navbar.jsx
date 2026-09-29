@@ -57,7 +57,7 @@ const Navbar = () => {
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            <Link to={user ? "/dashboard" : "/"} className="navbar-brand">
+            <Link to={user ? "/dashboard" : "/"} className="navbar-brand" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
               <div style={{
                 width: '38px',
                 height: '38px',
@@ -66,13 +66,18 @@ const Navbar = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
                 boxShadow: 'var(--shadow-teal)'
               }}>
                 <BookOpen color="#ffffff" size={22} />
               </div>
               <span style={{ 
                 fontWeight: '800', 
-                letterSpacing: '-0.5px',
+                fontSize: '1.25rem',
+                letterSpacing: '0.02em',
+                lineHeight: '1.2',
+                display: 'inline-block',
+                whiteSpace: 'nowrap',
                 background: 'linear-gradient(135deg, #ffffff 0%, var(--primary-color) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
@@ -203,7 +208,7 @@ const Navbar = () => {
             <div className="mobile-drawer-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <BookOpen color="var(--primary-color)" size={24} />
-                <span style={{ fontWeight: '800', fontSize: '1.2rem', color: 'var(--text-main)' }}>NeoLearner</span>
+                <span style={{ fontWeight: '800', fontSize: '1.2rem', letterSpacing: '0.02em', whiteSpace: 'nowrap', color: 'var(--text-main)' }}>NeoLearner</span>
               </div>
               <button onClick={closeMenu} className="btn btn-outline" style={{ padding: '6px', borderRadius: '50%' }}>
                 <X size={20} />
