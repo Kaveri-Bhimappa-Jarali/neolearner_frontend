@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 const translations = {
@@ -1746,9 +1747,9 @@ const translateDynamicTitle = (key, lang, translationsDict) => {
 
 export const useTranslation = () => {
   const { user } = useAuth();
-  const [overrideLang, setOverrideLang] = React.useState(() => localStorage.getItem('preferred_language_code') || localStorage.getItem('interface_lang') || 'en');
+  const [overrideLang, setOverrideLang] = useState(() => localStorage.getItem('preferred_language_code') || localStorage.getItem('interface_lang') || 'en');
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleLangChange = () => {
       const current = localStorage.getItem('preferred_language_code') || localStorage.getItem('interface_lang') || 'en';
       setOverrideLang(current);
