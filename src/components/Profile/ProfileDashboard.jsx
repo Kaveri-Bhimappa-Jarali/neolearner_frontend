@@ -68,7 +68,13 @@ const ProfileDashboard = () => {
     setSuccessMsg('');
 
     if (!formData.full_name || !formData.full_name.trim()) {
-      setError('Full Name cannot be empty');
+      setError(t('fullNameRequired') || 'Full Name cannot be empty');
+      return;
+    }
+
+    const token = localStorage.getItem('access_token');
+    if (!token && (!user || !user.email)) {
+      setError(t('sessionExpiredLoginMsg') || 'Your session has expired. Please log in to update your profile.');
       return;
     }
 
@@ -87,11 +93,22 @@ const ProfileDashboard = () => {
       const res = await api.put('/learners/me', payload);
       setUser(res.data);
       setIsEditing(false);
-      setSuccessMsg('Profile updated successfully! ✨');
+      setSuccessMsg(t('profileUpdatedSuccess') || 'Profile updated successfully! ✨');
+
+      // Sync interface language if preferred language was updated
+      if (res.data?.preferred_language?.code) {
+        localStorage.setItem('preferred_language_code', res.data.preferred_language.code);
+        localStorage.setItem('interface_lang', res.data.preferred_language.code);
+        window.dispatchEvent(new Event('language-change'));
+      }
     } catch (err) {
       console.error("Failed to update profile", err);
-      const detailMsg = err.response?.data?.detail || 'Failed to update profile. Please try again.';
-      setError(detailMsg);
+      if (err.response?.status === 401 || err.response?.data?.detail?.includes('Not authenticated')) {
+        setError(t('sessionExpiredLoginMsg') || 'Session expired or not authenticated. Please log in again to save changes.');
+      } else {
+        const detailMsg = err.response?.data?.detail || t('profileUpdateFailed') || 'Failed to update profile. Please try again.';
+        setError(detailMsg);
+      }
     } finally {
       setLoading(false);
     }

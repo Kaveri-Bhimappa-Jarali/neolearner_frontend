@@ -129,12 +129,12 @@ const LearnerDashboard = () => {
 
   // Learning categories array (6 core skills)
   const categories = [
-    { id: 'speaking', title: 'Speaking', desc: 'AI Voice Conversation Lab', icon: Mic, color: '#4F46E5', link: '/conversation', badge: 'AI Voice' },
-    { id: 'listening', title: 'Listening', desc: 'Audio Lessons & Dialogues', icon: Headphones, color: '#6D28D9', link: '/courses', badge: 'Audio' },
-    { id: 'reading', title: 'Reading', desc: 'Interactive Culture Stories', icon: BookOpen, color: '#D4A72C', link: '/stories', badge: 'Stories' },
-    { id: 'writing', title: 'Writing', desc: 'Mistakes Review & Quizzes', icon: PenTool, color: '#059669', link: '/review/mistakes', badge: 'Practice' },
-    { id: 'vocabulary', title: 'Vocabulary', desc: 'Visual Flashcards & SRS', icon: Layers, color: '#DC2626', link: '/flashcards', badge: 'SRS' },
-    { id: 'grammar', title: 'Grammar', desc: 'Interactive Practice Hub', icon: Zap, color: '#2563EB', link: '/practice-hub', badge: 'Hub' }
+    { id: 'speaking', title: t('speaking') || 'Speaking', desc: t('aiConversationLabDesc') || 'AI Voice Conversation Lab', icon: Mic, color: '#4F46E5', link: '/conversation', badge: 'AI Voice' },
+    { id: 'listening', title: t('listeningStudioTitle') || 'Listening', desc: t('listeningStudioDesc') || 'Audio Lessons & Dialogues', icon: Headphones, color: '#6D28D9', link: '/courses', badge: 'Audio' },
+    { id: 'reading', title: t('stories') || 'Reading', desc: t('storiesDesc') || 'Interactive Culture Stories', icon: BookOpen, color: '#D4A72C', link: '/stories', badge: 'Stories' },
+    { id: 'writing', title: t('writingSpellingTitle') || 'Writing', desc: t('writingSpellingDesc') || 'Mistakes Review & Quizzes', icon: PenTool, color: '#059669', link: '/review/mistakes', badge: 'Practice' },
+    { id: 'vocabulary', title: t('vocab') || 'Vocabulary', desc: t('flashcardsDesc') || 'Visual Flashcards & SRS', icon: Layers, color: '#DC2626', link: '/flashcards', badge: 'SRS' },
+    { id: 'grammar', title: t('grammar') || 'Grammar', desc: t('practiceHub') || 'Interactive Practice Hub', icon: Zap, color: '#2563EB', link: '/practice-hub', badge: 'Hub' }
   ];
 
   return (
@@ -151,12 +151,12 @@ const LearnerDashboard = () => {
           <div className="learner-greeting-block">
             <div className="learner-name-row">
               <h1 className="learner-welcome-title">
-                Welcome back, {user?.full_name?.split(' ')[0] || 'Learner'}! 👋
+                {t('welcomeUser', { name: user?.full_name?.split(' ')[0] || 'Learner', interfaceLang: user?.preferred_language?.name || 'English' }) || `Welcome back, ${user?.full_name?.split(' ')[0] || 'Learner'}! 👋`}
               </h1>
               <span className="cefr-badge-pill">{currentCEFR} Level</span>
             </div>
             <p className="learner-motivation-subtitle">
-              ✨ Consistency is key! You are mastering <strong>{user?.target_language?.name || 'Kannada'}</strong> in {user?.preferred_language?.name || 'English'}.
+              ✨ {t('learningTarget', { language: user?.target_language?.name || 'Kannada' }) || `You are mastering ${user?.target_language?.name || 'Kannada'}.`}
             </p>
           </div>
         </div>
@@ -164,18 +164,18 @@ const LearnerDashboard = () => {
         <div className="learner-header-actions">
           {user?.is_admin && (
             <Link to="/admin" className="mobile-admin-link-btn">
-              👑 Admin Portal
+              👑 {t('adminPortal') || 'Admin Portal'}
             </Link>
           )}
           <button 
             className="mobile-analytics-btn"
             onClick={() => setShowReportModal(true)}
           >
-            📊 Analytics
+            📊 {t('myStats') || 'Analytics'}
           </button>
           <div className="daily-goal-pill">
             <Clock size={16} color="#D4A72C" />
-            <span>{user?.daily_minutes_goal || 15}m daily goal</span>
+            <span>{t('dailyGoalMinutes', { minutes: user?.daily_minutes_goal || 15 })}</span>
           </div>
         </div>
       </div>
@@ -189,15 +189,15 @@ const LearnerDashboard = () => {
             </div>
             <div>
               <h3 className="diagnostic-alert-title">
-                Diagnostic Placement Test Required
+                {t('initialExamTitle') || 'Diagnostic Placement Test Required'}
               </h3>
               <p className="diagnostic-alert-text">
-                Take our 10-minute diagnostic placement test across vocabulary, reading, listening, and speaking to unlock your personalized learning path.
+                {t('initialExamDesc') || 'Take our 10-minute diagnostic placement test across vocabulary, reading, listening, and speaking to unlock your personalized learning path.'}
               </p>
             </div>
           </div>
           <Link to="/initial-exam" className="diagnostic-start-btn">
-            Start Placement Test 🚀
+            {t('startInitialExamBtn') || 'Start Placement Test 🚀'}
           </Link>
         </div>
       )}
@@ -212,18 +212,18 @@ const LearnerDashboard = () => {
         <div className="continue-learning-card">
           <div className="continue-card-header">
             <div className="continue-track-badge">
-              <Compass size={16} /> Active Learning Track
+              <Compass size={16} /> {t('activeLearningTrack') || 'Active Learning Track'}
             </div>
             <span className="continue-rate-text">
-              {learningPath.completion_rate}% Complete
+              {t('completeRate', { rate: learningPath.completion_rate }) || `${learningPath.completion_rate}% Complete`}
             </span>
           </div>
 
           <h2 className="continue-course-title">
-            {learningPath.course_title}
+            {t(learningPath.course_title) || learningPath.course_title}
           </h2>
           <p className="continue-course-meta">
-            Target Language: {learningPath.target_language_name} • {learningPath.total_nodes} Checkpoint Modules
+            {t('targetLanguage')}: {user?.target_language?.name || learningPath.target_language_name} • {t('checkpointModulesCount', { count: learningPath.total_nodes }) || `${learningPath.total_nodes} Checkpoint Modules`}
           </p>
 
           {/* Animated Progress Bar */}
@@ -239,10 +239,10 @@ const LearnerDashboard = () => {
             <div className="next-node-box">
               <div className="next-node-info">
                 <span className="next-node-tag">
-                  Module {nextNode.order} • Up Next
+                  {t('upNextNode', { order: nextNode.order }) || `Module ${nextNode.order} • Up Next`}
                 </span>
                 <h4 className="next-node-title">
-                  {nextNode.title}
+                  {t(nextNode.title) || nextNode.title}
                 </h4>
                 <span className="next-node-meta">
                   ⏱️ ~{nextNode.duration_minutes || 10} mins • {nextNode.competency_tag}
@@ -250,7 +250,7 @@ const LearnerDashboard = () => {
               </div>
 
               <Link to={getNextNodeUrl(nextNode)} className="continue-btn-cta">
-                <PlayCircle size={20} /> Continue Lesson
+                <PlayCircle size={20} /> {t('continueBtn') || 'Continue Lesson'}
               </Link>
             </div>
           )}
@@ -267,7 +267,7 @@ const LearnerDashboard = () => {
           </div>
           <div className="kpi-content">
             <span className="kpi-value">{completedCount}</span>
-            <span className="kpi-label">Lessons Completed</span>
+            <span className="kpi-label">{t('lessonsCompleted')}</span>
           </div>
         </div>
 
@@ -277,7 +277,7 @@ const LearnerDashboard = () => {
           </div>
           <div className="kpi-content">
             <span className="kpi-value">{user?.streak || 0} 🔥</span>
-            <span className="kpi-label">Day Streak</span>
+            <span className="kpi-label">{t('dayStreak')}</span>
           </div>
         </div>
 
@@ -287,7 +287,7 @@ const LearnerDashboard = () => {
           </div>
           <div className="kpi-content">
             <span className="kpi-value">{avgScore}%</span>
-            <span className="kpi-label">Average Score</span>
+            <span className="kpi-label">{t('avgScore')}</span>
           </div>
         </div>
 
@@ -297,7 +297,7 @@ const LearnerDashboard = () => {
           </div>
           <div className="kpi-content">
             <span className="kpi-value">{currentCEFR}</span>
-            <span className="kpi-label">CEFR Mastery</span>
+            <span className="kpi-label">{t('aiProficiencyBenchmark') || 'CEFR Mastery'}</span>
           </div>
         </div>
       </div>
@@ -308,9 +308,9 @@ const LearnerDashboard = () => {
       <div className="categories-section">
         <div className="section-header-row">
           <h3 className="section-title">
-            <Sparkles size={20} color="#6D28D9" /> Learning Categories
+            <Sparkles size={20} color="#6D28D9" /> {t('targetedPracticeModes') || 'Learning Categories'}
           </h3>
-          <span className="section-subtitle">Choose a skill to practice</span>
+          <span className="section-subtitle">{t('welcomeSubtitle') || 'Choose a skill to practice'}</span>
         </div>
 
         <div className="categories-grid">
@@ -331,7 +331,7 @@ const LearnerDashboard = () => {
                   <p className="category-desc">{cat.desc}</p>
                 </div>
                 <div className="category-card-arrow">
-                  <span>Start</span>
+                  <span>{t('startNow')}</span>
                   <ChevronRight size={16} />
                 </div>
               </Link>
@@ -348,7 +348,7 @@ const LearnerDashboard = () => {
         {/* Daily Quests Widget */}
         <div className="widget-card">
           <h3 className="widget-title">
-            <Target size={20} color="#4F46E5" /> Daily Quests
+            <Target size={20} color="#4F46E5" /> {t('dailyQuests')}
           </h3>
           <div className="quests-list">
             {quests.map(q => {
@@ -357,7 +357,7 @@ const LearnerDashboard = () => {
               return (
                 <div key={q.id} className="quest-item-box">
                   <div className="quest-item-header">
-                    <span className="quest-item-title">{q.title}</span>
+                    <span className="quest-item-title">{t(q.title) || q.title}</span>
                     <span className={`quest-item-status ${isComplete ? 'complete' : ''}`}>
                       {q.current} / {q.target} {q.unit} {isComplete && '✅'}
                     </span>
@@ -379,7 +379,7 @@ const LearnerDashboard = () => {
           <div className="widget-card">
             <div className="widget-header-flex">
               <h3 className="widget-title">
-                <BarChart2 size={20} color="#6D28D9" /> Diagnostic Competency
+                <BarChart2 size={20} color="#6D28D9" /> {t('cefrDiagnosticProfileTitle') || 'Diagnostic Competency'}
               </h3>
               <span className="widget-badge">{currentCEFR} Level</span>
             </div>
@@ -390,10 +390,10 @@ const LearnerDashboard = () => {
             <div className="strengths-weakness-grid">
               {strengths.length > 0 && (
                 <div className="sw-pill-group sw-green">
-                  <span className="sw-label">Key Strengths</span>
+                  <span className="sw-label">{t('keyStrengths')}</span>
                   <div className="sw-pills-row">
                     {strengths.map((s, idx) => (
-                      <span key={idx} className="sw-pill pill-green">{s}</span>
+                      <span key={idx} className="sw-pill pill-green">{t(s) || s}</span>
                     ))}
                   </div>
                 </div>
@@ -401,10 +401,10 @@ const LearnerDashboard = () => {
 
               {weakAreas.length > 0 && (
                 <div className="sw-pill-group sw-orange">
-                  <span className="sw-label">Needs Focus</span>
+                  <span className="sw-label">{t('needsFocus')}</span>
                   <div className="sw-pills-row">
                     {weakAreas.map((w, idx) => (
-                      <span key={idx} className="sw-pill pill-gold">{w}</span>
+                      <span key={idx} className="sw-pill pill-gold">{t(w) || w}</span>
                     ))}
                   </div>
                 </div>

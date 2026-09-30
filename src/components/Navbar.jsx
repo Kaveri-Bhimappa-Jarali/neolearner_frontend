@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useTranslation } from '../utils/i18n';
+import { INTERFACE_LANGUAGE_CODES, useTranslation } from '../utils/i18n';
 import { 
   BookOpen, LayoutDashboard, Compass, Trophy, Zap, 
   User, LogOut, ShieldAlert, Sparkles, MessageSquare, Gem, Flame, Award, Heart, Menu, X, MoreHorizontal, Globe, Crown, ChevronDown
@@ -12,9 +12,8 @@ const INTERFACE_LANGUAGES = [
   { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', flag: '🇮🇳' },
   { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: '🇮🇳' },
   { code: 'mr', name: 'Marathi', native: 'मराठी', flag: '🇮🇳' },
-  { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' },
-  { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸' }
-];
+  { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' }
+].filter(({ code }) => INTERFACE_LANGUAGE_CODES.includes(code));
 
 const Navbar = () => {
   const { user, logout, updateInterfaceLanguage } = useAuth();

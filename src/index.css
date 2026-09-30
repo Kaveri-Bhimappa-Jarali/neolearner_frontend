@@ -1,17 +1,28 @@
 :root {
-  /* NeoLearner Royal SaaS Design System Palette */
+  /* NeoLearner Royal SaaS Unified Design Tokens */
+  --neo-background: #0b0f19; /* Deep Midnight Navy */
+  --neo-surface: #111726;    /* Dark Navy Surface */
+  --neo-surface-card: #161e33; /* Dark Card Surface */
+  --neo-primary: #6d28d9;    /* Royal Purple */
+  --neo-purple: #4c1d95;     /* Deep Royal Purple */
+  --neo-gold: #d97706;       /* Champagne Gold */
+  --neo-gold-bright: #fbbf24;/* Bright Gold */
+  --neo-text: #f8fafc;       /* Ivory White Text */
+  --neo-muted: #94a3b8;      /* Muted Slate Text */
+  --neo-border: rgba(212, 175, 55, 0.16); /* Gold Tinted Border */
+
   --bg-dark: #070a12;
-  --background: #0b0f19;
-  --surface: #111726;
-  --surface-card: #161e33;
+  --background: var(--neo-background);
+  --surface: var(--neo-surface);
+  --surface-card: var(--neo-surface-card);
   --surface-hover: #1d2845;
-  --border-color: rgba(212, 175, 55, 0.16);
+  --border-color: var(--neo-border);
   --border-gold: rgba(212, 175, 55, 0.4);
   --border-focus: #fbbf24;
 
-  --primary-color: #6d28d9; /* Royal Purple Accent */
+  --primary-color: var(--neo-primary); /* Royal Purple Accent */
   --primary-hover: #5b21b6;
-  --secondary-color: #d97706; /* Royal Gold / Amber Accent */
+  --secondary-color: var(--neo-gold); /* Royal Gold / Amber Accent */
   --secondary-hover: #b45309;
   --accent-cyan: #38bdf8;
   --accent-purple: #a855f7;
@@ -23,8 +34,8 @@
   --royal-purple: #4c1d95;
   --royal-gold: #d97706;
 
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
+  --text-main: var(--neo-text);
+  --text-muted: var(--neo-muted);
   --text-subtle: #64748b;
   --text-gold: #fbbf24;
 
@@ -555,12 +566,19 @@ a:hover {
 
 .form-group { margin-bottom: 1.5rem; }
 .form-label { display: block; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main); font-size: 0.9rem; }
-.form-input, .form-select {
+.form-input, .form-select, select {
   width: 100%; padding: 0.875rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm);
-  font-size: 0.95rem; background-color: var(--background); color: var(--text-main); transition: all 0.2s ease;
-  line-height: 1.5;
+  font-size: 0.95rem; background-color: var(--neo-surface, #111726) !important; color: var(--neo-text, #f8fafc) !important; transition: all 0.2s ease;
+  line-height: 1.5; cursor: pointer;
 }
-.form-input:focus, .form-select:focus { outline: none; border-color: var(--secondary-color); }
+.form-input:focus, .form-select:focus, select:focus { outline: none; border-color: var(--secondary-color); }
+
+select option, .form-select option {
+  background-color: #111726 !important;
+  color: #f8fafc !important;
+  padding: 10px 14px;
+  font-weight: 700;
+}
 
 /* AI practice answer choices */
 .ai-answer-option {
@@ -3393,15 +3411,16 @@ table .btn {
   border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
-/* Light Royal Theme Specific Overrides for Mobile Screens */
+/* Unified NeoLearner Royal Responsive Layout Rules for Mobile & Small Screens */
 @media (max-width: 768px) {
   body, .app-container {
-    background-color: #f7f8fc !important;
+    background-color: var(--neo-background) !important;
+    color: var(--neo-text) !important;
   }
 
   .main-content {
-    background-color: #f7f8fc !important;
-    padding: 1rem 1rem 84px 1rem !important;
+    background-color: var(--neo-background) !important;
+    padding: 0.85rem 0.75rem 84px 0.75rem !important;
   }
 
   .learner-header-card,
@@ -3409,9 +3428,9 @@ table .btn {
   .kpi-card,
   .category-card-item,
   .widget-card {
-    background: #ffffff !important;
-    border: 1px solid #e5e7eb !important;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
+    background: var(--neo-surface-card) !important;
+    border: 1px solid var(--neo-border) !important;
+    box-shadow: var(--shadow-sm) !important;
   }
 
   .learner-welcome-title,
@@ -3423,7 +3442,7 @@ table .btn {
   .diagnostic-alert-title,
   .quest-item-title,
   .section-title {
-    color: #111827 !important;
+    color: var(--neo-text) !important;
   }
 
   .learner-motivation-subtitle,
@@ -3433,18 +3452,85 @@ table .btn {
   .next-node-meta,
   .diagnostic-alert-text,
   .section-subtitle {
-    color: #6b7280 !important;
+    color: var(--neo-muted) !important;
   }
 
   .next-node-box,
   .quest-item-box,
   .sw-pill-group {
-    background: #f9fafb !important;
-    border: 1px solid #e5e7eb !important;
+    background: var(--neo-surface) !important;
+    border: 1px solid var(--neo-border) !important;
   }
 
   .categories-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+
+  .progress-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+
+  .secondary-widgets-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .learner-header-card {
+    padding: 1.15rem !important;
+    border-radius: 16px !important;
+  }
+
+  .learner-avatar-badge {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+  }
+
+  .learner-avatar-badge .lang-flag {
+    font-size: 1.35rem !important;
+  }
+
+  .learner-welcome-title {
+    font-size: 1.25rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.6rem !important;
+  }
+
+  .category-card-item {
+    padding: 0.85rem !important;
+    min-height: 125px !important;
+  }
+
+  .category-title {
+    font-size: 0.92rem !important;
+  }
+
+  .category-desc {
+    font-size: 0.72rem !important;
+  }
+
+  .progress-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.6rem !important;
+  }
+
+  .kpi-card {
+    padding: 0.85rem !important;
+  }
+
+  .kpi-value {
+    font-size: 1.15rem !important;
+  }
+
+  .kpi-label {
+    font-size: 0.72rem !important;
   }
 }
 

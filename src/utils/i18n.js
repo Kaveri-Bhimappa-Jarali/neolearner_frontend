@@ -1636,6 +1636,8 @@ const translations = {
   }
 };
 
+export const INTERFACE_LANGUAGE_CODES = Object.keys(translations);
+
 const translateDynamicTitle = (key, lang, translationsDict) => {
   if (!key || typeof key !== 'string') return key;
 
@@ -1747,11 +1749,11 @@ const translateDynamicTitle = (key, lang, translationsDict) => {
 
 export const useTranslation = () => {
   const { user } = useAuth();
-  const [overrideLang, setOverrideLang] = useState(() => localStorage.getItem('preferred_language_code') || localStorage.getItem('interface_lang') || 'en');
+  const [overrideLang, setOverrideLang] = useState(() => localStorage.getItem('interface_lang') || localStorage.getItem('preferred_language_code') || '');
 
   useEffect(() => {
     const handleLangChange = () => {
-      const current = localStorage.getItem('preferred_language_code') || localStorage.getItem('interface_lang') || 'en';
+      const current = localStorage.getItem('interface_lang') || localStorage.getItem('preferred_language_code') || '';
       setOverrideLang(current);
     };
     window.addEventListener('language-change', handleLangChange);
@@ -1762,13 +1764,17 @@ export const useTranslation = () => {
     };
   }, []);
 
-  const rawLangCode = user?.preferred_language?.code || 
+  const rawLangCode = overrideLang ||
+                      user?.preferred_language?.code || 
                       (typeof user?.preferred_language === 'string' ? user.preferred_language : '') || 
                       user?.preferred_language_code || 
                       user?.interface_language || 
-                      overrideLang || 
                       'en';
   const lang = translations[rawLangCode] ? rawLangCode : 'en';
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   const t = (key, replacements = {}) => {
     if (!key) return "";

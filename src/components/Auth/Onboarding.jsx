@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
+import { INTERFACE_LANGUAGE_CODES } from '../../utils/i18n';
 import { 
   Globe, BookOpen, Target, Sparkles, Compass, 
   ArrowRight, ArrowLeft, Check, Award, Clock, 
@@ -261,7 +262,7 @@ const Onboarding = () => {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-              {languages.map(lang => {
+              {languages.filter(lang => INTERFACE_LANGUAGE_CODES.includes(lang.code)).map(lang => {
                 const isSelected = preferredLang === lang.id;
                 return (
                   <div

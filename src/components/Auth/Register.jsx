@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axios';
+import { INTERFACE_LANGUAGE_CODES } from '../../utils/i18n';
 import { BookOpen, Mail, Lock, User, CheckCircle2, ShieldCheck, Sparkles, Key, Globe, ArrowRight } from 'lucide-react';
 
 const DEFAULT_LANGUAGES = [
@@ -512,7 +513,7 @@ const Register = () => {
                 <Globe size={16} color="var(--primary-color)" /> I Speak (Native Language)
               </label>
               <div className="register-lang-grid">
-                {languages.map(l => {
+                {languages.filter(l => INTERFACE_LANGUAGE_CODES.includes(l.code)).map(l => {
                   const isSelected = formData.preferred_language_code === l.code;
                   return (
                     <button
