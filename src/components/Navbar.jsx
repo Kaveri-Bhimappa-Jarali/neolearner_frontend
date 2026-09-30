@@ -461,29 +461,29 @@ const Navbar = () => {
           backdropFilter: 'blur(20px)',
           borderTop: '1px solid rgba(212, 175, 55, 0.25)',
           zIndex: 999,
-          justifySpace: 'around',
+          justifyContent: 'space-around',
           alignItems: 'center'
         }}>
           <Link to="/dashboard" className={`bottom-nav-item ${isActive('/dashboard') ? 'active' : ''}`} style={bottomNavItemStyle(isActive('/dashboard'))}>
             <LayoutDashboard size={20} />
-            <span>{t('dashboard')}</span>
+            <span>Home</span>
           </Link>
           <Link to="/learning-path" className={`bottom-nav-item ${isActive('/learning-path') || isActive('/courses') ? 'active' : ''}`} style={bottomNavItemStyle(isActive('/learning-path') || isActive('/courses'))}>
             <Compass size={20} />
-            <span>{t('learningPath')}</span>
-          </Link>
-          <Link to="/conversation" className={`bottom-nav-item ${isActive('/conversation') ? 'active' : ''}`} style={bottomNavItemStyle(isActive('/conversation'))}>
-            <MessageSquare size={20} />
-            <span>{t('aiLab')}</span>
+            <span>Learn</span>
           </Link>
           <Link to="/practice-hub" className={`bottom-nav-item ${isActive('/practice-hub') ? 'active' : ''}`} style={bottomNavItemStyle(isActive('/practice-hub'))}>
             <Zap size={20} />
-            <span>{t('practiceHub')}</span>
+            <span>Practice</span>
           </Link>
-          <button onClick={() => setMobileMenuOpen(true)} className="bottom-nav-item" style={{ ...bottomNavItemStyle(false), background: 'none', border: 'none' }}>
-            <MoreHorizontal size={20} />
-            <span>{t('more') || 'More'}</span>
-          </button>
+          <Link to="/achievements" className={`bottom-nav-item ${isActive('/achievements') || isActive('/insights') ? 'active' : ''}`} style={bottomNavItemStyle(isActive('/achievements') || isActive('/insights'))}>
+            <Award size={20} />
+            <span>Progress</span>
+          </Link>
+          <Link to="/profile" className={`bottom-nav-item ${isActive('/profile') ? 'active' : ''}`} style={bottomNavItemStyle(isActive('/profile'))}>
+            <User size={20} />
+            <span>Profile</span>
+          </Link>
         </div>
       )}
     </>

@@ -6,14 +6,12 @@ import {
   TrendingUp, Award, Sparkles, BookOpen, CheckCircle, Clock, Target, 
   Flame, Gem, Trophy, ArrowRight, Compass, Zap, Headphones, Mic, 
   PenTool, AlertTriangle, Layers, PlayCircle, ShieldCheck, CheckCircle2,
-  Calendar, Activity, BarChart2
+  Calendar, Activity, BarChart2, Star, ChevronRight, User, Globe
 } from 'lucide-react';
 import { useTranslation } from '../../utils/i18n';
 import CourseRecommendationBanner from './CourseRecommendationBanner';
 import SkillRadarChart from './SkillRadarChart';
 import ProgressReportModal from './ProgressReportModal';
-import StatCard from '../ui/StatCard';
-import Badge from '../ui/Badge';
 
 const LearnerDashboard = () => {
   const { user } = useAuth();
@@ -70,7 +68,7 @@ const LearnerDashboard = () => {
     return (
       <div className="page-container" style={{ textAlign: 'center', padding: '5rem 1rem' }}>
         <div style={{ fontSize: '1.25rem', color: 'var(--text-muted)', fontWeight: '700' }}>
-          {t('analyzingProfile')}
+          {t('analyzingProfile') || 'Analyzing your learning profile...'}
         </div>
       </div>
     );
@@ -95,39 +93,12 @@ const LearnerDashboard = () => {
   const serverXpGoal = user?.daily_xp_goal ?? 30;
 
   const quests = [
-    { id: 1, title: t('earnXPToday'), current: serverXpEarned, target: serverXpGoal, unit: 'XP' },
-    { id: 2, title: t('completeLessonToday'), current: lessonsCompletedToday, target: 1, unit: 'lesson' },
-    { id: 3, title: t('completeQuizToday'), current: quizzesCompletedToday, target: 1, unit: 'quiz' }
+    { id: 1, title: t('earnXPToday') || 'Earn Daily XP', current: serverXpEarned, target: serverXpGoal, unit: 'XP' },
+    { id: 2, title: t('completeLessonToday') || 'Complete 1 Lesson', current: lessonsCompletedToday, target: 1, unit: 'lesson' },
+    { id: 3, title: t('completeQuizToday') || 'Complete 1 Quiz', current: quizzesCompletedToday, target: 1, unit: 'quiz' }
   ];
 
-  // Calculate active days for the weekly calendar
-  const activeDaysThisWeek = new Set();
-  const getWeekDays = () => {
-    const days = [];
-    const curr = new Date();
-    const first = curr.getDate() - curr.getDay() + (curr.getDay() === 0 ? -6 : 1);
-    for (let i = 0; i < 7; i++) {
-      const next = new Date(new Date().setDate(first + i));
-      days.push(next);
-    }
-    return days;
-  };
-  
-  const weekDays = getWeekDays();
-
-  progressList.forEach(p => {
-    if (p.status === 'completed' && p.last_accessed) {
-      activeDaysThisWeek.add(new Date(p.last_accessed).toDateString());
-    }
-  });
-
-  resultsList.forEach(r => {
-    if (r.completed_at) {
-      activeDaysThisWeek.add(new Date(r.completed_at).toDateString());
-    }
-  });
-
-  // Helper flags & labels
+  // Helper flags
   const getLangFlag = (code) => {
     switch (code) {
       case 'en': return '🇬🇧';
@@ -136,15 +107,6 @@ const LearnerDashboard = () => {
       case 'mr': return '🇮🇳';
       case 'hi': return '🇮🇳';
       default: return '🌐';
-    }
-  };
-
-  const getCEFRVariant = (cefr) => {
-    switch (cefr) {
-      case 'C2': case 'C1': return 'purple';
-      case 'B2': case 'B1': return 'cyan';
-      case 'A2': case 'A1': return 'teal';
-      default: return 'gold';
     }
   };
 
@@ -165,113 +127,77 @@ const LearnerDashboard = () => {
     return '/learning-path';
   };
 
+  // Learning categories array (6 core skills)
+  const categories = [
+    { id: 'speaking', title: 'Speaking', desc: 'AI Voice Conversation Lab', icon: Mic, color: '#4F46E5', link: '/conversation', badge: 'AI Voice' },
+    { id: 'listening', title: 'Listening', desc: 'Audio Lessons & Dialogues', icon: Headphones, color: '#6D28D9', link: '/courses', badge: 'Audio' },
+    { id: 'reading', title: 'Reading', desc: 'Interactive Culture Stories', icon: BookOpen, color: '#D4A72C', link: '/stories', badge: 'Stories' },
+    { id: 'writing', title: 'Writing', desc: 'Mistakes Review & Quizzes', icon: PenTool, color: '#059669', link: '/review/mistakes', badge: 'Practice' },
+    { id: 'vocabulary', title: 'Vocabulary', desc: 'Visual Flashcards & SRS', icon: Layers, color: '#DC2626', link: '/flashcards', badge: 'SRS' },
+    { id: 'grammar', title: 'Grammar', desc: 'Interactive Practice Hub', icon: Zap, color: '#2563EB', link: '/practice-hub', badge: 'Hub' }
+  ];
+
   return (
-    <div className="page-container" style={{ maxWidth: '1200px' }}>
+    <div className="learner-dashboard-wrapper">
       
-      {/* Top Banner / Greeting Header */}
-      <div 
-        style={{
-          background: 'var(--surface-card)',
-          border: '1px solid var(--border-color)',
-          borderRadius: 'var(--radius-xl)',
-          padding: '2rem',
-          marginBottom: '2rem',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '1.5rem',
-          boxShadow: 'var(--shadow-md)'
-        }}
-      >
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <span style={{ fontSize: '1.6rem' }}>{getLangFlag(user?.target_language?.code)}</span>
-            <h1 style={{ fontSize: '1.85rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, lineHeight: '1.2' }}>
-              {t('welcomeUser', { name: user?.full_name?.split(' ')[0] || 'Learner', interfaceLang: user?.preferred_language?.name || 'English' }).split('!')[0] || `Welcome back, ${user?.full_name?.split(' ')[0] || 'Learner'}`} 👋
-            </h1>
-            <Badge variant={getCEFRVariant(currentCEFR)}>
-              {currentCEFR} Level
-            </Badge>
+      {/* ========================================================
+          1. HEADER & WELCOME SECTION
+          ======================================================== */}
+      <div className="learner-header-card">
+        <div className="learner-header-main">
+          <div className="learner-avatar-badge">
+            <span className="lang-flag">{getLangFlag(user?.target_language?.code)}</span>
           </div>
-          <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.98rem' }}>
-            {t('learningTargetInInterface', { target: user?.target_language?.name || 'Kannada', interface: user?.preferred_language?.name || 'English' }) || `Learning ${user?.target_language?.name || 'Kannada'} in ${user?.preferred_language?.name || 'English'}`}
-          </p>
+          <div className="learner-greeting-block">
+            <div className="learner-name-row">
+              <h1 className="learner-welcome-title">
+                Welcome back, {user?.full_name?.split(' ')[0] || 'Learner'}! 👋
+              </h1>
+              <span className="cefr-badge-pill">{currentCEFR} Level</span>
+            </div>
+            <p className="learner-motivation-subtitle">
+              ✨ Consistency is key! You are mastering <strong>{user?.target_language?.name || 'Kannada'}</strong> in {user?.preferred_language?.name || 'English'}.
+            </p>
+          </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+        <div className="learner-header-actions">
           {user?.is_admin && (
-            <Link
-              to="/admin"
-              className="btn btn-primary"
-              style={{ padding: '0.65rem 1.25rem', fontSize: '0.88rem', fontWeight: '800', background: 'linear-gradient(135deg, var(--accent-purple), var(--secondary-color))' }}
-            >
-              👑 {t('adminPortal') || 'Admin Portal'}
+            <Link to="/admin" className="mobile-admin-link-btn">
+              👑 Admin Portal
             </Link>
           )}
-          <button
-            className="btn btn-secondary"
+          <button 
+            className="mobile-analytics-btn"
             onClick={() => setShowReportModal(true)}
-            style={{ padding: '0.65rem 1.25rem', fontSize: '0.88rem', fontWeight: '700' }}
           >
-            📊 {t('learningAnalytics') || 'Learning Analytics'}
+            📊 Analytics
           </button>
-          
-          <div style={{
-            background: 'var(--surface)',
-            border: '1px solid var(--border-color)',
-            padding: '8px 16px',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '0.88rem',
-            fontWeight: '700',
-            color: 'var(--primary-color)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}>
-            <Clock size={16} />
-            <span>{t('dailyGoalMinutes', { minutes: user?.daily_minutes_goal || 15 })}</span>
+          <div className="daily-goal-pill">
+            <Clock size={16} color="#D4A72C" />
+            <span>{user?.daily_minutes_goal || 15}m daily goal</span>
           </div>
         </div>
       </div>
 
       {/* Hero Alert: Initial Diagnostic Test Required */}
       {!hasCompletedTest && (
-        <div style={{
-          background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
-          border: '2px dashed var(--primary-color)',
-          borderRadius: 'var(--radius-xl)',
-          padding: 'clamp(1.25rem, 4vw, 2rem)',
-          marginBottom: '2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1.25rem',
-          boxShadow: 'var(--shadow-teal)',
-          width: '100%',
-          boxSizing: 'border-box'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.25rem', flex: '1 1 300px', minWidth: 0 }}>
-            <div style={{
-              width: '56px', height: '56px', borderRadius: '50%',
-              background: 'var(--primary-color)', color: '#fff',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-              marginTop: '2px'
-            }}>
-              <Compass size={30} />
+        <div className="diagnostic-hero-alert">
+          <div className="diagnostic-alert-left">
+            <div className="diagnostic-icon-circle">
+              <Compass size={28} />
             </div>
-            <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
-              <h3 style={{ margin: '0 0 6px', fontSize: 'clamp(1.15rem, 3vw, 1.35rem)', color: 'var(--text-main)', fontWeight: '800', lineHeight: '1.3', textAlign: 'left' }}>
-                {t('diagnosticPlacementRequired') || 'Diagnostic Placement Test Required'}
+            <div>
+              <h3 className="diagnostic-alert-title">
+                Diagnostic Placement Test Required
               </h3>
-              <p className="diagnostic-placement-desc" style={{ margin: 0, color: 'var(--text-muted)', fontSize: 'clamp(0.88rem, 2.2vw, 0.98rem)', maxWidth: '680px', lineHeight: '1.55', textAlign: 'left', wordBreak: 'break-word' }}>
-                {t('diagnosticPlacementDesc') || 'Take our 10-minute diagnostic test across vocabulary, reading, listening, and speaking to unlock your personalized learning path.'}
+              <p className="diagnostic-alert-text">
+                Take our 10-minute diagnostic placement test across vocabulary, reading, listening, and speaking to unlock your personalized learning path.
               </p>
             </div>
           </div>
-          <Link to="/initial-exam" className="btn btn-primary" style={{ padding: '0.85rem 1.85rem', fontWeight: '800', fontSize: '1rem', boxShadow: 'var(--shadow-teal)', whiteSpace: 'nowrap', flexShrink: 0 }}>
-            {t('startInitialExam') || 'Start Diagnostic Test 🚀'}
+          <Link to="/initial-exam" className="diagnostic-start-btn">
+            Start Placement Test 🚀
           </Link>
         </div>
       )}
@@ -279,253 +205,213 @@ const LearnerDashboard = () => {
       {/* Adaptive Course Recommendation Banner */}
       {hasCompletedTest && <CourseRecommendationBanner />}
 
-      {/* Top Stat KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
-        <StatCard 
-          title={t('lessonsCompleted')} 
-          value={completedCount} 
-          subtitle={t('totalCompletedUnits')} 
-          icon={BookOpen} 
-          color="teal" 
-        />
-        <StatCard 
-          title={t('assessmentsTaken')} 
-          value={resultsList.length} 
-          subtitle={t('quizzesAndTests')} 
-          icon={Target} 
-          color="indigo" 
-        />
-        <StatCard 
-          title={t('avgScore')} 
-          value={`${avgScore}%`} 
-          subtitle={t('overAllSubmissions')} 
-          icon={TrendingUp} 
-          color="cyan" 
-        />
-        <StatCard 
-          title={t('dayStreak')} 
-          value={`${user?.streak || 0} 🔥`} 
-          subtitle={t('consecutiveActiveDays')} 
-          icon={Flame} 
-          color="gold" 
-        />
-      </div>
+      {/* ========================================================
+          2. CONTINUE LEARNING SECTION
+          ======================================================== */}
+      {hasCompletedTest && learningPath && (
+        <div className="continue-learning-card">
+          <div className="continue-card-header">
+            <div className="continue-track-badge">
+              <Compass size={16} /> Active Learning Track
+            </div>
+            <span className="continue-rate-text">
+              {learningPath.completion_rate}% Complete
+            </span>
+          </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.75rem', marginBottom: '2rem' }}>
-        
-        {/* LEFT COLUMN: ACTIVE PATH, DIAGNOSTICS & BOOSTERS */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+          <h2 className="continue-course-title">
+            {learningPath.course_title}
+          </h2>
+          <p className="continue-course-meta">
+            Target Language: {learningPath.target_language_name} • {learningPath.total_nodes} Checkpoint Modules
+          </p>
 
-          {/* Active Course & Continue Learning Card */}
-          {hasCompletedTest && learningPath && (
+          {/* Animated Progress Bar */}
+          <div className="continue-progress-track">
             <div 
-              className="card" 
-              style={{ 
-                padding: '1.75rem',
-                background: 'var(--surface-card)',
-                border: '1px solid var(--border-color)',
-                borderRadius: 'var(--radius-xl)'
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <Badge variant="teal" icon={Compass}>{t('activeLearningTrack')}</Badge>
-                <span style={{ fontSize: '0.88rem', fontWeight: '800', color: 'var(--primary-color)' }}>
-                  {t('completeRate', { rate: learningPath.completion_rate })}
+              className="continue-progress-fill" 
+              style={{ width: `${Math.max(5, learningPath.completion_rate)}%` }} 
+            />
+          </div>
+
+          {/* Next Playable Node Box */}
+          {nextNode && (
+            <div className="next-node-box">
+              <div className="next-node-info">
+                <span className="next-node-tag">
+                  Module {nextNode.order} • Up Next
+                </span>
+                <h4 className="next-node-title">
+                  {nextNode.title}
+                </h4>
+                <span className="next-node-meta">
+                  ⏱️ ~{nextNode.duration_minutes || 10} mins • {nextNode.competency_tag}
                 </span>
               </div>
 
-              <h2 style={{ fontSize: '1.45rem', margin: '0 0 0.4rem 0', color: 'var(--text-main)', fontWeight: '800' }}>
-                {learningPath.course_title}
-              </h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.25rem' }}>
-                {t('targetTrackLabel')} {learningPath.target_language_name} • {t('checkpointModulesCount', { count: learningPath.total_nodes })}
-              </p>
+              <Link to={getNextNodeUrl(nextNode)} className="continue-btn-cta">
+                <PlayCircle size={20} /> Continue Lesson
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
 
-              {/* Progress Bar */}
-              <div style={{ height: '10px', background: 'var(--surface)', borderRadius: '9999px', overflow: 'hidden', marginBottom: '1.5rem', border: '1px solid var(--border-color)' }}>
-                <div style={{ 
-                  height: '100%', 
-                  width: `${Math.max(5, learningPath.completion_rate)}%`, 
-                  background: 'linear-gradient(90deg, var(--primary-color), var(--accent-cyan))', 
-                  transition: 'width 0.4s ease' 
-                }} />
-              </div>
+      {/* ========================================================
+          3. PROGRESS SUMMARY KPI GRID
+          ======================================================== */}
+      <div className="progress-kpi-grid">
+        <div className="kpi-card kpi-teal">
+          <div className="kpi-icon-wrapper">
+            <BookOpen size={22} color="#059669" />
+          </div>
+          <div className="kpi-content">
+            <span className="kpi-value">{completedCount}</span>
+            <span className="kpi-label">Lessons Completed</span>
+          </div>
+        </div>
 
-              {/* Next Playable Node */}
-              {nextNode && (
-                <div style={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: 'var(--radius-lg)',
-                  padding: '1.25rem',
-                  display: 'flex',
-                  justify: 'space-between',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  marginBottom: '1.25rem'
-                }}>
-                  <div>
-                    <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--primary-color)', fontWeight: '800', letterSpacing: '0.5px' }}>
-                      {t('upNextNode', { order: nextNode.order })}
-                    </span>
-                    <h4 style={{ margin: '4px 0 2px 0', fontSize: '1.05rem', color: 'var(--text-main)', fontWeight: '800' }}>
-                      {nextNode.title}
-                    </h4>
-                    <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                      ⏱️ ~{nextNode.duration_minutes || 10} mins • {nextNode.competency_tag}
+        <div className="kpi-card kpi-gold">
+          <div className="kpi-icon-wrapper">
+            <Flame size={22} color="#D4A72C" />
+          </div>
+          <div className="kpi-content">
+            <span className="kpi-value">{user?.streak || 0} 🔥</span>
+            <span className="kpi-label">Day Streak</span>
+          </div>
+        </div>
+
+        <div className="kpi-card kpi-indigo">
+          <div className="kpi-icon-wrapper">
+            <TrendingUp size={22} color="#4F46E5" />
+          </div>
+          <div className="kpi-content">
+            <span className="kpi-value">{avgScore}%</span>
+            <span className="kpi-label">Average Score</span>
+          </div>
+        </div>
+
+        <div className="kpi-card kpi-purple">
+          <div className="kpi-icon-wrapper">
+            <Award size={22} color="#6D28D9" />
+          </div>
+          <div className="kpi-content">
+            <span className="kpi-value">{currentCEFR}</span>
+            <span className="kpi-label">CEFR Mastery</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================
+          4. LEARNING CATEGORIES (6 SKILLS GRID)
+          ======================================================== */}
+      <div className="categories-section">
+        <div className="section-header-row">
+          <h3 className="section-title">
+            <Sparkles size={20} color="#6D28D9" /> Learning Categories
+          </h3>
+          <span className="section-subtitle">Choose a skill to practice</span>
+        </div>
+
+        <div className="categories-grid">
+          {categories.map((cat) => {
+            const IconComp = cat.icon;
+            return (
+              <Link to={cat.link} key={cat.id} className="category-card-item">
+                <div className="category-card-top">
+                  <div className="category-icon-box" style={{ background: `${cat.color}15`, color: cat.color }}>
+                    <IconComp size={24} />
+                  </div>
+                  <span className="category-badge-chip" style={{ color: cat.color, borderColor: `${cat.color}30`, background: `${cat.color}10` }}>
+                    {cat.badge}
+                  </span>
+                </div>
+                <div className="category-card-body">
+                  <h4 className="category-title">{cat.title}</h4>
+                  <p className="category-desc">{cat.desc}</p>
+                </div>
+                <div className="category-card-arrow">
+                  <span>Start</span>
+                  <ChevronRight size={16} />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ========================================================
+          5. RECOMMENDED / RECENT ACTIVITY & QUESTS SECTION
+          ======================================================== */}
+      <div className="secondary-widgets-grid">
+        
+        {/* Daily Quests Widget */}
+        <div className="widget-card">
+          <h3 className="widget-title">
+            <Target size={20} color="#4F46E5" /> Daily Quests
+          </h3>
+          <div className="quests-list">
+            {quests.map(q => {
+              const pct = Math.min(100, Math.round((q.current / q.target) * 100));
+              const isComplete = q.current >= q.target;
+              return (
+                <div key={q.id} className="quest-item-box">
+                  <div className="quest-item-header">
+                    <span className="quest-item-title">{q.title}</span>
+                    <span className={`quest-item-status ${isComplete ? 'complete' : ''}`}>
+                      {q.current} / {q.target} {q.unit} {isComplete && '✅'}
                     </span>
                   </div>
+                  <div className="quest-progress-track">
+                    <div 
+                      className={`quest-progress-fill ${isComplete ? 'complete' : ''}`} 
+                      style={{ width: `${pct}%` }} 
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
-                  <Link 
-                    to={getNextNodeUrl(nextNode)} 
-                    className="btn btn-primary" 
-                    style={{ padding: '0.7rem 1.35rem', fontWeight: '800', fontSize: '0.92rem', gap: '6px', whiteSpace: 'nowrap' }}
-                  >
-                    <PlayCircle size={18} /> {t('continueBtn')}
-                  </Link>
+        {/* Skill Diagnostic Radar & Weak Areas */}
+        {hasCompletedTest && (
+          <div className="widget-card">
+            <div className="widget-header-flex">
+              <h3 className="widget-title">
+                <BarChart2 size={20} color="#6D28D9" /> Diagnostic Competency
+              </h3>
+              <span className="widget-badge">{currentCEFR} Level</span>
+            </div>
+
+            <SkillRadarChart />
+
+            {/* Strengths & Focus Areas */}
+            <div className="strengths-weakness-grid">
+              {strengths.length > 0 && (
+                <div className="sw-pill-group sw-green">
+                  <span className="sw-label">Key Strengths</span>
+                  <div className="sw-pills-row">
+                    {strengths.map((s, idx) => (
+                      <span key={idx} className="sw-pill pill-green">{s}</span>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              <Link to="/learning-path" className="btn btn-secondary" style={{ width: '100%', justifyContent: 'center', fontWeight: '700' }}>
-                {t('openInteractivePath')}
-              </Link>
-            </div>
-          )}
-
-          {/* Diagnostic Competency Radar & Weak Areas */}
-          {hasCompletedTest && (
-            <div className="card" style={{ padding: '1.75rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <BarChart2 size={20} color="var(--primary-color)" /> {t('cefrDiagnosticProfileTitle')}
-                </h3>
-                <Badge variant="cyan">{currentCEFR} Level</Badge>
-              </div>
-
-              <SkillRadarChart />
-
-              {/* Weak Areas & Strengths Pills */}
-              <div style={{ marginTop: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                {strengths.length > 0 && (
-                  <div style={{ background: 'var(--surface)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--success)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '6px' }}>
-                      {t('keyStrengths')}
-                    </span>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                      {strengths.map((s, idx) => (
-                        <Badge key={idx} variant="green" size="small">{s}</Badge>
-                      ))}
-                    </div>
+              {weakAreas.length > 0 && (
+                <div className="sw-pill-group sw-orange">
+                  <span className="sw-label">Needs Focus</span>
+                  <div className="sw-pills-row">
+                    {weakAreas.map((w, idx) => (
+                      <span key={idx} className="sw-pill pill-gold">{w}</span>
+                    ))}
                   </div>
-                )}
-
-                {weakAreas.length > 0 && (
-                  <div style={{ background: 'var(--surface)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--accent-orange)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '6px' }}>
-                      {t('needsFocus')}
-                    </span>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                      {weakAreas.map((w, idx) => (
-                        <Badge key={idx} variant="gold" size="small">{w}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-        </div>
-
-        {/* RIGHT COLUMN: DAILY QUESTS, PRACTICE BOOSTERS & LEADERBOARD */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-
-          {/* Daily Quests Widget */}
-          <div className="card" style={{ padding: '1.75rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Target size={20} color="var(--primary-color)" /> {t('dailyQuests')}
-            </h3>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
-              {quests.map(q => {
-                const pct = Math.min(100, Math.round((q.current / q.target) * 100));
-                const isComplete = q.current >= q.target;
-                return (
-                  <div key={q.id} style={{ background: 'var(--surface)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                      <span style={{ fontWeight: '700', fontSize: '0.92rem', color: 'var(--text-main)' }}>{q.title}</span>
-                      <span style={{ fontSize: '0.82rem', fontWeight: '800', color: isComplete ? 'var(--primary-color)' : 'var(--text-muted)' }}>
-                        {q.current} / {q.target} {q.unit} {isComplete && '✅'}
-                      </span>
-                    </div>
-                    <div style={{ height: '8px', background: 'var(--bg-dark)', borderRadius: '9999px', overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${pct}%`, background: isComplete ? 'var(--primary-color)' : 'var(--secondary-color)', transition: 'width 0.3s ease' }} />
-                    </div>
-                  </div>
-                );
-              })}
+                </div>
+              )}
             </div>
           </div>
-
-          {/* Weekly Practice Heatmap Calendar */}
-          <div className="card" style={{ padding: '1.75rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Calendar size={20} color="var(--accent-gold)" /> {t('weeklyActivityCalendar')}
-            </h3>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', textAlign: 'center' }}>
-              {weekDays.map((d, i) => {
-                const dayName = d.toLocaleDateString('en-US', { weekday: 'narrow' });
-                const isToday = d.toDateString() === todayStr;
-                const isActive = activeDaysThisWeek.has(d.toDateString());
-                return (
-                  <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-muted)' }}>{dayName}</span>
-                    <div 
-                      style={{
-                        width: '36px', height: '36px', borderRadius: '50%',
-                        background: isActive ? 'var(--primary-color)' : (isToday ? 'var(--surface-hover)' : 'var(--surface)'),
-                        border: isToday ? '2px solid var(--primary-color)' : '1px solid var(--border-color)',
-                        color: isActive ? '#ffffff' : 'var(--text-muted)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontWeight: '800', fontSize: '0.85rem'
-                      }}
-                    >
-                      {isActive ? '✓' : d.getDate()}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Practice Boosters & Features */}
-          <div className="card" style={{ padding: '1.75rem', background: 'var(--surface-card)', borderRadius: 'var(--radius-xl)' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Zap size={20} color="var(--primary-color)" /> {t('practiceHub')}
-            </h3>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-              <Link to="/conversation" className="btn btn-secondary" style={{ flexDirection: 'column', padding: '1.15rem 0.85rem', alignItems: 'center', gap: '8px', textAlign: 'center' }}>
-                <Mic size={22} color="var(--primary-color)" />
-                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>{t('aiLab')}</span>
-              </Link>
-              <Link to="/stories" className="btn btn-secondary" style={{ flexDirection: 'column', padding: '1.15rem 0.85rem', alignItems: 'center', gap: '8px', textAlign: 'center' }}>
-                <BookOpen size={22} color="var(--secondary-color)" />
-                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>{t('stories')}</span>
-              </Link>
-              <Link to="/flashcards" className="btn btn-secondary" style={{ flexDirection: 'column', padding: '1.15rem 0.85rem', alignItems: 'center', gap: '8px', textAlign: 'center' }}>
-                <Layers size={22} color="var(--accent-gold)" />
-                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>{t('flashcardsTitle')}</span>
-              </Link>
-              <Link to="/review/srs" className="btn btn-secondary" style={{ flexDirection: 'column', padding: '1.15rem 0.85rem', alignItems: 'center', gap: '8px', textAlign: 'center' }}>
-                <Clock size={22} color="var(--accent-purple)" />
-                <span style={{ fontSize: '0.9rem', fontWeight: '800' }}>{t('srsTitle')}</span>
-              </Link>
-            </div>
-          </div>
-
-        </div>
+        )}
 
       </div>
 
