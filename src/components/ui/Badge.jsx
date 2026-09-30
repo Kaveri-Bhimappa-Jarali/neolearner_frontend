@@ -18,6 +18,7 @@ const Badge = ({ children, variant = 'teal', size = 'medium', icon: Icon }) => {
 
   return (
     <span
+      className="badge"
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -31,7 +32,9 @@ const Badge = ({ children, variant = 'teal', size = 'medium', icon: Icon }) => {
         fontSize: fontSize,
         letterSpacing: '0.4px',
         textTransform: 'uppercase',
-        whiteSpace: 'nowrap'
+        whiteSpace: 'nowrap',
+        maxWidth: '100%',
+        boxSizing: 'border-box'
       }}
     >
       {Icon && <Icon size={size === 'small' ? 12 : 14} />}
