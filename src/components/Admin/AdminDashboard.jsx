@@ -6,7 +6,7 @@ import { useTranslation } from '../../utils/i18n';
 import { 
   Users, BookOpen, BarChart3, Sparkles, Award, 
   ShieldAlert, RefreshCw, Eye, Compass, Activity, Database,
-  FileCheck2, Crown, Zap, ChevronRight, CheckCircle2, ArrowUpRight
+  FileCheck2, Crown, Zap, ChevronRight, CheckCircle2, ArrowRight
 } from 'lucide-react';
 import LearnerManagement from './LearnerManagement';
 import LearningAnalytics from './LearningAnalytics';
@@ -78,14 +78,14 @@ const AdminDashboard = () => {
   return (
     <div className="admin-container" style={{ maxWidth: '1380px', margin: '0 auto', padding: '1rem 1.25rem', animation: 'fadeIn 0.3s ease', width: '100%', boxSizing: 'border-box' }}>
       
-      {/* Royal Hero Card - Compact Content-Driven Height (Zero Empty Space) */}
+      {/* Royal Hero Card — Compact Content-Driven Height */}
       <div className="card admin-hero-card" style={{
-        background: 'linear-gradient(135deg, rgba(11, 15, 25, 0.98) 0%, rgba(26, 21, 59, 0.95) 50%, rgba(13, 23, 42, 0.98) 100%)',
+        background: 'linear-gradient(135deg, rgba(11, 15, 25, 0.98) 0%, rgba(26, 21, 59, 0.92) 50%, rgba(13, 23, 42, 0.98) 100%)',
         borderRadius: '24px',
         padding: 'clamp(1.25rem, 3vw, 2rem)',
-        border: '1px solid rgba(212, 175, 55, 0.3)',
+        border: '1px solid rgba(212, 175, 55, 0.28)',
         marginBottom: '1.75rem',
-        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(109, 40, 217, 0.15)',
+        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(109, 40, 217, 0.12)',
         width: '100%',
         boxSizing: 'border-box',
         position: 'relative',
@@ -101,7 +101,7 @@ const AdminDashboard = () => {
           width: '280px',
           height: '280px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(109, 40, 217, 0.15) 50%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(109, 40, 217, 0.12) 50%, transparent 70%)',
           pointerEvents: 'none'
         }} />
 
@@ -209,7 +209,7 @@ const AdminDashboard = () => {
         {/* Title & Subtitle */}
         <div style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
           <h1 style={{ 
-            fontSize: 'clamp(1.6rem, 3.8vw, 2.4rem)', 
+            fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', 
             fontWeight: '900', 
             color: '#ffffff', 
             margin: '0 0 0.4rem 0', 
@@ -217,7 +217,8 @@ const AdminDashboard = () => {
             letterSpacing: '-0.02em',
             display: 'flex',
             alignItems: 'center',
-            gap: '12px'
+            gap: '12px',
+            flexWrap: 'wrap'
           }}>
             <span>NeoLearner Admin Operations</span>
             <span style={{
@@ -233,15 +234,15 @@ const AdminDashboard = () => {
           <p style={{ 
             color: '#94a3b8', 
             margin: 0, 
-            fontSize: 'clamp(0.88rem, 2vw, 1rem)', 
+            fontSize: 'clamp(0.9rem, 2.2vw, 1.05rem)', 
             lineHeight: '1.5', 
-            maxWidth: '780px'
+            maxWidth: '820px'
           }}>
-            Manage learners, modules, communication, and platform data from one place.
+            Manage learners, modules, communication, and platform data from one centralized workspace.
           </p>
         </div>
 
-        {/* Compact 4-Stat Cards Ribbon directly inside Hero (No Empty Space) */}
+        {/* Compact 4-Stat Cards Ribbon directly inside Hero */}
         <div className="admin-metrics-ribbon" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
@@ -287,19 +288,29 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Admin Modules Quick Grid (Overview Tab Top Hub) */}
+      {/* Platform Control Modules Header & Grid */}
       {activeTab === 'overview' && (
         <div style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: '800', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+            <h2 style={{ fontSize: 'clamp(1.15rem, 2.5vw, 1.4rem)', fontWeight: '800', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
               <Zap size={20} color="#fbbf24" /> Platform Control Modules
             </h2>
-            <span style={{ fontSize: '0.82rem', color: '#94a3b8', fontWeight: '600' }}>9 Modules Active</span>
+            <span style={{ 
+              fontSize: '0.78rem', 
+              color: '#fbbf24', 
+              fontWeight: '800',
+              padding: '3px 10px',
+              borderRadius: '9999px',
+              background: 'rgba(212, 175, 55, 0.12)',
+              border: '1px solid rgba(212, 175, 55, 0.3)'
+            }}>
+              9 Modules Active
+            </span>
           </div>
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: '1rem'
           }}>
             {ADMIN_TABS.map(t => {
@@ -310,20 +321,22 @@ const AdminDashboard = () => {
                   key={t.id}
                   onClick={() => setActiveTab(t.id)}
                   style={{
-                    padding: '1.1rem 1.25rem',
+                    padding: '1.2rem 1.35rem',
                     borderRadius: '16px',
-                    background: isSelected ? 'rgba(109, 40, 217, 0.22)' : 'var(--surface-card)',
+                    background: isSelected ? 'rgba(109, 40, 217, 0.22)' : 'rgba(17, 24, 39, 0.75)',
+                    backdropFilter: 'blur(16px)',
                     border: isSelected ? '1.5px solid #fbbf24' : '1px solid rgba(212, 175, 55, 0.2)',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
                     display: 'flex',
-                    alignItems: 'center',
+                    flexDirection: 'column',
                     justifyContent: 'space-between',
-                    boxShadow: isSelected ? '0 8px 24px rgba(109, 40, 217, 0.3)' : 'var(--shadow-sm)'
+                    gap: '12px',
+                    boxShadow: isSelected ? '0 8px 24px rgba(109, 40, 217, 0.3)' : '0 4px 14px rgba(0, 0, 0, 0.3)'
                   }}
                   className="admin-module-quick-card"
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px' }}>
                     <div style={{
                       padding: '10px',
                       borderRadius: '12px',
@@ -334,14 +347,40 @@ const AdminDashboard = () => {
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}>
-                      <TabIcon size={20} />
+                      <TabIcon size={22} />
                     </div>
-                    <div>
-                      <div style={{ fontSize: '0.95rem', fontWeight: '800', color: '#ffffff' }}>{t.label}</div>
-                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '2px' }}>{t.desc}</div>
-                    </div>
+
+                    <span style={{
+                      fontSize: '0.68rem',
+                      fontWeight: '800',
+                      padding: '2px 8px',
+                      borderRadius: '6px',
+                      background: 'rgba(16, 185, 129, 0.12)',
+                      border: '1px solid rgba(16, 185, 129, 0.3)',
+                      color: '#34d399',
+                      letterSpacing: '0.05em'
+                    }}>ACTIVE</span>
                   </div>
-                  <ChevronRight size={18} color={isSelected ? '#fbbf24' : '#64748b'} />
+
+                  <div>
+                    <div style={{ fontSize: '1rem', fontWeight: '800', color: '#ffffff', marginBottom: '3px' }}>{t.label}</div>
+                    <div style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: '1.4' }}>{t.desc}</div>
+                  </div>
+
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'flex-end', 
+                    fontSize: '0.8rem', 
+                    fontWeight: '800', 
+                    color: isSelected ? '#fbbf24' : '#64748b',
+                    gap: '4px',
+                    paddingTop: '6px',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.05)'
+                  }}>
+                    <span>Manage</span>
+                    <ArrowRight size={14} />
+                  </div>
                 </div>
               );
             })}
