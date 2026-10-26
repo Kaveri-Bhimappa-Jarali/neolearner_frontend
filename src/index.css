@@ -1521,7 +1521,7 @@ table .btn {
   }
 
   .insights-container {
-    padding: 0.75rem 0.5rem !important;
+    padding: 1rem 0.75rem !important;
     width: 100% !important;
     max-width: 100% !important;
     overflow-x: hidden !important;
@@ -1529,9 +1529,9 @@ table .btn {
   }
 
   .insights-hero-card {
-    padding: 1.25rem 0.75rem !important;
-    border-radius: 20px !important;
-    margin-bottom: 1.5rem !important;
+    padding: 2rem 1.5rem !important;
+    border-radius: 24px !important;
+    margin-bottom: 1.75rem !important;
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
@@ -1539,10 +1539,10 @@ table .btn {
   }
 
   .insights-hero-badge {
-    font-size: 0.72rem !important;
-    padding: 0.35rem 0.65rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.4rem 0.9rem !important;
     letter-spacing: 0px !important;
-    white-space: normal !important;
+    white-space: nowrap !important;
     text-align: center !important;
     line-height: 1.3 !important;
     max-width: 100% !important;
@@ -1556,29 +1556,37 @@ table .btn {
   }
 
   .insights-hero-title {
-    font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
-    line-height: 1.3 !important;
+    font-size: clamp(1.5rem, 5.5vw, 2.2rem) !important;
+    line-height: 1.25 !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;
     max-width: 100% !important;
   }
 
   .insights-hero-desc {
-    font-size: 0.92rem !important;
-    line-height: 1.5 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.55 !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;
     max-width: 100% !important;
   }
 
+  /* Keep hero buttons in a row on mobile — same as desktop */
   .insights-action-flex {
-    flex-direction: column !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 0.6rem !important;
     width: 100% !important;
   }
 
   .insights-action-flex .btn {
-    width: 100% !important;
+    flex: 1 1 auto !important;
+    min-width: min(140px, 42%) !important;
+    padding: 0.7rem 1rem !important;
+    font-size: 0.88rem !important;
     box-sizing: border-box !important;
+    white-space: nowrap !important;
   }
 
   .insights-tabs-bar {
@@ -1610,7 +1618,7 @@ table .btn {
   }
 
   .insights-feature-card {
-    padding: 1.25rem 0.85rem !important;
+    padding: 1.5rem 1rem !important;
     border-radius: 20px !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -1660,7 +1668,7 @@ table .btn {
   }
 
   .main-content {
-    padding: 1rem 0.5rem !important;
+    padding: 1rem 0.75rem !important;
     width: 100% !important;
     max-width: 100vw !important;
     overflow-x: hidden !important;
@@ -1674,8 +1682,25 @@ table .btn {
   }
 
   .insights-hero-card {
-    padding: 1.25rem 0.65rem !important;
+    padding: 1.5rem 1rem !important;
     border-radius: 20px !important;
+  }
+
+  /* Keep action buttons in a row on small mobile too */
+  .insights-action-flex {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+  }
+
+  .insights-action-flex .btn {
+    flex: 1 1 auto !important;
+    min-width: min(120px, 40%) !important;
+    padding: 0.6rem 0.75rem !important;
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
   }
 
   .insights-metrics-grid {
